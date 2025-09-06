@@ -4,6 +4,7 @@ end
 vim.g.did_load_autocommands_plugin = true
 
 local fn = require("funcs")
+local lf = require("largefiles")
 
 -- Show cursor line only in active window.
 -- https://github.com/folke/dot/blob/master/nvim/lua/config/autocmds.lua
@@ -206,6 +207,19 @@ fn.augroup("checktime", {
     command = "if &buftype == '' && mode() != 'c' && getcmdwintype() == '' | checktime | endif",
     pattern = { "*" },
   },
+})
+
+
+fn.augroup("local-highlight-attach", {
+vim.g.post_load_events,
+{
+  pattern = "*",
+  callback = function(data)
+    if not lf.is_large_file(data.buf, true) then
+      require("local-highlight").attach(data.buf)
+    end
+  end,
+},
 })
 
 if vim.env.TERM == "alacritty" then

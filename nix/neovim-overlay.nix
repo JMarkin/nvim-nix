@@ -63,6 +63,7 @@ with final.pkgs.lib; let
   ++ (callPackage ./statusline.nix)
   ++ (callPackage ./quickfix.nix)
   ++ (callPackage ./blink-pairs.nix)
+  ++ (callPackage ./ui.nix)
 
   ++ [
     vim-polyglot

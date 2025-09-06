@@ -47,29 +47,13 @@ with pkgs.vimPlugins; [
          "local-highlight.nvim",
          on_require="local-highlight",
          after = function()
+          vim.api.nvim_set_hl(0, "LocalHighlight", { underline = true })
           require("local-highlight").setup({
             insert_mode = false,
             file_types = {},
             hlgroup = "LocalHighlight",
           })
-         end
-         before=function()
-          local fn = require("funcs")
-          local lf = require("largefiles")
-          vim.api.nvim_set_hl(0, "LocalHighlight", { underline = true })
-
-          fn.augroup("local-highlight-attach", {
-            vim.g.post_load_events,
-            {
-              pattern = "*",
-              callback = function(data)
-                if not lf.is_large_file(data.buf, true) then
-                  require("local-highlight").attach(data.buf)
-                end
-              end,
-            },
-          })
-         end
+         end,
       })
     '';
   }

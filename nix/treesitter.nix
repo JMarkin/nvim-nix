@@ -85,5 +85,6 @@ in
   pkgs.vimPlugins.nvim-treesitter-context
   nvim-yati
   hlargs-nvim
+  pkgs.vimPlugins.nvim-treesitter-textobjects
 
 ]

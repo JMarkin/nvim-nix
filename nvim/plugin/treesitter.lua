@@ -53,6 +53,11 @@ lze.load({
 })
 
 lze.load({
+  "nvim-treesitter-textobjects",
+  on_plugin = "nvim-treesitter",
+})
+
+lze.load({
   "nvim-yati",
   on_plugin = "nvim-treesitter",
 })
