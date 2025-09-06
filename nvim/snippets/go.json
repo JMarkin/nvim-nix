@@ -1,0 +1,14 @@
+{
+  "ie + if e + ife": {
+    "body": [
+      "if err != nil {",
+      "    $0",
+      "}"
+    ],
+    "prefix": [
+      "ie",
+      "if e",
+      "ife"
+    ]
+  }
+}
