@@ -2,6 +2,10 @@
 let
 
   yaml-nvim = (mkNvimPlugin inputs.yaml-nvim "yaml.nvim");
+  gentags = (mkNvimPlugin inputs.gentags-lua "gentags.lua").overrideAttrs
+    {
+      dependencies = [ pkgs.vimPlugins.plenary-nvim ];
+    };
 in
 {
   packages = with pkgs; [
@@ -18,6 +22,7 @@ in
 
     biome
 
+    universal-ctags
   ];
 
   plugins = with pkgs.vimPlugins; [
@@ -26,8 +31,9 @@ in
       type = "lua";
       optional = true;
       config = /*lua*/''
-        require("lze").load {
-          "nvim-lint",
+        lze.load {
+          "${nvim-lint.pname}",
+          on_require = "lint",
           after = function()
             require("lint").linters_by_ft = vim.g.linter_by_ft
             require("lint").linters.sqlfluff.args = {
@@ -44,9 +50,10 @@ in
       type = "lua";
       optional = true;
       config = /*lua*/''
-        require("lze").load {
-          "conform.nvim",
+        lze.load {
+          "${conform-nvim.pname}",
           cmd = { "ConformInfo" },
+          on_require = "conform",
           after = function()
             require("conform").setup({
               formatters_by_ft = vim.g.formatters_by_ft,
@@ -68,10 +75,11 @@ in
     {
       plugin = SchemaStore-nvim;
       type = "lua";
-      optional = true;
+      optional = false;
       config = /*lua*/''
-        require("lze").load {
-          "schemastore.nvim",
+        lze.load {
+          "${SchemaStore-nvim.pname}",
+          on_require = "schemastore",
         }
       '';
     }
@@ -80,13 +88,17 @@ in
       type = "lua";
       optional = true;
       config = /*lua*/''
-        require("lze").load {
-          "yaml.nvim",
+        lze.load {
+          "${yaml-nvim.pname}",
+          on_require = "yaml",
           ft = {"yaml"}
         }
       '';
     }
 
+    (mkNvimPlugin inputs.namu-nvim "namu.nvim")
+
+    gentags
 
   ];
 }

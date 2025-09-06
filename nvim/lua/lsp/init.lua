@@ -15,7 +15,7 @@ M.lsps = {
   -- "jedi_language_server",
   "ruff",
   "ty",
-  "basedpyright",
+  -- "basedpyright",
   "taplo",
   "ts_ls",
   "neocmake",

@@ -16,8 +16,8 @@ local is_disable = function(_lang, buf)
   -- return _type == FILE_TYPE.READ_ONLY or _type == FILE_TYPE.LARGE_SIZE
 end
 
-require("lze").load({
-  "treesitter-context",
+lze.load({
+  "nvim-treesitter-context",
   on_plugin = "nvim-treesitter",
   after = function()
     local tsc = require("treesitter-context")
@@ -52,14 +52,24 @@ require("lze").load({
   end,
 })
 
-require("lze").load({
+lze.load({
+  "nvim-yati",
+  on_plugin = "nvim-treesitter",
+})
+
+lze.load({
+  "hlargs.nvim",
+})
+
+lze.load({
   "nvim-treesitter",
   event = vim.g.post_load_events,
+  on_require = { "nvim-treesitter.configs" },
   before = function()
     local prev = vim.treesitter.language.get_lang
     ---@diagnostic disable-next-line: duplicate-set-field
     vim.treesitter.language.get_lang = function(...)
-      require("lze").trigger_load({ "nvim-treesitter" })
+      lze.trigger_load("nvim-treesitter")
       return prev(...)
     end
   end,

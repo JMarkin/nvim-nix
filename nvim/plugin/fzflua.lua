@@ -1,10 +1,15 @@
+if vim.g.did_load_fzf_plugin then
+  return
+end
+vim.g.did_load_fzf_plugin = true
+
 local autocmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 
-return {
-  "ibhagwan/fzf-lua",
+lze.load({
+  "fzf-lua",
   cmd = "FzfLua",
-  lazy = true,
+  on_require = "fzf-lua",
   keys = {
     {
       "<leader>sq",
@@ -160,7 +165,7 @@ return {
       desc = "Search: git commits",
     },
   },
-  config = function()
+  after = function()
     local actions = require("fzf-lua.actions")
     require("fzf-lua").setup({
       -- fzf_bin = "sk",
@@ -361,8 +366,8 @@ return {
   end,
   init = function()
     vim.ui.select = function(...)
-      require("lazy").load({ plugins = { "fzf-lua" } })
+      lze.trigger_load("fzf-lua")
       return vim.ui.select(...)
     end
   end,
-}
+})

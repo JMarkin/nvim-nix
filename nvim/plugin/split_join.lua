@@ -1,3 +1,8 @@
+if vim.g.did_load_split_join_plugin then
+  return
+end
+vim.g.did_load_split_join_plugin = true
+
 local function get_pos_lang(node)
   local c = vim.api.nvim_win_get_cursor(0)
   local range = { c[1] - 1, c[2], c[1] - 1, c[2] }
@@ -10,10 +15,10 @@ local function get_pos_lang(node)
   return current_tree:lang()
 end
 
-return {
-  { "echasnovski/mini.splitjoin", lazy = true },
+lze.load({
+  { "mini.splitjoin", on_require = "mini.splitjoin" },
   {
-    "Wansmer/treesj",
+    "treesj",
     keys = {
       { "gj", ":lua require('treesj').join()<cr>", desc = "join lines", silent = true },
       { "gs", ":lua require('treesj').split()<cr>", desc = "split lines", silent = true },
@@ -39,8 +44,7 @@ return {
         desc = "Toggle single/multiline block of code",
       },
     },
-    dependencies = { "nvim-treesitter/nvim-treesitter" }, -- if you install parsers with `nvim-treesitter`
-    config = function()
+    after = function()
       local langs = require("treesj.langs").presets
       local lu = require("treesj.langs.utils")
 
@@ -123,4 +127,24 @@ return {
       })
     end,
   },
-}
+})
+
+lze.load({
+  "vim-easy-align",
+  keys = {
+    { "gl", "<Plug>(EasyAlign)", mode = { "v", "x" }, noremap = false, desc = "EazyAlign" },
+    { "gL", "<Plug>(LiveEasyAlign)", mode = { "v", "x" }, noremap = false, desc = "EazyAlign Live" },
+  },
+  before = function()
+    vim.g.easy_align_delimiters = {
+      ["\\"] = {
+        pattern = [[\\\+]],
+      },
+      ["/"] = {
+        pattern = [[//\+\|/\*\|\*/]],
+        delimiter_align = "c",
+        ignore_groups = "!Comment",
+      },
+    }
+  end,
+})

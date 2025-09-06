@@ -32,7 +32,7 @@ vim.api.nvim_create_autocmd("User", {
   end,
 })
 
-require("lze").load({
+lze.load({
   {
     "gitsigns.nvim",
     after = function()
@@ -128,3 +128,4 @@ require("lze").load({
     end,
   },
 })
+

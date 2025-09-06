@@ -146,7 +146,7 @@ if g.modern_ui then
     diff = "╱",
   })
 
-  -- vim.api.nvim_command('colorscheme ex-bamboo')
+  vim.api.nvim_command('colorscheme ex-bamboo')
 else
   opt.termguicolors = false
 end

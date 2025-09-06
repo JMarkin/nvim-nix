@@ -74,7 +74,7 @@ let
     {
       dependencies = [ nvim-treesitter ];
     };
-  hlargs-nvim = (mkNvimPlugin inputs.hlargs-nvim "hlargs-nvim").overrideAttrs
+  hlargs-nvim = (mkNvimPlugin inputs.hlargs-nvim "hlargs.nvim").overrideAttrs
     {
       dependencies = [ nvim-treesitter ];
     };
@@ -83,27 +83,7 @@ in
 
   nvim-treesitter
   pkgs.vimPlugins.nvim-treesitter-context
-  {
-    plugin = nvim-yati;
-    type = "lua";
-    optional = true;
-    config = /*lua*/''
-      require('lze').load {
-        'nvim-yati',
-        on_plugin = 'nvim-treesitter',
-      }
-    '';
-  }
-  {
-    plugin = hlargs-nvim;
-    type = "lua";
-    optional = true;
-    config = /*lua*/''
-      require('lze').load {
-        'hlargs.nvim',
-        on_plugin = 'nvim-treesitter',
-      }
-    '';
-  }
+  nvim-yati
+  hlargs-nvim
 
 ]

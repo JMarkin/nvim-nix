@@ -16,6 +16,22 @@
         "type": "github"
       }
     },
+    "diaglist-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1696529653,
+        "narHash": "sha256-/4eb11/8O89YeHf0TSzQpQyCbS0oPyG/QqtVOrFPaOo=",
+        "owner": "JMarkin",
+        "repo": "diaglist.nvim",
+        "rev": "73ace32941fa5db5427f7ef936598072f89ce34a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "JMarkin",
+        "repo": "diaglist.nvim",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -89,6 +105,23 @@
         "type": "github"
       }
     },
+    "gentags-lua": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1749466337,
+        "narHash": "sha256-TQe3Uob1QRrM8ELRBl5gokBVZ2KZAWcKoVPvMDiZTXE=",
+        "owner": "JMarkin",
+        "repo": "gentags.lua",
+        "rev": "25231af5ece9cb2bc3ba3a95fedbbde03bac6b14",
+        "type": "github"
+      },
+      "original": {
+        "owner": "JMarkin",
+        "ref": "feat/neovim-0.10",
+        "repo": "gentags.lua",
+        "type": "github"
+      }
+    },
     "git-hooks": {
       "inputs": {
         "flake-compat": "flake-compat",
@@ -151,6 +184,22 @@
         "type": "github"
       }
     },
+    "local-highlight-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1743315097,
+        "narHash": "sha256-A92wZoI4J8vpSFUnYIPaTnLs60Ax57Mvegy+dmQhTck=",
+        "owner": "tzachar",
+        "repo": "local-highlight.nvim",
+        "rev": "272f36f412c0a82c785c01256abf4eda4c1cb11d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tzachar",
+        "repo": "local-highlight.nvim",
+        "type": "github"
+      }
+    },
     "luvit-meta": {
       "flake": false,
       "locked": {
@@ -164,6 +213,22 @@
       "original": {
         "owner": "Bilal2453",
         "repo": "luvit-meta",
+        "type": "github"
+      }
+    },
+    "namu-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1751647668,
+        "narHash": "sha256-zMRjYesRVagguR521e6MgjYcEOPEVyb7UG8NzKOTSw0=",
+        "owner": "bassamsdata",
+        "repo": "namu.nvim",
+        "rev": "6759df3cddb1d6d11442b953f8b63e64350229f3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "bassamsdata",
+        "repo": "namu.nvim",
         "type": "github"
       }
     },
@@ -246,12 +311,18 @@
     "root": {
       "inputs": {
         "cmp-diag-codes": "cmp-diag-codes",
+        "diaglist-nvim": "diaglist-nvim",
         "flake-utils": "flake-utils",
         "gen-luarc": "gen-luarc",
+        "gentags-lua": "gentags-lua",
         "hlargs-nvim": "hlargs-nvim",
+        "local-highlight-nvim": "local-highlight-nvim",
+        "namu-nvim": "namu-nvim",
         "nixpkgs": "nixpkgs_2",
         "nvim-yati": "nvim-yati",
         "rust-overlay": "rust-overlay",
+        "stay-in-place-nvim": "stay-in-place-nvim",
+        "whatthejump-nvim": "whatthejump-nvim",
         "yaml-nvim": "yaml-nvim"
       }
     },
@@ -275,6 +346,22 @@
         "type": "github"
       }
     },
+    "stay-in-place-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1674224618,
+        "narHash": "sha256-Cq9/JQoxuUiAQPobiSizwmvdxJRjE7XjG47A38wdVwY=",
+        "owner": "gbprod",
+        "repo": "stay-in-place.nvim",
+        "rev": "0628b6db8970fc731abf9608d6f80659b58932c9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "gbprod",
+        "repo": "stay-in-place.nvim",
+        "type": "github"
+      }
+    },
     "systems": {
       "locked": {
         "lastModified": 1681028828,
@@ -287,6 +374,22 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "whatthejump-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1754642285,
+        "narHash": "sha256-ZIkm99cE7cxQYyR0E0oMwgPSgPgEOOLt7TkbCmxLaJY=",
+        "owner": "lewis6991",
+        "repo": "whatthejump.nvim",
+        "rev": "a00d4db481fe5b14362c9a5688d5575fb7e48ee1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "lewis6991",
+        "repo": "whatthejump.nvim",
         "type": "github"
       }
     },

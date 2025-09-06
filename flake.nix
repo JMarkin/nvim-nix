@@ -24,9 +24,36 @@
       url = "github:cuducos/yaml.nvim";
       flake = false;
     };
+    local-highlight-nvim = {
+      url = "github:tzachar/local-highlight.nvim";
+      flake = false;
+    };
+
+    whatthejump-nvim = {
+      url = "github:lewis6991/whatthejump.nvim";
+      flake = false;
+    };
+
+    stay-in-place-nvim = {
+      url = "github:gbprod/stay-in-place.nvim";
+      flake = false;
+    };
+
+    namu-nvim = {
+      url = "github:bassamsdata/namu.nvim";
+      flake = false;
+    };
 
     cmp-diag-codes = {
       url = "github:JMarkin/cmp-diag-codes";
+      flake = false;
+    };
+    diaglist-nvim = {
+      url = "github:JMarkin/diaglist.nvim";
+      flake = false;
+    };
+    gentags-lua = {
+      url = "github:JMarkin/gentags.lua?ref=feat/neovim-0.10";
       flake = false;
     };
   };

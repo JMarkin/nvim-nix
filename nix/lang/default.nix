@@ -14,6 +14,32 @@ let
   langs = [ unsorted go lua rust nix sql python ];
 in
 {
-  plugins = builtins.concatMap (x: x.plugins) langs;
   packages = builtins.concatMap (x: x.packages) langs;
+  plugins = with pkgs.vimPlugins; [
+    {
+      plugin = nvim-lspconfig;
+      type = "lua";
+      optional = true;
+      config = /*lua*/''
+        lze.load {
+          "${nvim-lspconfig.pname}",
+          event = vim.g.pre_load_events
+        }
+      '';
+    }
+    {
+      plugin = fidget-nvim;
+      type = "lua";
+      optional = true;
+      config = /*lua*/''
+        lze.load {
+          "${fidget-nvim.pname}",
+          event="LspAttach",
+          after=function()
+            require("fidget").setup({})
+          end
+        }
+      '';
+    }
+  ] ++ builtins.concatMap (x: x.plugins) langs;
 }

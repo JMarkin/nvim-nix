@@ -1,3 +1,8 @@
+if vim.g.did_load_lspconfig_plugin then
+  return
+end
+vim.g.did_load_lspconfig_plugin = true
+
 if vim.env.NVIM_MINI ~= nil then
   return
 end

@@ -35,28 +35,70 @@ with final.pkgs.lib; let
   #   ...
   # }
   all-plugins = with pkgs.vimPlugins; [
+    # кастыль для neovim/nix там init.vim чтобы всё обернуть в lua << END
+    # последний плагин в конце должен содержать END
     {
       plugin = lze;
       optional = false;
+      config = /*vim*/''
+        lua << END
+        _G.lze = require("lze")
+        END
+
+        lua << END
+      '';
     }
+
     {
-      plugin = snacks-nvim;
+      plugin = alpha-nvim;
       optional = false;
+      config = /*lua*/''
+        require("dash")
+      '';
     }
   ]
   ++ langs.plugins
   ++ (callPackage ./treesitter.nix)
   ++ (callPackage ./autocomplete.nix)
+  ++ (callPackage ./statusline.nix)
+  ++ (callPackage ./quickfix.nix)
+  ++ (callPackage ./blink-pairs.nix)
 
   ++ [
+    vim-polyglot
     diffview-nvim
     gitsigns-nvim
     vim-fugitive
 
     which-key-nvim
     better-escape-nvim
-    plenary-nvim
+    {
+      plugin = plenary-nvim;
+      optional = true;
+      type = "lua";
+      config = /*lua*/''
+        lze.load {
+          "plenary.nvim",
+          on_require = {"plenary.job"},
+        }
+      '';
+    }
 
+    fzf-lua
+    smart-splits-nvim
+
+    eyeliner-nvim
+    demicolon-nvim
+    flash-nvim
+
+    comment-nvim
+
+
+    vim-easy-align
+    treesj
+    mini-splitjoin
+    mini-ai
+    mini-misc
     {
       plugin = mini-icons;
       optional = false;
@@ -66,12 +108,83 @@ with final.pkgs.lib; let
         MiniIcons.mock_nvim_web_devicons()
       '';
     }
+    {
+      plugin = vim-suda;
+      optional = true;
+      type = "lua";
+      config = /*lua*/''
+        lze.load({
+          "suda.vim",
+          cmd = { "SudaRead", "SudaWrite" },
+        })
+      '';
+    }
+    {
+      plugin = (mkNvimPlugin inputs.stay-in-place-nvim "stay-in-place.nvim");
+      optional = true;
+      type = "lua";
+      config = /*lua*/''
+        lze.load({
+          "stay-in-place.nvim",
+          after=function()
+            require("stay-in-place").setup{
+              set_keymaps = true,
+              preserve_visual_selection = true,
+            }
+          end,
+          event = "ModeChanged",
+        })
+      '';
+    }
+
+    {
+      plugin = nvim-scissors;
+      type = "lua";
+      optional = true;
+      config = /*lua*/''
+        lze.load {
+          "nvim-scissors",
+          after = function()
+            require("nvim-scissors").setup{
+                snippetDir = vim.fn.stdpath("config") .. "/snippets",
+                jsonFormatter = "jaq",
+            }
+          end,
+          keys = {
+            {
+              "<leader>Se",
+              function()
+                require("scissors").editSnippet()
+              end,
+              desc = "Snippet: Edit",
+            },
+            {
+              "<leader>Sn",
+              function()
+                require("scissors").addNewSnippet()
+              end,
+              mode = { "n", "x", "v" },
+              desc = "Snippet: New",
+            },
+          },
+        }
+      '';
+    }
+
     { plugin = oil-nvim; optional = false; }
 
+    {
+      plugin = snacks-nvim;
+      optional = false;
+
+      config = /*lua*/''
+        END
+      '';
+    }
 
   ];
 
-  extraPackages = langs.packages;
+  extraPackages = langs.packages ++ [ pkgs.jaq ];
 in
 {
   # This is the neovim derivation

@@ -12,8 +12,8 @@
       optional = true;
       type = "lua";
       config = /*lua*/''
-        require("lze").load {
-          "vim-dadbod",
+        lze.load {
+          "${vim-dadbod.pname}",
           on_plugin = "vim-dadbod-ui",
           ft= { "sql", "mssql", "plsql" }
         }
@@ -24,8 +24,8 @@
       optional = true;
       type = "lua";
       config = /*lua*/''
-        require('lze').load {
-          'vim-dadbod',
+        lze.load {
+          "${vim-dadbod-completion.pname}",
           on_plugin = "vim-dadbod-ui",
           ft= { "sql", "mssql", "plsql" }
         }
@@ -36,8 +36,8 @@
       optional = true;
       type = "lua";
       config = /*lua*/''
-        require('lze').load {
-          'vim-dadbod-ui',
+        lze.load {
+          "${vim-dadbod-ui.pname}",
           cmd = { "DBUI", "DBUIToggle" },
           before = function(event)
             vim.g.db_ui_execute_on_save = 0

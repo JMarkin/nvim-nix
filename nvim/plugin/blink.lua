@@ -6,23 +6,43 @@ vim.g.did_load_blink_plugin = true
 local funcs = require("funcs")
 local lf = require("largefiles")
 
-require("lze").load({
-  "friendly-snippets",
+lze.load({
   "neogen",
-  "colorful-menu.nvim",
+  on_require = "neogen",
+  after = function()
+    require("neogen").setup({
+      enabled = true,
+      input_after_comment = true,
+      snippet_engine = "nvim",
+    })
+  end,
+  cmd = "Neogen",
+  keys = {
+    {
+      "<leader>lD",
+      "<cmd>Neogen<cr>",
+      desc = "Lang: generate docs",
+    },
+  },
+})
+
+lze.load({
+  { "friendly-snippets", on_plugin = "blink.cmp" },
+  { "colorful-menu.nvim", on_plugin = "blink.cmp" },
+  { "cmp-diag-codes", on_plugin = "blink.cmp" },
+  { "cmp-nvim-tags", on_plugin = "blink.cmp" },
 
   -- cmp compact
   {
     "blink.compat",
+    on_plugin = "blink.cmp",
     after = function()
       require("blink.compat").setup({ impersonate_nvim_cmp = true })
     end,
   },
-  "cmp-diag-codes",
-  "cmp-nvim-tags",
 })
 
-require("lze").load({
+lze.load({
   "blink.cmp",
   event = { "InsertEnter", "CmdlineEnter" },
   after = function()

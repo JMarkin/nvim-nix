@@ -38,26 +38,6 @@ fn.augroup("cursoronlyactivate", {
   },
 })
 
--- fastsyntax
-fn.augroup("fastsyntax", {
-  { "BufWinEnter", "Syntax" },
-  {
-    pattern = "*",
-    command = "syn sync minlines=256 maxlines=256",
-  },
-})
-
-fn.augroup("omnifuncsetter", {
-  { "FileType" },
-  {
-    pattern = "*",
-    callback = function()
-      if vim.opt.omnifunc == "" then
-        vim.opt_local.omnifunc = "syntaxcomplete#Complete"
-      end
-    end,
-  },
-})
 
 -- Persistent Folds
 fn.augroup("auto_view", {

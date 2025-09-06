@@ -70,7 +70,7 @@ let
       // (
         if x ? plugin
         then x
-        else { plugin = x; optional = true; type = "lua"; }
+        else { plugin = x; optional = true; }
       ))
     plugins;
 

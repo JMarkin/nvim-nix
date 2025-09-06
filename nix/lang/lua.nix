@@ -12,8 +12,9 @@
       optional = true;
       type = "lua";
       config = /*lua*/''
-        require('lze').load {
+        lze.load {
           'lazydev-nvim',
+          on_require = "lazydev",
           ft= { "lua" }
         }
       '';

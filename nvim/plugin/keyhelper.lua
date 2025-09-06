@@ -3,10 +3,10 @@ if vim.g.did_load_keyhelper_plugin then
 end
 vim.g.did_load_keyhelper_plugin = true
 
-require("lze").load({
+lze.load({
   {
     "which-key.nvim",
-    event = "VimEnter",
+    event = "DeferredUIEnter",
     after = function()
       require("which-key").setup({
         defaults = {},
@@ -70,6 +70,7 @@ require("lze").load({
   },
   {
     "better-escape.nvim",
+    event = "DeferredUIEnter",
     after = function()
       require("better_escape").setup({
         default_mappings = false,
