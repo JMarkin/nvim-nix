@@ -13,8 +13,8 @@
       type = "lua";
       config = /*lua*/''
         lze.load {
-          'lazydev-nvim',
-          on_require = "lazydev",
+          "${lazydev-nvim.pname}",
+          on_require = {"lazydev", "lazydev.integrations.blink"},
           ft= { "lua" }
         }
       '';

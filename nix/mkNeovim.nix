@@ -98,8 +98,8 @@ let
         lib.all (regex: builtins.match regex relPath == null) ignoreConfigRegexes;
     };
 
-  # Split runtimepath into 3 directories:
-  # - lua, to be prepended to the rtp at the beginning of init.lua
+  # Split runtimepath into directories:
+  # - lua,colors to be prepended to the rtp at the beginning of init.lua
   # - nvim, containing plugin, ftplugin, ... subdirectories
   # - after, to be sourced last in the startup initialization
   # See also: https://neovim.io/doc/user/starting.html
@@ -110,12 +110,20 @@ let
     buildPhase = ''
       mkdir -p $out/nvim
       mkdir -p $out/lua
+      mkdir -p $out/colors
       rm init.lua
     '';
 
     installPhase = ''
       cp -r lua $out/lua
       rm -r lua
+
+      # Copy nvim/colors only if it exists
+      if [ -d "colors" ]; then
+          cp -r colors $out/colors
+          rm -r colors
+      fi
+
       # Copy nvim/after only if it exists
       if [ -d "after" ]; then
           cp -r after $out/after
@@ -136,6 +144,9 @@ let
     ''
       -- prepend lua directory
       vim.opt.rtp:prepend('${nvimRtp}/lua')
+
+      -- prepend colors directory
+      vim.opt.rtp:prepend('${nvimRtp}/colors')
     ''
     # Wrap init.lua
     + (builtins.readFile ../nvim/init.lua)

@@ -91,7 +91,7 @@ lze.load({
     },
   },
   {
-    "sindrets/diffview.nvim",
+    "diffview.nvim",
     keys = {
       { "<leader>gD", DiffviewToggle, silent = true, desc = "Git: Diffview toggle" },
       { "<leader>gh", ":DiffviewFileHistory %<cr>", silent = true, desc = "Git: DiffviewFileHistory current" },

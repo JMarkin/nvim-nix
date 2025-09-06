@@ -27,7 +27,7 @@ with pkgs.vimPlugins; [
       lze.load {
         "mini.statusline",
         event = vim.g.post_load_events,
-        config = function()
+        after = function()
           require("mini.statusline").setup()
         end,
       }
