@@ -144,9 +144,9 @@ with final.pkgs.lib; let
       optional = true;
       config = /*lua*/''
         lze.load {
-          "nvim-scissors",
+          "${nvim-scissors.pname}",
           after = function()
-            require("nvim-scissors").setup{
+            require("scissors").setup{
                 snippetDir = vim.fn.stdpath("config") .. "/snippets",
                 jsonFormatter = "jaq",
             }
@@ -185,7 +185,14 @@ with final.pkgs.lib; let
 
   ];
 
-  extraPackages = langs.packages ++ [ pkgs.jaq ];
+  extraPackages = langs.packages ++ [
+    pkgs.jaq
+    # lsp features
+    fswatch
+
+    fixjson
+    codespell
+  ];
 in
 {
   # This is the neovim derivation
