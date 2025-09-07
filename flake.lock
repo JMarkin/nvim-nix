@@ -108,11 +108,11 @@
     "gentags-lua": {
       "flake": false,
       "locked": {
-        "lastModified": 1749466337,
-        "narHash": "sha256-TQe3Uob1QRrM8ELRBl5gokBVZ2KZAWcKoVPvMDiZTXE=",
+        "lastModified": 1757283576,
+        "narHash": "sha256-M16zbv4mFcKeifx9BH/VLjg4kWq4Mx7l+CQgKRDZ2KE=",
         "owner": "JMarkin",
         "repo": "gentags.lua",
-        "rev": "25231af5ece9cb2bc3ba3a95fedbbde03bac6b14",
+        "rev": "8f3570348a22bffa67168e0c760c0efa3e314689",
         "type": "github"
       },
       "original": {
@@ -278,11 +278,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1756542300,
-        "narHash": "sha256-tlOn88coG5fzdyqz6R93SQL5Gpq+m/DsWpekNFhqPQk=",
+        "lastModified": 1757068644,
+        "narHash": "sha256-NOrUtIhTkIIumj1E/Rsv1J37Yi3xGStISEo8tZm3KW4=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "d7600c775f877cd87b4f5a831c28aa94137377aa",
+        "rev": "8eb28adfa3dc4de28e792e3bf49fcf9007ca8ac9",
         "type": "github"
       },
       "original": {
@@ -333,11 +333,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1757125853,
-        "narHash": "sha256-noKkYHKpT5lpvNSYrlH56d8cedthZfs010Uv6vTqLT4=",
+        "lastModified": 1757212513,
+        "narHash": "sha256-ZTHwY7u8BQF1JUazhGk+ftCjsS57Ht6KSnnkxQoUBA8=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "8b70793a6be183536a5d562056dac10b7b36820d",
+        "rev": "a8c2f9348abb14647d8a4899d1b3acd0155ce2cd",
         "type": "github"
       },
       "original": {
