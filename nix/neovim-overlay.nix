@@ -188,10 +188,10 @@ with final.pkgs.lib; let
   extraPackages = langs.packages ++ [
     pkgs.jaq
     # lsp features
-    fswatch
+    pkgs.fswatch
 
-    fixjson
-    codespell
+    pkgs.fixjson
+    pkgs.codespell
   ];
 in
 {
