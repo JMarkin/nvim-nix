@@ -15,8 +15,8 @@ let
 
 
   rustPlatform = pkgs.makeRustPlatform {
-    cargo = pkgs.rust-bin.nightly."2025-04-12".minimal;
-    rustc = pkgs.rust-bin.nightly."2025-04-12".minimal;
+    cargo = pkgs.rust-bin.nightly."2025-09-08".minimal;
+    rustc = pkgs.rust-bin.nightly."2025-09-08".minimal;
   };
 
   blink-pairs-lib = rustPlatform.buildRustPackage {

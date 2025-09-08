@@ -62,7 +62,7 @@ opt.hlsearch                                                 = true
 opt.autochdir                                                = false
 opt.bs                                                       = "indent,eol,start"
 g.editorconfig                                               = true
-opt.synmaxcol                                                = 240
+opt.synmaxcol                                                = 2000
 opt.exrc                                                     = true
 opt.laststatus                                               = 3
 

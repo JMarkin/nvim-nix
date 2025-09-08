@@ -6,7 +6,8 @@
     flake-utils.url = "github:numtide/flake-utils";
     gen-luarc.url = "github:mrcjkb/nix-gen-luarc-json";
     rust-overlay = {
-      url = "github:oxalica/rust-overlay";
+      # 2025-09-08
+      url = "github:oxalica/rust-overlay?rev=cfd63776bde44438ff2936f0c9194c79dd407a5f";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
