@@ -6,12 +6,17 @@
     cargo
 
     graphviz
+    lldb
+    ra-multiplex
   ];
 
 
   plugins = with pkgs.vimPlugins;[
     {
-      plugin = rustaceanvim;
+      plugin = rustaceanvim.overrideAttrs (oa: {
+        # neotest error
+        doCheck = false;
+      });
       optional = false;
     }
   ];

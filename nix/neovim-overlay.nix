@@ -64,6 +64,7 @@ with final.pkgs.lib; let
   ++ (callPackage ./quickfix.nix)
   ++ (callPackage ./blink-pairs.nix)
   ++ (callPackage ./ui.nix)
+  ++ (callPackage ./avante.nix)
 
   ++ [
     vim-polyglot
@@ -80,7 +81,7 @@ with final.pkgs.lib; let
       config = /*lua*/''
         lze.load {
           "plenary.nvim",
-          on_require = {"plenary.job"},
+          on_require = {"plenary.job", "plenary.path"},
         }
       '';
     }

@@ -1,3 +1,8 @@
+if vim.g.did_load_dashboard_plugin then
+  return
+end
+vim.g.did_load_dashboard_plugin = true
+
 local M = {
   neofetch = "",
   version = "",
@@ -71,9 +76,7 @@ dashboard.section.buttons.val = {
   dashboard.button("n", " " .. " New file", ":ene <BAR> startinsert <CR>"),
   dashboard.button("f", " " .. " Find file", ":FzfLua files<cr>"),
   dashboard.button("a", "󰊳 " .. " AI", function()
-    local buf = vim.api.nvim_get_current_buf()
-    vim.cmd([[:CodeCompanionChat]])
-    vim.cmd("bd " .. tostring(buf))
+      require("avante.api").zen_mode()
   end),
   dashboard.button("s", " " .. " Search", ":FzfLua grep_project<cr>"),
   dashboard.button(
