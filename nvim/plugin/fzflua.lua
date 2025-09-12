@@ -166,6 +166,8 @@ lze.load({
     },
   },
   after = function()
+    local fzf = "FZF"
+    augroup(fzf, { clear = true })
     local actions = require("fzf-lua.actions")
     require("fzf-lua").setup({
       -- fzf_bin = "sk",
@@ -179,6 +181,7 @@ lze.load({
           vim.keymap.set("t", "<C-n>", "<Down>", { silent = true, buffer = true })
           vim.keymap.set("t", "<C-p>", "<Up>", { silent = true, buffer = true })
         end,
+
       },
       previewers = {
         builtin = {
@@ -353,14 +356,6 @@ lze.load({
       },
     })
     require("fzf-lua").config.globals.fzf_opts["--border"] = nil
-
-    local fzf = "FZF"
-    augroup(fzf, { clear = true })
-    autocmd("VimResized", {
-      pattern = "*",
-      group = fzf,
-      command = 'lua require("fzf-lua").redraw()',
-    })
 
     require("fzf-lua").register_ui_select()
   end,
