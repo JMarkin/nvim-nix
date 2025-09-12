@@ -5,10 +5,9 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     gen-luarc.url = "github:mrcjkb/nix-gen-luarc-json";
-    rust-overlay = {
-      # 2025-09-08
-      url = "github:oxalica/rust-overlay?rev=cfd63776bde44438ff2936f0c9194c79dd407a5f";
-      inputs.nixpkgs.follows = "nixpkgs";
+
+    blink-pairs = {
+      url = "github:Saghen/blink.pairs";
     };
 
     # Add bleeding-edge plugins here.
@@ -63,14 +62,16 @@
     inputs @ { self
     , nixpkgs
     , flake-utils
-    , rust-overlay
+    # , rust-overlay
     , ...
     }:
     let
       systems = builtins.attrNames nixpkgs.legacyPackages;
 
       # This is where the Neovim derivation is built.
-      neovim-overlay = import ./nix/neovim-overlay.nix { inherit inputs; };
+      neovim-overlay = import ./nix/neovim-overlay.nix {
+        inherit inputs;
+      };
     in
     flake-utils.lib.eachSystem systems
       (system:
@@ -78,7 +79,6 @@
         pkgs = import nixpkgs {
           inherit system;
           overlays = [
-            (import rust-overlay)
             # Import the overlay, so that the final Neovim derivation(s) can be accessed via pkgs.<nvim-pkg>
             neovim-overlay
             # This adds a function can be used to generate a .luarc.json

@@ -4,6 +4,8 @@ with final.pkgs.lib; let
   pkgs = final;
   lib = final.pkgs.lib;
 
+  rust-bin = inputs.rust-overlay.rust-bin;
+
   # Use this to create a plugin from a flake input
   mkNvimPlugin = src: pname:
     pkgs.vimUtils.buildVimPlugin {
