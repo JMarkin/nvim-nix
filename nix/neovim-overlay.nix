@@ -102,7 +102,11 @@ with final.pkgs.lib; let
     treesj
     mini-splitjoin
     mini-ai
-    mini-misc
+    {
+      plugin = mini-misc;
+      optional = false;
+      type = "lua";
+    }
     {
       plugin = mini-icons;
       optional = false;
@@ -212,7 +216,7 @@ in
     plugins = all-plugins;
     inherit extraPackages;
     appName = "nvim-dev";
-    wrapRc = false;
+    wrapRc = true;
   };
 
   # This can be symlinked in the devShell's shellHook

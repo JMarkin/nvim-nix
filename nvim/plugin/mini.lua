@@ -3,6 +3,28 @@ if vim.g.did_load_mini_plugin then
 end
 vim.g.did_load_mini_plugin = true
 
+local misc = require("mini.misc")
+misc.setup()
+misc.setup_auto_root(vim.g.root_pattern)
+
+local data = vim.fn.stdpath("data")
+
+vim.opt.shadafile = (function()
+  local cwd = require("funcs").shorten_path(vim.fn.getcwd())
+
+  local file = vim.fs.joinpath(data, "project_shada", cwd)
+  vim.fn.mkdir(vim.fs.dirname(file), "p")
+
+  return file
+end)()
+
+vim.opt.viewdir = data .. "/" .. "view"
+
+-- last position
+misc.setup_restore_cursor({
+  ignore_filetype = { "largefile", "gitcommit", "gitrebase", "svn", "hgcommit" },
+})
+
 lze.load({
   {
     "mini.ai",
@@ -40,33 +62,6 @@ lze.load({
 
         -- Whether to disable showing non-error feedback
         silent = false,
-      })
-    end,
-  },
-  {
-    "mini.misc",
-    lazy = false,
-    after = function()
-      local misc = require("mini.misc")
-      misc.setup()
-      misc.setup_auto_root(vim.g.root_pattern)
-
-      local data = vim.fn.stdpath("data")
-
-      vim.opt.shadafile = (function()
-        local cwd = require("funcs").shorten_path(vim.fn.getcwd())
-
-        local file = vim.fs.joinpath(data, "project_shada", cwd)
-        vim.fn.mkdir(vim.fs.dirname(file), "p")
-
-        return file
-      end)()
-
-      vim.opt.viewdir = data .. "/" .. "view"
-
-      -- last position
-      misc.setup_restore_cursor({
-        ignore_filetype = { "largefile", "gitcommit", "gitrebase", "svn", "hgcommit" },
       })
     end,
   },
