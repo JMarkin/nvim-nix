@@ -19,8 +19,8 @@ let
         src = pkgs.fetchFromGitHub {
           owner = "zubanls";
           repo = "zuban";
-          rev="9ea8512d8852bd220b6ca8f0763aa50ba7c3c763";
-          sha256="sha256-0yal71pidWCJ01xaz5X9LeE2hNYL75cQ7bzGcuIV/9k=";
+          rev="1dd7a1cb4e111116f19e29b713d3b6d6eb6ae01d";
+          sha256="sha256-L/ZQgwYAJHw5M6dgoOpKjE0SbA71fTXBxyRDeEB+TxM=";
         };
 
         buildAndTestSubdir = "crates/zuban";

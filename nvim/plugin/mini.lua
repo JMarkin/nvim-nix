@@ -18,7 +18,7 @@ vim.opt.shadafile = (function()
   return file
 end)()
 
-vim.opt.viewdir = data .. "/" .. "view"
+vim.opt.viewdir = vim.fs.joinpath(data, "view")
 
 -- last position
 misc.setup_restore_cursor({

@@ -14,7 +14,7 @@ lze.load({
     {
       "<leader>sq",
       function()
-        require("fzf-lua").quickfix({ multiprocess = true })
+        require("fzf-lua").quickfix()
       end,
       desc = "Search: quickfix",
     },
@@ -22,7 +22,6 @@ lze.load({
       "<leader>sr",
       function()
         require("fzf-lua").oldfiles({
-          multiprocess = true,
           cwd_only = true,
         })
       end,
@@ -31,7 +30,7 @@ lze.load({
     {
       "<leader>sl",
       function()
-        require("fzf-lua").loclist({ multiprocess = true })
+        require("fzf-lua").loclist()
       end,
       desc = "Search: loclist",
     },
@@ -45,7 +44,7 @@ lze.load({
     {
       "<leader>sb",
       function()
-        require("fzf-lua").buffers({ multiprocess = true, current_tab_only = true })
+        require("fzf-lua").buffers({ current_tab_only = true })
       end,
       desc = "Search: buffers",
     },
@@ -103,7 +102,7 @@ lze.load({
     {
       "<leader>sT",
       function()
-        require("fzf-lua").tags({ multiprocess = true, cwd = vim.uv.cwd() })
+        require("fzf-lua").tags({ cwd = vim.uv.cwd() })
       end,
       desc = "Search: tags global",
     },
@@ -118,28 +117,28 @@ lze.load({
     {
       "<leader>sh",
       function()
-        require("fzf-lua").help_tags({ multiprocess = true })
+        require("fzf-lua").help_tags()
       end,
       desc = "Search: helptags",
     },
     {
       "<leader>sc",
       function()
-        require("fzf-lua").commands({ multiprocess = true })
+        require("fzf-lua").commands()
       end,
       desc = "Search: commands",
     },
     {
       "<leader>sk",
       function()
-        require("fzf-lua").keymaps({ multiprocess = true })
+        require("fzf-lua").keymaps()
       end,
       desc = "Search: keymaps",
     },
     {
       "<leader>sch",
       function()
-        require("fzf-lua").command_history({ multiprocess = true })
+        require("fzf-lua").command_history()
       end,
       desc = "Search: command_history",
     },
@@ -162,7 +161,7 @@ lze.load({
       function()
         require("fzf-lua").git_bcommits({ multiprocess = true })
       end,
-      desc = "Search: git commits",
+      desc = "Search: git commits buffer",
     },
   },
   after = function()
@@ -181,7 +180,6 @@ lze.load({
           vim.keymap.set("t", "<C-n>", "<Down>", { silent = true, buffer = true })
           vim.keymap.set("t", "<C-p>", "<Up>", { silent = true, buffer = true })
         end,
-
       },
       previewers = {
         builtin = {

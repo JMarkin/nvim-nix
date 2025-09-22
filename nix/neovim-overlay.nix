@@ -122,7 +122,7 @@ with final.pkgs.lib; let
       type = "lua";
       config = /*lua*/''
         lze.load({
-          "suda.vim",
+          "${vim-suda.pname}",
           cmd = { "SudaRead", "SudaWrite" },
         })
       '';
