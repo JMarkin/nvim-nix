@@ -168,11 +168,11 @@
     "gentags-lua": {
       "flake": false,
       "locked": {
-        "lastModified": 1757283576,
+        "lastModified": 1758663122,
         "narHash": "sha256-M16zbv4mFcKeifx9BH/VLjg4kWq4Mx7l+CQgKRDZ2KE=",
         "owner": "JMarkin",
         "repo": "gentags.lua",
-        "rev": "8f3570348a22bffa67168e0c760c0efa3e314689",
+        "rev": "88192a4929c5cf56eb6743d547485ae0ec08a315",
         "type": "github"
       },
       "original": {
@@ -231,11 +231,11 @@
     "hlargs-nvim": {
       "flake": false,
       "locked": {
-        "lastModified": 1758449462,
-        "narHash": "sha256-GUt22XgwpIQjwvpuIEjKqJvbrRZkNKBh8y290Ox/f9M=",
+        "lastModified": 1758619418,
+        "narHash": "sha256-WjmVefR0qk2ANWgyHSuYMTuCfzlVTF7tqzAL+uatKkc=",
         "owner": "m-demare",
         "repo": "hlargs.nvim",
-        "rev": "f4fe983a2be08145808eb296807030889249ed5a",
+        "rev": "0b29317c944fb1f76503ce4540d6dceffbb5ccd2",
         "type": "github"
       },
       "original": {
@@ -369,11 +369,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1758277210,
-        "narHash": "sha256-iCGWf/LTy+aY0zFu8q12lK8KuZp7yvdhStehhyX1v8w=",
+        "lastModified": 1758427187,
+        "narHash": "sha256-pHpxZ/IyCwoTQPtFIAG2QaxuSm8jWzrzBGjwQZIttJc=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "8eaee110344796db060382e15d3af0a9fc396e0e",
+        "rev": "554be6495561ff07b6c724047bdd7e0716aa7b46",
         "type": "github"
       },
       "original": {
