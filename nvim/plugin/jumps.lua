@@ -13,6 +13,21 @@ lze.load({
         dim = true,
         default_keymaps = false,
       })
+      local function eyeliner_jump(key)
+        local forward = vim.list_contains({ "t", "f" }, key)
+        return function()
+          require("eyeliner").highlight({ forward = forward })
+          return require("demicolon.jump").horizontal_jump(key)()
+        end
+      end
+
+      local nxo = { "n", "x", "o" }
+      local key_opts = { expr = true }
+
+      vim.keymap.set(nxo, "f", eyeliner_jump("f"), key_opts)
+      vim.keymap.set(nxo, "F", eyeliner_jump("F"), key_opts)
+      vim.keymap.set(nxo, "t", eyeliner_jump("t"), key_opts)
+      vim.keymap.set(nxo, "T", eyeliner_jump("T"), key_opts)
     end,
   },
   {
@@ -65,22 +80,6 @@ lze.load({
           fold_motions = true,
         },
       })
-
-      local function eyeliner_jump(key)
-        local forward = vim.list_contains({ "t", "f" }, key)
-        return function()
-          require("eyeliner").highlight({ forward = forward })
-          return require("demicolon.jump").horizontal_jump(key)()
-        end
-      end
-
-      local nxo = { "n", "x", "o" }
-      local key_opts = { expr = true }
-
-      vim.keymap.set(nxo, "f", eyeliner_jump("f"), key_opts)
-      vim.keymap.set(nxo, "F", eyeliner_jump("F"), key_opts)
-      vim.keymap.set(nxo, "t", eyeliner_jump("t"), key_opts)
-      vim.keymap.set(nxo, "T", eyeliner_jump("T"), key_opts)
     end,
     -- event = vim.g.post_load_events,
   },

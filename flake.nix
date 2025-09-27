@@ -2,6 +2,7 @@
   description = "Neovim derivation";
 
   inputs = {
+    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     gen-luarc.url = "github:mrcjkb/nix-gen-luarc-json";
@@ -62,7 +63,6 @@
     inputs @ { self
     , nixpkgs
     , flake-utils
-    # , rust-overlay
     , ...
     }:
     let
@@ -79,6 +79,7 @@
         pkgs = import nixpkgs {
           inherit system;
           overlays = [
+            inputs.neovim-nightly-overlay.overlays.default
             # Import the overlay, so that the final Neovim derivation(s) can be accessed via pkgs.<nvim-pkg>
             neovim-overlay
             # This adds a function can be used to generate a .luarc.json
