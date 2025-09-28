@@ -3,7 +3,6 @@ if vim.g.did_load_fzf_plugin then
 end
 vim.g.did_load_fzf_plugin = true
 
-local autocmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 
 lze.load({

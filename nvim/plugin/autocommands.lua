@@ -39,7 +39,6 @@ fn.augroup("cursoronlyactivate", {
   },
 })
 
-
 -- Persistent Folds
 fn.augroup("auto_view", {
   { "BufWinLeave", "BufWritePost", "WinLeave" },
@@ -207,19 +206,6 @@ fn.augroup("checktime", {
     command = "if &buftype == '' && mode() != 'c' && getcmdwintype() == '' | checktime | endif",
     pattern = { "*" },
   },
-})
-
-
-fn.augroup("local-highlight-attach", {
-vim.g.post_load_events,
-{
-  pattern = "*",
-  callback = function(data)
-    if not lf.is_large_file(data.buf, true) then
-      require("local-highlight").attach(data.buf)
-    end
-  end,
-},
 })
 
 if vim.env.TERM == "alacritty" then

@@ -19,7 +19,7 @@ g.snips_email                                                = vim.env.EMAIL or 
 g.snips_github                                               = vim.env.GITHUB or "https://github.com/JMarkin"
 
 
-opt.cmdheight                                                = 0
+opt.cmdheight                                                = 1
 -- opt.colorcolumn                                   = '+1'
 opt.cursorlineopt                                            = 'both'
 opt.cursorline                                               = true

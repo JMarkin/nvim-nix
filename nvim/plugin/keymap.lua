@@ -20,6 +20,10 @@ vim.keymap.set({ "n" }, { "<leader>q", "<space>q" }, ":q<cr>", { desc = "Quit", 
 vim.keymap.set({ "n", "v" }, "<C-d>", "10jzz")
 vim.keymap.set({ "n", "v" }, "<C-u>", "10kzz")
 vim.keymap.set({ "n", "v" }, "<C-e>", "<C-u>")
+vim.keymap.set({ "n" }, "<C-w>>", "10<C-w>>")
+vim.keymap.set({ "n" }, "<C-w><", "10<C-w><")
+vim.keymap.set({ "n" }, "<C-w>+", "5<C-w>+")
+vim.keymap.set({ "n" }, "<C-w>-", "5<C-w>-")
 
 vim.keymap.set({ "v" }, "p", "pgvy", { desc = "Disable yank on paste" })
 

@@ -36,9 +36,33 @@ with final.pkgs.lib; let
   #   optional = <true|false>; # Default: false
   #   ...
   # }
-  all-plugins = with pkgs.vimPlugins; [
+
+  stayinpalce = (mkNvimPlugin inputs.stay-in-place-nvim "stay-in-place.nvim");
+
+  toggle_plugins = val: /*vim*/''
+    let g:did_load_ai_plugin = v:${val}
+    let g:did_load_blink_plugin = v:${val}
+    let g:did_load_comment_plugin = v:${val}
+    let g:did_load_format_plugin = v:${val}
+    let g:did_load_git_plugin = v:${val}
+    let g:did_load_jumps_plugin = v:${val}
+    let g:did_load_keyhelper_plugin = v:${val}
+    let g:did_load_lint_plugin = v:${val}
+    let g:did_load_lspconfig_plugin = v:${val}
+    let g:did_load_mini_plugin = v:${val}
+    let g:did_load_snacks_plugin = v:${val}
+    let g:did_load_smart_plugin = v:${val}
+    let g:did_load_split_join_plugin = v:${val}
+    let g:did_load_tags_plugin = v:${val}
+    let g:did_load_treesitter_plugin = v:${val}
+    let g:did_load_ui_plugins = v:${val}
+  '';
+
+
+  minimal-plugins = with pkgs.vimPlugins; [
     # кастыль для neovim/nix там init.vim чтобы всё обернуть в lua << END
     # последний плагин в конце должен содержать END
+    vim-polyglot
     {
       plugin = lze;
       optional = false;
@@ -46,76 +70,38 @@ with final.pkgs.lib; let
         lua << END
         _G.lze = require("lze")
         END
-
+        ${toggle_plugins "true"}
         lua << END
       '';
     }
-
     {
-      plugin = alpha-nvim;
-      optional = false;
-      config = /*lua*/''
-        require("dash")
-      '';
-    }
-  ]
-  ++ langs.plugins
-  ++ (callPackage ./treesitter.nix)
-  ++ (callPackage ./autocomplete.nix)
-  ++ (callPackage ./statusline.nix)
-  ++ (callPackage ./quickfix.nix)
-  ++ (callPackage ./blink-pairs.nix)
-  ++ (callPackage ./ui.nix)
-  ++ (callPackage ./avante.nix)
-
-  ++ [
-    vim-polyglot
-    diffview-nvim
-    gitsigns-nvim
-    vim-fugitive
-
-    which-key-nvim
-    better-escape-nvim
-    {
-      plugin = plenary-nvim;
+      plugin = smartyank-nvim;
       optional = true;
       type = "lua";
       config = /*lua*/''
         lze.load {
-          "plenary.nvim",
-          on_require = {"plenary.job", "plenary.path"},
+          "${smartyank-nvim.pname}",
+          event = "ModeChanged",
+          after = function()
+            require("smartyank").setup({
+              highlight = {
+                enabled = true, -- highlight yanked text
+                timeout = 100,
+              },
+            })
+            vim.api.nvim_create_autocmd("FocusGained", {
+              callback = function()
+                local loaded_content = vim.fn.getreg("+")
+                if loaded_content ~= "" then
+                  vim.fn.setreg('"', loaded_content)
+                end
+              end,
+            })
+          end
         }
       '';
     }
-
     fzf-lua
-    smart-splits-nvim
-
-    eyeliner-nvim
-    demicolon-nvim
-    flash-nvim
-
-    comment-nvim
-
-
-    vim-easy-align
-    treesj
-    mini-splitjoin
-    mini-ai
-    {
-      plugin = mini-misc;
-      optional = false;
-      type = "lua";
-    }
-    {
-      plugin = mini-icons;
-      optional = false;
-      type = "lua";
-      config = /*lua*/''
-        require("mini.icons").setup()
-        MiniIcons.mock_nvim_web_devicons()
-      '';
-    }
     {
       plugin = vim-suda;
       optional = true;
@@ -128,12 +114,12 @@ with final.pkgs.lib; let
       '';
     }
     {
-      plugin = (mkNvimPlugin inputs.stay-in-place-nvim "stay-in-place.nvim");
+      plugin = stayinpalce;
       optional = true;
       type = "lua";
       config = /*lua*/''
         lze.load({
-          "stay-in-place.nvim",
+          "${stayinpalce.pname}",
           after=function()
             require("stay-in-place").setup{
               set_keymaps = true,
@@ -146,40 +132,74 @@ with final.pkgs.lib; let
     }
 
     {
-      plugin = nvim-scissors;
-      type = "lua";
+      plugin = oil-nvim;
+      optional = false;
+
+      config = /*vim*/''
+        END
+      '';
+    }
+  ];
+
+  smallset-plugins = minimal-plugins
+    ++ (with pkgs.vimPlugins; [
+    {
+      plugin = vim-fugitive;
       optional = true;
-      config = /*lua*/''
+      type = "lua";
+      config = /*vim*/''
+        let g:did_load_mini_plugin = v:false
+        let g:did_load_smart_plugin = v:false
+        let g:did_load_snacks_plugin = v:false
+        let g:did_load_comment_plugin = v:false
+        let g:did_load_treesitter_plugin = v:false
+
+        lua << END
         lze.load {
-          "${nvim-scissors.pname}",
-          after = function()
-            require("scissors").setup{
-                snippetDir = vim.fn.stdpath("config") .. "/snippets",
-                jsonFormatter = "jaq",
-            }
-          end,
-          keys = {
-            {
-              "<leader>Se",
-              function()
-                require("scissors").editSnippet()
-              end,
-              desc = "Snippet: Edit",
-            },
-            {
-              "<leader>Sn",
-              function()
-                require("scissors").addNewSnippet()
-              end,
-              mode = { "n", "x", "v" },
-              desc = "Snippet: New",
-            },
+          "${vim-fugitive.pname}",
+          cmd = {
+            "Git",
           },
         }
       '';
     }
+  ])
+    ++ (callPackage ./treesitter.nix)
+    ++ (callPackage ./statusline.nix)
+    ++ (callPackage ./quickfix.nix)
 
-    { plugin = oil-nvim; optional = false; }
+    ++ (with pkgs.vimPlugins; [
+
+
+    {
+      plugin = plenary-nvim;
+      optional = true;
+      type = "lua";
+      config = /*lua*/''
+        lze.load {
+          "${plenary-nvim.pname}",
+          on_require = {"plenary.job", "plenary.path"},
+        }
+      '';
+    }
+
+    smart-splits-nvim
+    comment-nvim
+    {
+      plugin = mini-misc;
+      optional = false;
+      type = "lua";
+    }
+    mini-ai
+    {
+      plugin = mini-icons;
+      optional = false;
+      type = "lua";
+      config = /*lua*/''
+        require("mini.icons").setup()
+        MiniIcons.mock_nvim_web_devicons()
+      '';
+    }
 
     {
       plugin = snacks-nvim;
@@ -190,7 +210,80 @@ with final.pkgs.lib; let
       '';
     }
 
-  ];
+  ]);
+
+  all-plugins = smallset-plugins ++ (
+    with pkgs.vimPlugins;
+    [
+      {
+        plugin = alpha-nvim;
+        optional = false;
+        config = /*vim*/''
+          ${toggle_plugins "false"}
+
+          lua << END
+          require("dash")
+        '';
+      }
+    ]
+  )
+    ++ (callPackage ./ai.nix)
+    ++ (callPackage ./autocomplete.nix)
+    ++ (callPackage ./blink-pairs.nix)
+    ++ (callPackage ./ui.nix)
+    ++ langs.plugins
+    ++ (
+    with pkgs.vimPlugins; [
+      eyeliner-nvim
+      demicolon-nvim
+      flash-nvim
+
+      vim-easy-align
+      treesj
+      mini-splitjoin
+
+      which-key-nvim
+      better-escape-nvim
+
+      diffview-nvim
+      gitsigns-nvim
+
+      {
+        plugin = nvim-scissors;
+        type = "lua";
+        optional = true;
+        config = /*lua*/''
+          lze.load {
+            "${nvim-scissors.pname}",
+            after = function()
+              require("scissors").setup{
+                  snippetDir = vim.fn.stdpath("config") .. "/snippets",
+                  jsonFormatter = "jaq",
+              }
+            end,
+            keys = {
+              {
+                "<leader>Se",
+                function()
+                  require("scissors").editSnippet()
+                end,
+                desc = "Snippet: Edit",
+              },
+              {
+                "<leader>Sn",
+                function()
+                  require("scissors").addNewSnippet()
+                end,
+                mode = { "n", "x", "v" },
+                desc = "Snippet: New",
+              },
+            },
+          }
+          END
+        '';
+      }
+    ]
+  );
 
   extraPackages = langs.packages ++ [
     pkgs.jaq
@@ -209,6 +302,20 @@ in
     inherit extraPackages;
   };
 
+  nvim-small = mkNeovim {
+    plugins = smallset-plugins;
+    ignoreConfigRegexes = [
+      "^lsp/.*.lua"
+    ];
+  };
+
+  nvim-minimal = mkNeovim {
+    plugins = minimal-plugins;
+    ignoreConfigRegexes = [
+      "^lsp/.*.lua"
+    ];
+  };
+
   # This is meant to be used within a devshell.
   # Instead of loading the lua Neovim configuration from
   # the Nix store, it is loaded from $XDG_CONFIG_HOME/nvim-dev
@@ -217,6 +324,24 @@ in
     inherit extraPackages;
     appName = "nvim-dev";
     wrapRc = true;
+  };
+
+  nvim-dev-small = mkNeovim {
+    plugins = smallset-plugins;
+    appName = "nvim-dev-small";
+    wrapRc = true;
+    ignoreConfigRegexes = [
+      "^lsp/.*.lua"
+    ];
+  };
+
+  nvim-dev-minimal = mkNeovim {
+    plugins = minimal-plugins;
+    appName = "nvim-dev-minimal";
+    wrapRc = true;
+    ignoreConfigRegexes = [
+      "^lsp/.*.lua"
+    ];
   };
 
   # This can be symlinked in the devShell's shellHook

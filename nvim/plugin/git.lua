@@ -3,7 +3,6 @@ if vim.g.did_load_git_plugin then
 end
 vim.g.did_load_git_plugin = true
 
-local autocmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 function DiffviewToggle()
   local lib = require("diffview.lib")
@@ -82,12 +81,6 @@ lze.load({
       { "<leader>gR", ":Gitsign reset_buffer<cr>", desc = "Git: reset buffer" },
       { "<leader>gp", ":Gitsign preview_hunk_inline<cr>", desc = "Git: preview hunk" },
       { "ih", ":<C-U>Gitsigns select_hunk<CR>", desc = "Git: select hunk", mode = { "o", "x" } },
-    },
-  },
-  {
-    "vim-fugitive",
-    cmd = {
-      "Git",
     },
   },
   {
