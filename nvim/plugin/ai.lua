@@ -128,7 +128,6 @@ lze.load({
         use_cwd_as_project_root = true,
         auto_focus_on_diff_view = true,
       },
-      hints = { enabled = true },
 
       rag_service = { -- RAG Service configuration
         enabled = false,
