@@ -62,6 +62,7 @@ lze.load({
       "eyeliner.nvim",
       "nvim-treesitter",
     },
+    on_require = { "demicolon.jump" },
     after = function()
       require("demicolon").setup({
         -- Create default keymaps

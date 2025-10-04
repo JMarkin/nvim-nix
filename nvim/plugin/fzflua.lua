@@ -92,13 +92,6 @@ lze.load({
       desc = "Search: current buffer",
     },
     {
-      "<leader>st",
-      function()
-        require("fzf-lua").btags({ multiprocess = true, cwd = vim.uv.cwd() })
-      end,
-      desc = "Search: tags current file",
-    },
-    {
       "<leader>sT",
       function()
         require("fzf-lua").tags({ cwd = vim.uv.cwd() })

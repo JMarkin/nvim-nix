@@ -5,7 +5,7 @@ vim.g.did_load_tags_plugin = true
 
 lze.load({
   "namu.nvim",
-  keys = { { "<space>T", ":Namu ctags<cr>", desc = "Tagbar" } },
+  keys = { { "<leader>st", ":Namu ctags<cr>", desc = "Tagbar" } },
   cmd = { "Namu" },
   after = function()
     require("namu").setup({
