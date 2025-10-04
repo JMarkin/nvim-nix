@@ -34,6 +34,11 @@
       flake = false;
     };
 
+    beacon-nvim = {
+      url = "github:DanilaMihailov/beacon.nvim";
+      flake = false;
+    };
+
     stay-in-place-nvim = {
       url = "github:gbprod/stay-in-place.nvim";
       flake = false;

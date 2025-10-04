@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "beacon-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1719294964,
+        "narHash": "sha256-x/79mRkwwT+sNrnf8QqocsaQtM+Rx6BUvVj5Nnv5JDY=",
+        "owner": "DanilaMihailov",
+        "repo": "beacon.nvim",
+        "rev": "098ff96c33874339d5e61656f3050dbd587d6bd5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "DanilaMihailov",
+        "repo": "beacon.nvim",
+        "type": "github"
+      }
+    },
     "blink-pairs": {
       "inputs": {
         "fenix": "fenix",
@@ -401,6 +417,7 @@
     },
     "root": {
       "inputs": {
+        "beacon-nvim": "beacon-nvim",
         "blink-pairs": "blink-pairs",
         "cmp-diag-codes": "cmp-diag-codes",
         "diaglist-nvim": "diaglist-nvim",

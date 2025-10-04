@@ -19,12 +19,13 @@ vim.keymap.set({ "n" }, { "<leader>q", "<space>q" }, ":q<cr>", { desc = "Quit", 
 
 vim.keymap.set({ "n", "v" }, "<C-d>", "10jzz")
 vim.keymap.set({ "n", "v" }, "<C-u>", "10kzz")
-vim.keymap.set({ "n", "v" }, "<C-e>", "<C-u>")
 vim.keymap.set({ "n" }, "<C-w>>", "10<C-w>>")
 vim.keymap.set({ "n" }, "<C-w><", "10<C-w><")
 vim.keymap.set({ "n" }, "<C-w>+", "5<C-w>+")
 vim.keymap.set({ "n" }, "<C-w>-", "5<C-w>-")
 
+vim.keymap.set({ 'n' }, 'o', 'o<Esc>', { desc = 'Add line under' })
+vim.keymap.set({ 'n' }, 'O', 'O<Esc>', { desc = 'Add line prev' })
 vim.keymap.set({ "v" }, "p", "pgvy", { desc = "Disable yank on paste" })
 
 vim.keymap.set({ "n" }, { "<leader>w", "<leader>'" }, ":w<CR>", { silent = true, desc = "normal mode: save" })
