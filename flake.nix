@@ -114,5 +114,6 @@
             };
           };
         };
+      flake.overlays.default = neovim-overlay;
     };
 }
