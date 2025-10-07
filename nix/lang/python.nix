@@ -14,13 +14,13 @@ let
       {
         pname = "zuban";
 
-        version = "2025-09-16";
+        version = "2025-10-07";
 
         src = pkgs.fetchFromGitHub {
           owner = "zubanls";
           repo = "zuban";
-          rev="1dd7a1cb4e111116f19e29b713d3b6d6eb6ae01d";
-          sha256="sha256-L/ZQgwYAJHw5M6dgoOpKjE0SbA71fTXBxyRDeEB+TxM=";
+          rev="66102a7ce1a999aa7857a5d9721e8afbb1ce4d37";
+          sha256="sha256-Bz1M2afQ8vaC6IpgZyzp/JXoCIw8x7h26PjEHlaQNes=";
         };
 
         buildAndTestSubdir = "crates/zuban";
@@ -30,7 +30,7 @@ let
           cp -r ${typeshedSrc} $out/${pkgs.python3.sitePackages}/zuban/typeshed
         '';
 
-        cargoHash = "sha256-TAFdS4NmXchmhqVRcsckz6GhZG35IE2fukDlZiRF8Ms=";
+        cargoHash = "sha256-RQ/+YR67j9PwLz9vQ2HJUyEs1qYzG5JWfGt9vCEqx1o=";
 
         doInstallCheck = true;
 
