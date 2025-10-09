@@ -199,14 +199,13 @@ g.airun_embedded_model = vim.env.AI_RUN_EMBEDDED_MODEL
 
 local airun_modify_config = function(cfg)
   cfg.provider = "airun"
-  cfg.mode = "legacy"
+  -- cfg.mode = "legacy"
   cfg.auto_suggestions_provider = "airun_autocomplete"
   cfg.providers.airun = {
     __inherited_from = "openai",
     endpoint = g.airun_endpoint,
     api_key_name = "AI_RUN_TOKEN",
     model = g.airun_model,
-    disable_tools = true,
     allow_insecure = true,
     extra = {
       temperature = 0.7,
@@ -219,7 +218,6 @@ local airun_modify_config = function(cfg)
     allow_insecure = true,
     api_key_name = "AI_RUN_TOKEN",
     model = g.airun_autocomplete_model,
-    disable_tools = true,
   }
   cfg.rag_service.enabled = false
   cfg.rag_service.llm = {
