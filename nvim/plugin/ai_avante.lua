@@ -1,13 +1,19 @@
-if vim.g.did_load_ai_plugin then
+vim.g.did_load_avante_plugin = true
+
+if vim.g.did_load_avante_plugin then
   return
 end
-vim.g.did_load_ai_plugin = true
+vim.g.did_load_avante_plugin = true
 
 local g = vim.g
 
 local opts = {
   mode = "agentic",
-  debug = false,
+  rules = {
+    project_dir = ".avante/rules", -- relative to project root, can also be an absolute path
+    global_dir = "~/.config/avante/rules", -- absolute path
+  },
+  -- debug = true,
   providers = {},
   web_search_engine = {},
   behaviour = {
@@ -160,7 +166,6 @@ local ollama_modify_config = function(cfg)
   cfg.providers.ollama = {
     endpoint = g.ollama_url,
     model = g.ollama_model,
-    disabled_tools = { "python" },
     extra_request_body = {
       -- num_ctx = 1024 * 20,
       temperature = 0.5,

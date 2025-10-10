@@ -115,7 +115,6 @@ lze.load({
         per_filetype = {
           sql = { "dadbod", "buffer", "snippets" },
           lua = { inherit_defaults = true, "lazydev" },
-          codecompanion = { inherit_defaults = true, "codecompanion" },
           AvanteInput = { inherit_defaults = true, "avante" },
         },
         providers = {

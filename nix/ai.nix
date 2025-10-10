@@ -1,25 +1,35 @@
 { inputs, pkgs, ... }:
 with pkgs.vimPlugins; [
   {
-    plugin = avante-nvim.overrideAttrs (oa: {
+    plugin = codecompanion-nvim.overrideAttrs (oa: {
       dependencies = with pkgs.vimPlugins; [
-        nui-nvim
-        nvim-treesitter
-        plenary-nvim
+        codecompanion-spinner-nvim
+        codecompanion-history-nvim
       ];
     });
     type = "lua";
-    optional = true;
+    optional = false;
   }
-  {
-    plugin = blink-cmp-avante;
-    type = "lua";
-    optional = true;
-    config = /*lua*/''
-      lze.load {
-        "${blink-cmp-avante.pname}",
-        on_plugin = "blink.cmp",
-      }
-    '';
-  }
+  # {
+  #   plugin = avante-nvim.overrideAttrs (oa: {
+  #     dependencies = with pkgs.vimPlugins; [
+  #       nui-nvim
+  #       nvim-treesitter
+  #       plenary-nvim
+  # {
+  #   plugin = blink-cmp-avante;
+  #   type = "lua";
+  #   optional = true;
+  #   config = /*lua*/''
+  #     lze.load {
+  #       "${blink-cmp-avante.pname}",
+  #       on_plugin = "blink.cmp",
+  #     }
+  #   '';
+  # }
+  #     ];
+  #   });
+  #   type = "lua";
+  #   optional = true;
+  # }
 ]
