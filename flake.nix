@@ -3,6 +3,10 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+    neovim-nightly-overlay.inputs.nixpkgs.follows = "nixpkgs";
+    neovim-nightly-overlay.inputs.flake-parts.follows = "flake-parts";
+
     flake-parts.url = "github:hercules-ci/flake-parts";
     gen-luarc.url = "github:mrcjkb/nix-gen-luarc-json";
     gen-luarc.inputs.nixpkgs.follows = "nixpkgs";
@@ -10,8 +14,6 @@
 
 
     blink-pairs.url = "github:Saghen/blink.pairs";
-    blink-pairs.inputs.nixpkgs.follows = "nixpkgs";
-    blink-pairs.inputs.flake-parts.follows = "flake-parts";
 
     # Add bleeding-edge plugins here.
     # They can be updated with `nix flake update` (make sure to commit the generated flake.lock)

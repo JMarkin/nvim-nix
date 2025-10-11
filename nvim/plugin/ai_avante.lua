@@ -1,6 +1,4 @@
-vim.g.did_load_avante_plugin = true
-
-if vim.g.did_load_avante_plugin then
+if vim.g.did_load_avante_plugin or vim.g.did_load_ai_plugin then
   return
 end
 vim.g.did_load_avante_plugin = true
@@ -31,6 +29,7 @@ local opts = {
     enable_token_counting = true,
     use_cwd_as_project_root = true,
     auto_focus_on_diff_view = true,
+    auto_approve_tool_permissions = false,
   },
 
   selection = {

@@ -1,6 +1,9 @@
 return {
   calculator = {
     description = "Perform calculations",
+    opts = {
+      requires_approval = true,
+    },
     callback = {
       name = "calculator",
       cmds = {

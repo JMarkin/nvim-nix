@@ -77,8 +77,10 @@ lze.load({
         mappings = {
           i = {
             j = {
-              k = "<Esc>",
               j = "<Esc>",
+            },
+            k = {
+              k = "<Esc>",
             },
           },
           c = {},

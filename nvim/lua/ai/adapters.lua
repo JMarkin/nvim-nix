@@ -18,7 +18,12 @@ M.airun = function()
       url = vim.env.AI_RUN_URL,
       api_key = "AI_RUN_TOKEN", -- optional: if your endpoint is authenticated
       chat_url = "/v1/chat/completions", -- optional: default value, override if different
-      -- models_endpoint = "/v1/models", -- optional: attaches to the end of the URL to form the endpoint to retrieve models
+      models_endpoint = "/v1/models", -- optional: attaches to the end of the URL to form the endpoint to retrieve models
+    },
+    opts = {
+      vision = false,
+      tools = true,
+      stream = true,
     },
     schema = {
       model = {
@@ -27,13 +32,9 @@ M.airun = function()
           return {}
         end,
       },
-      opts = {
-        vision = false,
-        tools = true,
+      num_ctx = {
+        default = 131072,
       },
-      -- num_ctx = {
-      --   default = 131072,
-      -- },
     },
   })
 end

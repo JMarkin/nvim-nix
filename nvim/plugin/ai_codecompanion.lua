@@ -1,4 +1,6 @@
-if vim.g.did_load_cai_plugin then
+vim.g.did_load_cai_plugin = true
+
+if vim.g.did_load_cai_plugin or vim.g.did_load_ai_plugin then
   return
 end
 vim.g.did_load_cai_plugin = true
@@ -91,7 +93,7 @@ lze.load({
   after = function()
     local opts = {
       opts = {
-        log_level = "DEBUG", -- TRACE|DEBUG|ERROR|INFO
+        log_level = "TRACE", -- TRACE|DEBUG|ERROR|INFO
       },
       adapters = {
         http = adapters,
@@ -120,6 +122,9 @@ lze.load({
         },
         agent = { adapter = "default_adapter" },
       },
+      diff = {
+        enabled = true,
+      },
       display = {
         chat = {
           -- window = {
@@ -131,30 +136,31 @@ lze.load({
           },
           show_header_separator = true,
           show_settings = true,
+          show_tools_processing = true,
         },
       },
-      extensions = {
-        spinner = {},
-        history = {
-          enabled = true,
-          opts = {
-            keymap = "<leader>sh",
-            save_chat_keymap = "sc",
-            auto_save = true,
-            expiration_days = 0,
-            picker = "fzf-lua",
-            auto_generate_title = false,
-            ---On exiting and entering neovim, loads the last chat on opening chat
-            continue_last_chat = false,
-            ---When chat is cleared with `gx` delete the chat from history
-            delete_on_clearing_chat = true,
-            ---Directory path to save the chats
-            dir_to_save = vim.fn.stdpath("data") .. "/codecompanion-history",
-            ---Enable detailed logging for history extension
-            enable_logging = false,
-          },
-        },
-      },
+      -- extensions = {
+      --   spinner = {},
+      --   history = {
+      --     enabled = true,
+      --     opts = {
+      --       keymap = "<leader>sh",
+      --       save_chat_keymap = "sc",
+      --       auto_save = true,
+      --       expiration_days = 0,
+      --       picker = "fzf-lua",
+      --       auto_generate_title = false,
+      --       ---On exiting and entering neovim, loads the last chat on opening chat
+      --       continue_last_chat = false,
+      --       ---When chat is cleared with `gx` delete the chat from history
+      --       delete_on_clearing_chat = true,
+      --       ---Directory path to save the chats
+      --       dir_to_save = vim.fn.stdpath("data") .. "/codecompanion-history",
+      --       ---Enable detailed logging for history extension
+      --       enable_logging = false,
+      --     },
+      --   },
+      -- },
     }
 
     local ok, _ = pcall(require, "mchup")
