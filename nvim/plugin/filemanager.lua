@@ -6,7 +6,7 @@ vim.g.did_load_filemanager_plugin = true
 local oil = require("oil")
 local funcs = require("funcs")
 
-vim.keymap.set("n", "<space>f", "<cmd>Oil<cr>", { noremap = true, desc = "Netrw: open" })
+vim.keymap.set("n", "<space>f", "<cmd>Oil<cr>", { noremap = true, desc = "FileManager" })
 
 local detail = false
 
@@ -56,8 +56,8 @@ oil.setup({
     ["_"] = { "actions.open_cwd", mode = "n" },
     ["<tab>"] = "actions.select",
     ["<s-tab>"] = { "actions.parent", mode = "n" },
-    ["~"] = { "actions.cd", opts = { scope = "tab" }, mode = "n" },
-    ["s"] = { "actions.change_sort", mode = "n" },
+    ["cd"] = { "actions.cd", opts = { scope = "tab" }, mode = "n" },
+    ["gs"] = { "actions.change_sort", mode = "n" },
     ["gh"] = { "actions.toggle_hidden", mode = "n" },
     ["gd"] = {
       desc = "Toggle file detail view",
@@ -101,7 +101,5 @@ oil.setup({
 
       return false
     end,
-    -- Window-local options to use for preview window buffers
-    win_options = {},
   },
 })

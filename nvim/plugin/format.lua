@@ -40,8 +40,9 @@ for _, lang in ipairs({
 end
 
 vim.keymap.set("", "gqb", function()
+  local lf = require("largefiles")
   local buf = vim.api.nvim_get_current_buf()
-  if require("largefiles").is_large_file(buf, true) then
+  if lf.is_large_file(buf, false) == lf.FILE_TYPE.READ_ONLY then
     vim.notify_once("Large buf can't format", vim.log.levels.WARN)
     return
   end

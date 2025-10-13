@@ -132,7 +132,12 @@ with final.pkgs.lib; let
     }
 
     {
-      plugin = oil-nvim;
+      plugin = indent-o-matic;
+      optional = false;
+    }
+
+    {
+      plugin = (mkNvimPlugin inputs.oil-nvim "oil.nvim");
       optional = false;
 
       config = /*vim*/''

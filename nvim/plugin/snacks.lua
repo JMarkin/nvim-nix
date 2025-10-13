@@ -66,7 +66,7 @@ _G.bt = function()
 end
 vim.print = _G.dd -- Override print to use snacks for `:=` command
 
-Snacks.toggle.option("hlsearch", { name = "HLSearch" }):map("<leader>th")
+Snacks.toggle.option("hlsearch", { name = "HLSearch", global = true }):map("<leader>th")
 Snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>ts")
 Snacks.toggle.option("wrap", { name = "Wrap" }):map("<leader>tw")
 Snacks.toggle
