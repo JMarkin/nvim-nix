@@ -7,20 +7,20 @@ let
         typeshedSrc = pkgs.fetchFromGitHub {
           owner = "python";
           repo = "typeshed";
-          rev = "1b267b25f2c726291e4e6627b7567f2c8dc04b60";
-          sha256 = "sha256-SQJypewNYLfNSIc+Myd9l+nypdMdOx+Fyymmg/YpFW4=";
+          rev = "0e9b8c99ba01717d737de8b01ed647ef2f2ac9e5";
+          sha256 = "sha256-btpuvJHw9dmVg0lEWRFe+JCx1f91O4T6/73TFgCxHNg=";
         };
       in
       {
         pname = "zuban";
 
-        version = "2025-10-07";
+        version = "2025-10-15";
 
         src = pkgs.fetchFromGitHub {
           owner = "zubanls";
           repo = "zuban";
-          rev="66102a7ce1a999aa7857a5d9721e8afbb1ce4d37";
-          sha256="sha256-Bz1M2afQ8vaC6IpgZyzp/JXoCIw8x7h26PjEHlaQNes=";
+          rev = "34cd12eb13fad252e15f1fe980b097a6b77ec69d";
+          sha256 = "sha256-d4uQdRg/kZ+7W2Yfn/8BlsyzKAkkxv2KYuRVUcrbWR8=";
         };
 
         buildAndTestSubdir = "crates/zuban";
@@ -30,7 +30,7 @@ let
           cp -r ${typeshedSrc} $out/${pkgs.python3.sitePackages}/zuban/typeshed
         '';
 
-        cargoHash = "sha256-RQ/+YR67j9PwLz9vQ2HJUyEs1qYzG5JWfGt9vCEqx1o=";
+        cargoHash = "sha256-Etjo2/2HKe0fOZKVrAaIZCWiuCp3TOmPGnbxBMfYCHA=";
 
         doInstallCheck = true;
 
@@ -53,6 +53,7 @@ in
       ruff
       # ty
       zuban
+      uv
     ];
 
   plugins = [ ];
