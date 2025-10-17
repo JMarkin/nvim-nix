@@ -28,6 +28,25 @@ in
       '';
     }
     {
+      plugin = symbol-usage-nvim;
+      type = "lua";
+      optional = true;
+      config = /*lua*/''
+        lze.load {
+          "${symbol-usage-nvim.pname}",
+          event="LspAttach",
+          after=function()
+            require('symbol-usage').setup({
+                vt_position = 'end_of_line',
+                references = { enabled = true, include_declaration = false },
+                definition = { enabled = true },
+                implementation = { enabled = true },
+            })
+          end
+        }
+      '';
+    }
+    {
       plugin = fidget-nvim;
       type = "lua";
       optional = true;

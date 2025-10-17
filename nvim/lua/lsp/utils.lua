@@ -9,21 +9,21 @@ M.keys = {
   {
     "<leader>sd",
     function()
-      require("fzf-lua").lsp_definitions({ multiprocess = true })
+      require("fzf-lua").lsp_definitions()
     end,
     { desc = "Search: Definitions", table.unpack(opts_l) },
   },
   {
     "<leader>sS",
     function()
-      require("fzf-lua").lsp_live_workspace_symbols({ multiprocess = true })
+      require("fzf-lua").lsp_live_workspace_symbols()
     end,
     { desc = "Search: Symbols", table.unpack(opts_l) },
   },
   {
     "grr",
     function()
-      require("fzf-lua").lsp_references({ multiprocess = true, ignore_current_line = true })
+      require("fzf-lua").lsp_references({ ignore_current_line = true })
     end,
     { desc = "Search: references", table.unpack(opts_l) },
   },
