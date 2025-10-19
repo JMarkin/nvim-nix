@@ -352,6 +352,7 @@ in
   # This can be symlinked in the devShell's shellHook
   nvim-luarc-json = final.mk-luarc-json {
     plugins = all-plugins;
+    lua-version = "jit51";
   };
 
   # You can add as many derivations as you like.

@@ -75,6 +75,9 @@ function M.maxline(path, break_after)
     return max
   end
   local stat = vim.uv.fs_fstat(fd)
+  if stat == nil then
+    return max
+  end
   local data = vim.uv.fs_read(fd, stat.size, nil)
   vim.uv.fs_close(fd)
   if not data then

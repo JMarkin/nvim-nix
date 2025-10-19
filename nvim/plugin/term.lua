@@ -39,7 +39,7 @@ vim.keymap.set("n", "<space>k", function()
   end
 
   vim.ui.select(selects, {
-    prompt = "Select kubeconfig:",
+    prompt = "Select kubeconfig in ~/.kube/configs:",
     format_item = function(item)
       return item
     end,
