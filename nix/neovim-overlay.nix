@@ -171,6 +171,7 @@ with final.pkgs.lib; let
   ])
     ++ (callPackage ./treesitter.nix)
     ++ (callPackage ./statusline.nix)
+    ++ (callPackage ./windows.nix)
     ++ (callPackage ./quickfix.nix)
 
     ++ (with pkgs.vimPlugins; [

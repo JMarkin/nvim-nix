@@ -58,6 +58,11 @@
       flake = false;
     };
 
+    nvim-window = {
+      url = "github:yorickpeterse/nvim-window";
+      flake = false;
+    };
+
     cmp-diag-codes = {
       url = "github:JMarkin/cmp-diag-codes";
       flake = false;
