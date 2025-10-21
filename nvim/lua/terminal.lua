@@ -52,16 +52,6 @@ vim.api.nvim_create_autocmd({ "WinEnter", "BufWinEnter", "TermOpen" }, {
   end,
 })
 
-local function close_tab_if_empty()
-  local tab = vim.api.nvim_get_current_tabpage()
-  local wins = vim.api.nvim_tabpage_list_wins(tab)
-  if #wins == 0 then
-    vim.cmd("tabclose")
-  else
-    vim.cmd("q")
-  end
-end
-
 vim.api.nvim_create_autocmd({ "TermOpen" }, {
   callback = function(params)
     if vim.b[params.buf]["term_ignore"] == true then
@@ -75,7 +65,6 @@ vim.api.nvim_create_autocmd({ "TermOpen" }, {
       callback = function()
         vim.schedule(function()
           vim.api.nvim_buf_delete(params.buf, { force = true })
-          close_tab_if_empty()
         end)
         vim.cmd("let &stl = &stl") -- redrawstatus | redrawtabline
       end,

@@ -8,29 +8,29 @@ require("snacks").setup({
   dashboard = { enabled = false },
   explorer = { enabled = false },
   indent = { enabled = false },
-  input = { enabled = true },
-  notifier = {
-    enabled = true,
-    timeout = 1000,
-    level = vim.log.levels.WARN,
-  },
   picker = { enabled = false },
   quickfile = { enabled = true },
   scope = { enabled = false },
   scroll = { enabled = false },
+  words = { enabled = false },
   statuscolumn = {
-    enabled = true,
+    enabled = false,
     folds = {
       open = true, -- show open fold icons
       git_hl = false, -- use Git Signs hl for fold icons
     },
     refresh = 200, -- ms
   },
-  words = { enabled = false },
   styles = {
     notification = {
       wo = { wrap = true }, -- Wrap notifications
     },
+  },
+  input = { enabled = true },
+  notifier = {
+    enabled = true,
+    timeout = 1000,
+    level = vim.log.levels.WARN,
   },
 })
 

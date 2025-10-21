@@ -14,13 +14,13 @@ let
       {
         pname = "zuban";
 
-        version = "2025-10-15";
+        version = "2025-10-21";
 
         src = pkgs.fetchFromGitHub {
           owner = "zubanls";
           repo = "zuban";
-          rev = "34cd12eb13fad252e15f1fe980b097a6b77ec69d";
-          sha256 = "sha256-d4uQdRg/kZ+7W2Yfn/8BlsyzKAkkxv2KYuRVUcrbWR8=";
+          rev = "e05a3c57f07484c93c1573fdd90992f518ce2004";
+          sha256 = "sha256-tVU0HsALH8UJtqSPlC0+t1r9gYdYxjQtyaBy8f+YFY8=";
         };
 
         buildAndTestSubdir = "crates/zuban";

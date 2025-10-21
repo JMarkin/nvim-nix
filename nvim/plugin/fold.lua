@@ -11,7 +11,7 @@ vim.o.foldlevel = 99
 vim.o.foldmethod = "expr"
 vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.o.foldtext = ""
-vim.opt.foldcolumn = "0"
+vim.opt.foldcolumn = "1"
 
 vim.opt.fillchars:append({
   fold = "·",
@@ -20,8 +20,8 @@ vim.opt.fillchars:append({
 
 if vim.g.modern_ui then
   vim.opt.fillchars:append({
-    foldopen = "",
-    foldclose = "",
+    foldopen = "-",
+    foldclose = "+",
   })
 end
 

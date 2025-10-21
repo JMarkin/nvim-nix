@@ -100,14 +100,22 @@ lze.load({
     },
     after = function()
       require("diffview").setup({
+        signs = {
+          fold_closed = "+",
+          fold_open = "-",
+          done = "✓",
+        },
         hooks = {
           diff_buf_read = function(bufnr)
+            bufnr = vim._resolve_bufnr(bufnr)
             vim.b[bufnr].no_winbar = true
           end,
         },
         view = {
           default = {
             layout = "diff2_horizontal",
+            disable_diagnostics = true,
+            winbar_info = true,
           },
           merge_tool = {
             layout = "diff4_mixed",
@@ -121,4 +129,3 @@ lze.load({
     end,
   },
 })
-
