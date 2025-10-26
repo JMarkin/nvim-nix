@@ -10,8 +10,9 @@ let
   nix = callPackage ./nix.nix;
   sql = callPackage ./sql.nix;
   python = callPackage ./python.nix;
+  http = callPackage ./http.nix;
 
-  langs = [ unsorted go lua rust nix sql python ];
+  langs = [ unsorted go lua rust nix sql python http ];
 in
 {
   packages = builtins.concatMap (x: x.packages) langs;

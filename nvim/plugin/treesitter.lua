@@ -69,7 +69,7 @@ lze.load({
 lze.load({
   "nvim-treesitter",
   event = vim.g.post_load_events,
-  on_require = { "nvim-treesitter.configs" },
+  on_require = { "nvim-treesitter.configs", "nvim-treesitter.textobjects.repeatable_move" },
   before = function()
     local prev = vim.treesitter.language.get_lang
     ---@diagnostic disable-next-line: duplicate-set-field

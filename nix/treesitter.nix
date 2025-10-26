@@ -1,7 +1,11 @@
 { inputs, pkgs, mkNvimPlugin, ... }:
 let
+  kulala = pkgs.callPackage ./kulala.nix { inherit inputs pkgs; };
   # nvim-treesitter = pkgs.vimPlugins.nvim-treesitter.withAllGrammars;
   nvim-treesitter = pkgs.vimPlugins.nvim-treesitter.withPlugins (p: [
+    # plugins
+    kulala.grammar
+
     # languages
     p.rust
     p.c

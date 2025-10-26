@@ -15,6 +15,13 @@
 
     blink-pairs.url = "github:Saghen/blink.pairs";
 
+    # kulala-nvim ecosystem
+    kulala-nvim.url = "github:mistweaverco/kulala.nvim";
+    kulala-nvim.flake = false;
+    kulala-fmt.url = "github:mistweaverco/kulala-fmt";
+    kulala-fmt.inputs.flake-parts.follows = "flake-parts";
+    kulala-fmt.inputs.nixpkgs.follows = "nixpkgs";
+
     # Add bleeding-edge plugins here.
     # They can be updated with `nix flake update` (make sure to commit the generated flake.lock)
     oil-nvim = {
