@@ -288,12 +288,13 @@ with final.pkgs.lib; let
           END
         '';
       }
+      # vim plugins
+      { plugin = vim-test; optional = false; type = "vim"; }
     ]
   );
 
   extraPackages = langs.packages ++ [
     pkgs.jaq
-    # lsp features
     pkgs.fswatch
 
     pkgs.fixjson

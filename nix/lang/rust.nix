@@ -8,6 +8,8 @@
     graphviz
     lldb
     ra-multiplex
+
+    cargo-nextest
   ];
 
 

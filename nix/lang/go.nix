@@ -6,16 +6,15 @@
     golangci-lint
     gopls
     gotools
+    delve
+    mockgen
 
     # gofumpt
     # golines
     # gomodifytags
     # iferr
     # impl
-    # ginkgo
-    # mockgen
     # govulncheck
-
   ];
 
   plugins = [ ];
