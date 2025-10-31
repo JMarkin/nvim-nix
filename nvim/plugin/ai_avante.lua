@@ -30,6 +30,8 @@ local opts = {
     use_cwd_as_project_root = true,
     auto_focus_on_diff_view = true,
     auto_approve_tool_permissions = false,
+    auto_add_current_file = false,
+    confirmation_ui_style = "popup",
   },
 
   selection = {
@@ -124,8 +126,16 @@ local opts = {
     ---@alias AvantePosition "right" | "left" | "top" | "bottom" | "smart"
     ---@type AvantePosition
     position = "smart",
+    sidebar_header = {
+      enabled = true, -- true, false to enable/disable the header
+      align = "left", -- left, center, right for title
+      rounded = true,
+    },
     edit = {
       start_insert = false, -- Start insert mode when opening the edit window
+    },
+    ask = {
+      floating = true,
     },
   },
 

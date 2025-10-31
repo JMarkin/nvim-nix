@@ -3,36 +3,24 @@
 
 local M = {}
 
-M.lsps = {
-  -- "nginx_language_server",
-  "nixd",
-  "lua_ls",
-  "rust_analyzer",
-  "bashls",
-  "vimls",
-  "html",
-  "cssls",
-  -- "jedi_language_server",
-  "ruff",
-  "zuban",
-  -- "ty",
-  -- "basedpyright",
-  "taplo",
-  "ts_ls",
-  "neocmake",
-  "docker_language_server",
-  "biome",
-  "jinja_lsp",
-  "golangci_lint_ls",
-  "gopls",
-  "vacuum",
-  "yamlls",
-  "jsonls",
-  "clangd",
-}
+local get_lsps = function()
+  return vim
+    .iter(vim.api.nvim_get_runtime_file("lsp/*.lua", true))
+    :filter(function(path)
+      local exists, _ = string.find(path, "nvim/")
+      return exists ~= nil
+    end)
+    :map(function(path)
+      local file_name = path:match("[^/]*.lua$")
+      return file_name:sub(0, #file_name - 4)
+    end)
+    :totable()
+end
 
 M.setup = function()
-  for _, lsp in ipairs(M.lsps) do
+  local lsps = get_lsps()
+
+  for _, lsp in ipairs(lsps) do
     local cfg = vim.lsp.config[lsp]
     if not cfg then
       vim.print(string.format("%s not configured", lsp))
@@ -46,7 +34,6 @@ M.setup = function()
     end
 
     if type(cmd) == "function" then
-      vim.lsp.enable(lsp, vim.g.lsp_autostart)
       goto continue
     end
 

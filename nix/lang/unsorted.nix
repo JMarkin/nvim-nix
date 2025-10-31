@@ -18,10 +18,6 @@ in
     vacuum-go
     taplo
 
-    vscode-langservers-extracted
-
-    biome
-
     universal-ctags
   ];
 

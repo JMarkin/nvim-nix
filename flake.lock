@@ -1,21 +1,5 @@
 {
   "nodes": {
-    "beacon-nvim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1719294964,
-        "narHash": "sha256-x/79mRkwwT+sNrnf8QqocsaQtM+Rx6BUvVj5Nnv5JDY=",
-        "owner": "DanilaMihailov",
-        "repo": "beacon.nvim",
-        "rev": "098ff96c33874339d5e61656f3050dbd587d6bd5",
-        "type": "github"
-      },
-      "original": {
-        "owner": "DanilaMihailov",
-        "repo": "beacon.nvim",
-        "type": "github"
-      }
-    },
     "blink-pairs": {
       "inputs": {
         "fenix": "fenix",
@@ -32,6 +16,7 @@
       },
       "original": {
         "owner": "Saghen",
+        "ref": "574ce24d44526a76e0b76e921a92c6737a6b3954",
         "repo": "blink.pairs",
         "type": "github"
       }
@@ -344,11 +329,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1761696321,
-        "narHash": "sha256-UpAmPtmsO9g7+uECR+NsjuKCYPa5SFj2akkjLc51k8I=",
+        "lastModified": 1761869064,
+        "narHash": "sha256-rp7XnoIqjnpZD4o9i00JDGXRkfXlYKejl9HeN+MXdW8=",
         "owner": "nix-community",
         "repo": "neovim-nightly-overlay",
-        "rev": "37853aa4419e22dc2b7544e4238dd880af673bc8",
+        "rev": "923a0d1e5e5ce35847b75a95d759f3128bc09202",
         "type": "github"
       },
       "original": {
@@ -360,11 +345,11 @@
     "neovim-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1761695393,
-        "narHash": "sha256-BMoy/in1jne82gM2LEiBG6hhiyllyvmSNBf4Vhrho7s=",
+        "lastModified": 1761834237,
+        "narHash": "sha256-dDgCjRfZY8AWTL9BKEbXhPOb5rdNI4RlmLE+rmGNzZs=",
         "owner": "neovim",
         "repo": "neovim",
-        "rev": "c2781d3db3efa3a86d9f383a0886567ff38e4d63",
+        "rev": "5ddabbeba43e519604f5e1cfacb7a1d83094097e",
         "type": "github"
       },
       "original": {
@@ -437,11 +422,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1761373498,
-        "narHash": "sha256-Q/uhWNvd7V7k1H1ZPMy/vkx3F8C13ZcdrKjO7Jv7v0c=",
+        "lastModified": 1761672384,
+        "narHash": "sha256-o9KF3DJL7g7iYMZq9SWgfS1BFlNbsm6xplRjVlOCkXI=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "6a08e6bb4e46ff7fcbb53d409b253f6bad8a28ce",
+        "rev": "08dacfca559e1d7da38f3cf05f1f45ee9bfd213c",
         "type": "github"
       },
       "original": {
@@ -501,7 +486,6 @@
     },
     "root": {
       "inputs": {
-        "beacon-nvim": "beacon-nvim",
         "blink-pairs": "blink-pairs",
         "cmp-diag-codes": "cmp-diag-codes",
         "diaglist-nvim": "diaglist-nvim",

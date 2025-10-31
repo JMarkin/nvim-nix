@@ -14,115 +14,126 @@ g.post_load_events = { "BufReadPost", "FileReadPost", "TermOpen" }
 g.pre_load_events = { "BufReadPre", "FileReadPre", "BufNewFile", "TermOpen" }
 
 -- stylua: ignore start
-g.snips_author                                               = vim.env.AUTHOR or "Jury Markin"
-g.snips_email                                                = vim.env.EMAIL or "me@jmarkin.ru"
-g.snips_github                                               = vim.env.GITHUB or "https://github.com/JMarkin"
+g.snips_author                                                         = vim.env.AUTHOR or "Jury Markin"
+g.snips_email                                                          = vim.env.EMAIL or "me@jmarkin.ru"
+g.snips_github                                                         = vim.env.GITHUB or "https://github.com/JMarkin"
 
 
-opt.cmdheight                                                = 1
+opt.cmdheight                                                          = 0
 -- opt.colorcolumn                                   = '+1'
-opt.cursorlineopt                                            = 'both'
-opt.cursorline                                               = true
+opt.cursorlineopt                                                      = 'both'
+opt.cursorline                                                         = true
 -- g.cursorhold_updatetime                           = 200
-g.default_winwidth                                           = 20
-g.default_winheight                                          = 1
-opt.winwidth                                                 = g.default_winwidth
-opt.winheight                                                = g.default_winheight
-opt.winminwidth                                              = 20
-opt.pumheight                                                = 20
-opt.splitright                                               = true
-opt.splitbelow                                               = true
-opt.equalalways                                              = false
-opt.updatetime                                               = 200
-opt.number                                                   = true
-g.numbertoggle                                               = true
-opt.ruler                                                    = true
-opt.scrolloff                                                = 4
-opt.sidescrolloff                                            = 8
-opt.sidescroll                                               = 0
-opt.signcolumn                                               = 'yes:1'
-opt.swapfile                                                 = true
-opt.undofile                                                 = true
-opt.wrap                                                     = false
-opt.linebreak                                                = true
-opt.breakindent                                              = true
-opt.scrollback                                               = 2000
-opt.conceallevel                                             = 0
-opt.autowriteall                                             = true
-opt.virtualedit                                              = 'block'
-opt.mouse                                                    = "vh"
-opt.mousemoveevent                                           = true
-opt.mousefocus                                               = false
-g.mapleader                                                  = "\\"
-opt.fileencoding                                             = "utf-8"
-opt.encoding                                                 = "utf-8"
-opt.hidden                                                   = true
-opt.showmatch                                                = false
-opt.hlsearch                                                 = true
-opt.autochdir                                                = false
-opt.bs                                                       = "indent,eol,start"
-g.editorconfig                                               = true
-opt.synmaxcol                                                = 2000
-opt.exrc                                                     = true
-opt.laststatus                                               = 3
+g.default_winwidth                                                     = 20
+g.default_winheight                                                    = 1
+opt.winwidth                                                           = g.default_winwidth
+opt.winheight                                                          = g.default_winheight
+opt.winminwidth                                                        = 20
+opt.pumheight                                                          = 20
+opt.splitright                                                         = true
+opt.splitbelow                                                         = true
+opt.equalalways                                                        = false
+opt.updatetime                                                         = 200
+opt.number                                                             = true
+g.numbertoggle                                                         = true
+opt.ruler                                                              = true
+opt.scrolloff                                                          = 4
+opt.sidescrolloff                                                      = 8
+opt.sidescroll                                                         = 0
+opt.signcolumn                                                         = 'yes:1'
+opt.swapfile                                                           = true
+opt.undofile                                                           = true
+opt.wrap                                                               = false
+opt.linebreak                                                          = true
+opt.breakindent                                                        = true
+opt.scrollback                                                         = 2000
+opt.conceallevel                                                       = 0
+opt.autowriteall                                                       = true
+opt.virtualedit                                                        = 'block'
+opt.mouse                                                              = "vh"
+opt.mousemoveevent                                                     = true
+opt.mousefocus                                                         = false
+g.mapleader                                                            = "\\"
+opt.fileencoding                                                       = "utf-8"
+opt.encoding                                                           = "utf-8"
+opt.hidden                                                             = true
+opt.showmatch                                                          = false
+opt.hlsearch                                                           = true
+opt.autochdir                                                          = false
+opt.bs                                                                 = "indent,eol,start"
+g.editorconfig                                                         = true
+opt.synmaxcol                                                          = 2000
+opt.exrc                                                               = true
+opt.laststatus                                                         = 3
 
-opt.guifont                                                  = "JetBrainsMonoNL Nerd Font Mono:h13"
-opt.guicursor                                                = "a:block"
-opt.background                                               = "dark"
+opt.guifont                                                            = "JetBrainsMonoNL Nerd Font Mono:h13"
+opt.guicursor                                                          = "a:block"
+opt.background                                                         = "dark"
 
-if vim.fn.has('nvim-0.11')                                  == 1 then
-opt.completeopt                                              = "menu,menuone,noselect,popup,noinsert,fuzzy"
+if vim.fn.has('nvim-0.11')                                            == 1 then
+opt.completeopt                                                        = "menu,menuone,noselect,popup,noinsert,fuzzy"
 else
-opt.completeopt                                              = "menu,menuone,noselect,popup,noinsert"
+opt.completeopt                                                        = "menu,menuone,noselect,popup,noinsert"
 end
-opt.cia                                                      = 'kind,abbr,menu'
+opt.cia                                                                = 'kind,abbr,menu'
 
-opt.tags                                                     = { "tags", ".git/tags" }
+opt.tags                                                               = { "tags", ".git/tags" }
 
-opt.spell                                                    = false
-opt.spelllang                                                = { "en", "ru" }
-g.spellfile_URL                                              = "https://ftp.nluug.nl/vim/runtime/spell/"
+opt.spell                                                              = false
+opt.spelllang                                                          = { "en", "ru" }
+g.spellfile_URL                                                        = "https://ftp.nluug.nl/vim/runtime/spell/"
 
-g.root_pattern                                               = {
-                                                                  ".nvim.lua",
-                                                                  "flake.nix",
-                                                                  "Makefile",
-                                                                  ".git",
-                                                               }
-opt.list                                                     = true
-opt.listchars                                                = {
-                                                                tab    = '→ ',
-                                                                trail  = '·',
-                                                                eol    = '↲',
-                                                               }
-opt.fillchars                                                = {
-                                                                eob    = ' ',
-                                                               }
+g.root_pattern                                                         = {
+                                                                            ".nvim.lua",
+                                                                            "flake.nix",
+                                                                            "Makefile",
+                                                                            ".git",
+                                                                         }
+g.js_root_pattern                                                      = {
+                                                                          "package-lock.json",
+                                                                          "yarn.lock",
+                                                                          "pnpm-lock.yaml",
+                                                                          "bun.lockb",
+                                                                          "bun.lock",
+                                                                          "biome.json",
+                                                                          "biome.jsonc",
+                                                                          ".nvim.lua",
+                                                                          ".git",
+                                                                         }
+opt.list                                                               = true
+opt.listchars                                                          = {
+                                                                          tab    = '→ ',
+                                                                          trail  = '·',
+                                                                          eol    = '↲',
+                                                                         }
+opt.fillchars                                                          = {
+                                                                          eob    = ' ',
+                                                                         }
 
-opt.tabstop                                                  = 4
-opt.softtabstop                                              = 4
-opt.shiftwidth                                               = 4
-opt.expandtab                                                = true
-opt.smartindent                                              = true
-opt.autoindent                                               = true
+opt.tabstop                                                            = 4
+opt.softtabstop                                                        = 4
+opt.shiftwidth                                                         = 4
+opt.expandtab                                                          = true
+opt.smartindent                                                        = true
+opt.autoindent                                                         = true
 
-opt.ignorecase                                               = true
-opt.smartcase                                                = true
+opt.ignorecase                                                         = true
+opt.smartcase                                                          = true
 
-opt.termguicolors                                            = true
+opt.termguicolors                                                      = true
 
-opt.textwidth                                                = 80
+opt.textwidth                                                          = 80
 
-opt.relativenumber                                           = true
-opt.sessionoptions                                           = 'curdir,folds,globals,help,tabpages,terminal,winsize'
-opt.viewoptions                                              = 'folds,cursor'
+opt.relativenumber                                                     = true
+opt.sessionoptions                                                     = 'curdir,folds,globals,help,tabpages,terminal,winsize'
+opt.viewoptions                                                        = 'folds,cursor'
 
-g.omni_sql_ignorecase                                        = 1
-
-
+g.omni_sql_ignorecase                                                  = 1
 
 
-g.lsp_autostart                                              = vim.env.LSP_AUTOSTART ~= nil
+
+
+g.lsp_autostart                                                        = vim.env.LSP_AUTOSTART ~= nil
 
 opt.wildignore:append({ -- Ignore on file name completion.
 	".DS_store",
@@ -130,7 +141,7 @@ opt.wildignore:append({ -- Ignore on file name completion.
 	"**/.venv/**",
 })
 
-opt.lazyredraw                                    = true
+opt.lazyredraw                                                         = true
 
 -- stylua: ignore end
 g.dbs = {
@@ -145,7 +156,7 @@ if g.modern_ui then
     eob = " ",
     diff = "╱",
   })
-  vim.api.nvim_command('colorscheme ex-bamboo')
+  vim.api.nvim_command("colorscheme ex-bamboo")
   -- vim.schedule(function ()
   --     vim.api.nvim_command('colorscheme ex-bamboo')
   -- end)

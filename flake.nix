@@ -13,7 +13,7 @@
     gen-luarc.inputs.flake-parts.follows = "flake-parts";
 
 
-    blink-pairs.url = "github:Saghen/blink.pairs";
+    blink-pairs.url = "github:Saghen/blink.pairs?ref=574ce24d44526a76e0b76e921a92c6737a6b3954";
 
     # kulala-nvim ecosystem
     kulala-nvim.url = "github:mistweaverco/kulala.nvim";
@@ -50,10 +50,10 @@
       flake = false;
     };
 
-    beacon-nvim = {
-      url = "github:DanilaMihailov/beacon.nvim";
-      flake = false;
-    };
+    # beacon-nvim = {
+    #   url = "github:DanilaMihailov/beacon.nvim";
+    #   flake = false;
+    # };
 
     stay-in-place-nvim = {
       url = "github:gbprod/stay-in-place.nvim";

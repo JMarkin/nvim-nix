@@ -11,8 +11,9 @@ let
   sql = callPackage ./sql.nix;
   python = callPackage ./python.nix;
   http = callPackage ./http.nix;
+  js = callPackage ./js.nix;
 
-  langs = [ unsorted go lua rust nix sql python http ];
+  langs = [ unsorted go lua rust nix sql python http js ];
 in
 {
   packages = builtins.concatMap (x: x.packages) langs;
@@ -22,9 +23,10 @@ in
       type = "lua";
       optional = true;
       config = /*lua*/''
+        vim.g.lspconfig = 1
         lze.load {
           "${nvim-lspconfig.pname}",
-          event = vim.g.pre_load_events
+          on_require = {"lspconfig", "lspconfig.utils"},
         }
       '';
     }
