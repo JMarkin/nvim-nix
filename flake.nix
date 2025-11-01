@@ -74,10 +74,10 @@
       url = "github:JMarkin/cmp-diag-codes";
       flake = false;
     };
-    diaglist-nvim = {
-      url = "github:JMarkin/diaglist.nvim";
-      flake = false;
-    };
+    # diaglist-nvim = {
+    #   url = "github:JMarkin/diaglist.nvim";
+    #   flake = false;
+    # };
     gentags-lua = {
       url = "github:JMarkin/gentags.lua?ref=feat/neovim-0.10";
       flake = false;

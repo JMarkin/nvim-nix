@@ -37,22 +37,6 @@
         "type": "github"
       }
     },
-    "diaglist-nvim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1696529653,
-        "narHash": "sha256-/4eb11/8O89YeHf0TSzQpQyCbS0oPyG/QqtVOrFPaOo=",
-        "owner": "JMarkin",
-        "repo": "diaglist.nvim",
-        "rev": "73ace32941fa5db5427f7ef936598072f89ce34a",
-        "type": "github"
-      },
-      "original": {
-        "owner": "JMarkin",
-        "repo": "diaglist.nvim",
-        "type": "github"
-      }
-    },
     "fenix": {
       "inputs": {
         "nixpkgs": [
@@ -488,7 +472,6 @@
       "inputs": {
         "blink-pairs": "blink-pairs",
         "cmp-diag-codes": "cmp-diag-codes",
-        "diaglist-nvim": "diaglist-nvim",
         "flake-parts": "flake-parts_2",
         "gen-luarc": "gen-luarc",
         "gentags-lua": "gentags-lua",
