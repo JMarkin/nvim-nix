@@ -45,18 +45,18 @@ Content-Type: application/json
   "messages": [
        {
            "role": "system",
-           "content": "You are Fill in the Middle completion. Respond with only the filled-in code. Generate 5 different completion separate <COMPLETION> as separator of completion"
+           "content": "You AI assistant"
        },
        {
            "role": "user",
-           "content": "language python indentation 4 spaces for a tab."
+           "content": "language python indentation 2 spaces for a tab."
        },
        {
            "role": "user",
-           "content": "<|fim_prefix|>def quicksort(arr):\n    if len(arr) <= 1:\n        return arr\n    pivot = arr[len(arr) // 2]\n    <|fim_suffix|>\n    middle = [x for x in arr if x == pivot]\n    right = [x for x in arr if x > pivot]\n    return quicksort(left) + middle + quicksort(right)<|fim_middle|>"
+           "content": "get fibbonachi fucntion for calcualte first 30 numbers fastest"
        }
    ],
-  "model":"hf.co/unsloth/gemma-3-12b-it-qat-GGUF:Q4_K_M",
+  "model":"orieg/gemma3-tools:4b",
   "stream": false
 }
 

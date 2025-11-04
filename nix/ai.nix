@@ -1,4 +1,4 @@
-{ inputs, pkgs, ... }:
+{ inputs, pkgs, mkNvimPlugin, ... }:
 with pkgs.vimPlugins; [
   # {
   #   plugin = codecompanion-nvim.overrideAttrs (oa: {
@@ -32,5 +32,5 @@ with pkgs.vimPlugins; [
       }
     '';
   }
-
+  (mkNvimPlugin inputs.gp-nvim "gp.nvim")
 ]

@@ -13,7 +13,7 @@ in
     yaml-language-server
     # systemd-language-server
     # nginx-language-server
-    docker-language-server
+    # docker-language-server
 
     vacuum-go
     taplo

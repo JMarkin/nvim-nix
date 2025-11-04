@@ -70,6 +70,13 @@
       flake = false;
     };
 
+    gp-nvim = {
+      url = "github:Robitx/gp.nvim";
+      flake = false;
+    };
+
+    # my
+
     cmp-diag-codes = {
       url = "github:JMarkin/cmp-diag-codes";
       flake = false;

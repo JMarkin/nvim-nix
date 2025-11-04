@@ -162,13 +162,7 @@ local opts = {
   },
 }
 -- ollama setup
-g.ollama_host = vim.env.OLLAMA_HOST or "localhost"
-g.ollama_port = vim.env.OLLAMA_PORT or "11434"
-g.ollama_url = string.format("http://%s:%s", g.ollama_host, g.ollama_port)
-g.ollama_generate_endpoint = string.format("%s/api/generate", g.ollama_url)
-g.ollama_chat_endpoint = string.format("%s/api/chat", g.ollama_url)
-g.ollama_completions_endpoint = string.format("%s/api/generate", g.ollama_url)
-g.ollama_model = "hf.co/mradermacher/Qwen2.5-CoderX-14B-v0.5-GGUF:Q8_0"
+g.ollama_model = "orieg/gemma3-tools:4b"
 
 local ollama_modify_config = function(cfg)
   cfg.provider = "ollama"
