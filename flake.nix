@@ -24,6 +24,12 @@
 
     # Add bleeding-edge plugins here.
     # They can be updated with `nix flake update` (make sure to commit the generated flake.lock)
+    
+    smart-splits-nvim = {
+      url = "github:mrjones2014/smart-splits.nvim";
+      flake = false;
+    };
+
     oil-nvim = {
       url = "github:stevearc/oil.nvim";
       flake = false;

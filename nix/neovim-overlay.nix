@@ -189,7 +189,7 @@ with final.pkgs.lib; let
       '';
     }
 
-    smart-splits-nvim
+    (mkNvimPlugin inputs.smart-splits-nvim "smart-splits.nvim")
     comment-nvim
     {
       plugin = mini-misc;

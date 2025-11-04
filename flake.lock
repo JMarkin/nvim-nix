@@ -502,6 +502,7 @@
         "nvim-window": "nvim-window",
         "nvim-yati": "nvim-yati",
         "oil-nvim": "oil-nvim",
+        "smart-splits-nvim": "smart-splits-nvim",
         "stay-in-place-nvim": "stay-in-place-nvim",
         "whatthejump-nvim": "whatthejump-nvim",
         "yaml-nvim": "yaml-nvim"
@@ -521,6 +522,22 @@
         "owner": "rust-lang",
         "ref": "nightly",
         "repo": "rust-analyzer",
+        "type": "github"
+      }
+    },
+    "smart-splits-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1761929118,
+        "narHash": "sha256-73F0iIPpG7RC0IT06Qv3ufcO6EfkEmYEXXk409S9tsw=",
+        "owner": "mrjones2014",
+        "repo": "smart-splits.nvim",
+        "rev": "1611946e397a8b42807a9ad527088bf7ebc9ce33",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mrjones2014",
+        "repo": "smart-splits.nvim",
         "type": "github"
       }
     },
