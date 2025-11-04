@@ -11,6 +11,12 @@ with final.pkgs.lib; let
       version = src.lastModifiedDate;
     };
 
+  mkNvimPluginNoCheck = src: pname:
+    pkgs.vimUtils.buildVimPlugin {
+      inherit pname src;
+      version = src.lastModifiedDate;
+      doCheck = false;
+    };
   # Make sure we use the pinned nixpkgs instance for wrapNeovimUnstable,
   # otherwise it could have an incompatible signature when applying this overlay.
   pkgs-locked = inputs.nixpkgs.legacyPackages.${pkgs.system};
@@ -189,7 +195,7 @@ with final.pkgs.lib; let
       '';
     }
 
-    (mkNvimPlugin inputs.smart-splits-nvim "smart-splits.nvim")
+    (mkNvimPluginNoCheck inputs.smart-splits-nvim "smart-splits.nvim")
     comment-nvim
     {
       plugin = mini-misc;
