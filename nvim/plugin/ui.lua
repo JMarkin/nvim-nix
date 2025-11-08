@@ -13,7 +13,7 @@ lze.load({
     vim.api.nvim_set_hl(0, "LocalHighlight", { underline = true })
     require("local-highlight").setup({
       animate = {
-        enabled = true,
+        enabled = false,
       },
       insert_mode = false,
       file_types = {},
