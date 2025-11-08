@@ -43,7 +43,7 @@ lze.load({
     {
       "<leader>sb",
       function()
-        require("fzf-lua").buffers({ current_tab_only = true })
+        require("fzf-lua").buffers()
       end,
       desc = "Search: buffers",
     },

@@ -210,17 +210,18 @@ with final.pkgs.lib; let
       config = /*lua*/''
         require("mini.icons").setup()
         MiniIcons.mock_nvim_web_devicons()
-      '';
-    }
-
-    {
-      plugin = snacks-nvim;
-      optional = false;
-
-      config = /*lua*/''
         END
       '';
     }
+
+    # {
+    #   plugin = snacks-nvim;
+    #   optional = false;
+    #
+    #   config = /*lua*/''
+    #     END
+    #   '';
+    # }
 
   ]);
 

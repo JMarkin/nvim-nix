@@ -1,3 +1,4 @@
+vim.g.did_load_snacks_plugin = true
 if vim.g.did_load_snacks_plugin then
   return
 end

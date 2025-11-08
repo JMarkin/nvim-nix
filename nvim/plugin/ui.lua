@@ -12,6 +12,9 @@ lze.load({
   after = function()
     vim.api.nvim_set_hl(0, "LocalHighlight", { underline = true })
     require("local-highlight").setup({
+      animate = {
+        enabled = true,
+      },
       insert_mode = false,
       file_types = {},
       hlgroup = "LocalHighlight",
@@ -87,6 +90,29 @@ lze.load({
             return ok and cwd or vim.fn.getcwd()
           end,
         },
+      },
+    })
+  end,
+})
+
+lze.load({
+  "${render-markdown-nvim.pname}",
+  ft = { "markdown", "codecompanion", "Avante" },
+  after = function()
+    require("render-markdown").setup({
+      render_modes = true,
+      file_types = { "markdown", "Avante", "codecompanion", "rmd" },
+      debounce = 200,
+      code = {
+        style = "language",
+        highlight = nil,
+        highlight_inline = nil,
+        onceal_delimiters = false,
+        border = "thick",
+      },
+      completions = {
+        blink = { enabled = true },
+        lsp = { enabled = true },
       },
     })
   end,
