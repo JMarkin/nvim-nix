@@ -96,7 +96,7 @@ lze.load({
 })
 
 lze.load({
-  "${render-markdown-nvim.pname}",
+  "render-markdown.nvim",
   ft = { "markdown", "codecompanion", "Avante" },
   after = function()
     require("render-markdown").setup({

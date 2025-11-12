@@ -4,6 +4,7 @@
   packages = with pkgs; [
     vscode-langservers-extracted
     biome
+    prettierd
     nodejs
     bun
     yarn-berry
@@ -22,7 +23,13 @@
             event = vim.g.pre_load_events,
             after = function()
                 require("typescript-tools").setup {
-                  tsserver_path = "${pkgs.typescript}/bin/tsserver"
+                  tsserver_path = "${pkgs.typescript}/bin/tsserver",
+                  settings = {
+                    tsserver_max_memory = 4096,
+                    tsserver_file_preferences = {
+                      includeCompletionsForModuleExports = true,
+                    },
+                  },
                 }
             end
           }

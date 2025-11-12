@@ -1,6 +1,17 @@
 {
   description = "Neovim derivation";
 
+  nixConfig = {
+    extra-substituters = [
+      "http://192.168.88.15:8501"
+      "http://tln.jmarkin.ru:8501"
+    ];
+    extra-trusted-public-keys = [
+      "192.168.88.15:EOj0yG2nmqNFVZA1GWYKZ8JU8uZHbAzvYXglA8u+yKw="
+      "tln.jmarkin.ru:EOj0yG2nmqNFVZA1GWYKZ8JU8uZHbAzvYXglA8u+yKw="
+    ];
+  };
+
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
@@ -24,7 +35,7 @@
 
     # Add bleeding-edge plugins here.
     # They can be updated with `nix flake update` (make sure to commit the generated flake.lock)
-    
+
     smart-splits-nvim = {
       url = "github:mrjones2014/smart-splits.nvim";
       flake = false;

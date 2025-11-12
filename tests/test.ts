@@ -1,1 +1,3 @@
-import s
+var s = ''
+
+s

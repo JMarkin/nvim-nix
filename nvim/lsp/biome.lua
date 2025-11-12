@@ -24,5 +24,5 @@ return {
     "vue",
   },
   workspace_required = true,
-  root_dir = vim.g.js_root_pattern
+  root_dir = vim.g.js_root_pattern,
 }

@@ -21,7 +21,7 @@ end, {
 
 local complete_client = function(arg)
   return vim
-    .iter(vim.lsp.get_clients())
+    .iter(require("lsp").get_lsps())
     :map(function(client)
       return client.name
     end)
@@ -53,7 +53,7 @@ api.nvim_create_user_command("LspStart", function(info)
   -- otherwise they won't be present in the private `vim.lsp.config._configs` table.
   if #servers == 0 then
     local filetype = vim.bo.filetype
-    for name, _ in pairs(vim.lsp.config._configs) do
+    for name, _ in pairs(require("lsp").get_lsps()) do
       local filetypes = vim.lsp.config[name].filetypes
       if filetypes and vim.tbl_contains(filetypes, filetype) then
         table.insert(servers, name)

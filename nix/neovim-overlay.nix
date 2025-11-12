@@ -174,6 +174,14 @@ with final.pkgs.lib; let
         }
       '';
     }
+    {
+      plugin = mini-notify;
+      optional = false;
+      type = "lua";
+      config = /*lua*/ ''
+        require('mini.notify').setup();
+      '';
+    }
   ])
     ++ (callPackage ./treesitter.nix)
     ++ (callPackage ./statusline.nix)

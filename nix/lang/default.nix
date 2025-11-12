@@ -49,19 +49,5 @@ in
         }
       '';
     }
-    {
-      plugin = fidget-nvim;
-      type = "lua";
-      optional = true;
-      config = /*lua*/''
-        lze.load {
-          "${fidget-nvim.pname}",
-          event="LspAttach",
-          after=function()
-            require("fidget").setup({})
-          end
-        }
-      '';
-    }
   ] ++ builtins.concatMap (x: x.plugins) langs;
 }

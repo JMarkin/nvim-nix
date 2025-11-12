@@ -11,7 +11,6 @@ g.formatters_by_ft = {
   lua = { "stylua" },
   python = { "ruff_format" },
   rust = { "rustfmt" },
-  javascript = { "prettierd" },
   json = { "fixjson" },
   jinja = { "djlint" },
   htmldjango = { "djlint" },
