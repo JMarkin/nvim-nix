@@ -175,11 +175,19 @@ with final.pkgs.lib; let
       '';
     }
     {
-      plugin = mini-notify;
+      plugin = nvim-notify;
       optional = false;
       type = "lua";
       config = /*lua*/ ''
-        require('mini.notify').setup();
+        local notif = require("notify")
+        notif.setup({
+            timeout = 1000,
+            stages = "static",
+            level = vim.log.levels.INFO,
+            top_down = true,
+        })
+        vim.notify = notif
+
       '';
     }
   ])

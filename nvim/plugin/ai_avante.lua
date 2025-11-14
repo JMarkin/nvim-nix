@@ -135,7 +135,7 @@ local opts = {
       start_insert = false, -- Start insert mode when opening the edit window
     },
     ask = {
-      floating = true,
+      floating = false,
     },
   },
 
