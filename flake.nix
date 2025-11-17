@@ -3,11 +3,9 @@
 
   nixConfig = {
     extra-substituters = [
-      "http://192.168.88.15:8501"
       "http://tln.jmarkin.ru:8501"
     ];
     extra-trusted-public-keys = [
-      "192.168.88.15:EOj0yG2nmqNFVZA1GWYKZ8JU8uZHbAzvYXglA8u+yKw="
       "tln.jmarkin.ru:EOj0yG2nmqNFVZA1GWYKZ8JU8uZHbAzvYXglA8u+yKw="
     ];
   };
