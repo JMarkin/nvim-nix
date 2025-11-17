@@ -9,29 +9,26 @@
     bun
     yarn-berry
     typescript-language-server
+    vtsls
     typescript
   ];
 
   plugins = with pkgs.vimPlugins; [
     {
-      plugin = typescript-tools-nvim;
+      plugin = nvim-vtsls;
       type = "lua";
       optional = true;
       config = /*lua*/''
         lze.load {
-            "${typescript-tools-nvim.pname}",
-            event = vim.g.pre_load_events,
-            after = function()
-                require("typescript-tools").setup {
-                  tsserver_path = "${pkgs.typescript}/bin/tsserver",
-                  settings = {
-                    tsserver_max_memory = 4096,
-                    tsserver_file_preferences = {
-                      includeCompletionsForModuleExports = true,
-                    },
-                  },
-                }
-            end
+            "${nvim-vtsls.pname}",
+            ft={
+              "javascript",
+              "javascriptreact",
+              "javascript.jsx",
+              "typescript",
+              "typescriptreact",
+              "typescript.tsx",
+            }
           }
       '';
     }

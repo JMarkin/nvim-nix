@@ -16,7 +16,7 @@ let
   langs = [ unsorted go lua rust nix sql python http js ];
 in
 {
-  packages = builtins.concatMap (x: x.packages) langs;
+  packages = [ pkgs.lspmux ] ++ builtins.concatMap (x: x.packages) langs;
   plugins = with pkgs.vimPlugins; [
     {
       plugin = nvim-lspconfig;
