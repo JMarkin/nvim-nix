@@ -12,7 +12,6 @@ local opts = {
     global_dir = "~/.config/avante/rules", -- absolute path
   },
   -- debug = true,
-  providers = {},
   web_search_engine = {},
   behaviour = {
     auto_set_keymaps = true,
@@ -38,12 +37,57 @@ local opts = {
     enabled = false,
     hint_display = "delayed",
   },
-
+  provider = "ollama",
+  providers = {
+    ollama = {
+      endpoint = g.ollama_url,
+      model = "danielsheep/gpt-oss-20b-Unsloth:latest",
+      extra = {
+        num_ctx = 131072,
+      },
+    },
+    airun = {
+      __inherited_from = "openai",
+      endpoint = g.airun_endpoint,
+      api_key_name = "AI_RUN_TOKEN",
+      model = g.airun_model,
+      allow_insecure = true,
+      extra = {
+        temperature = 0.7,
+        max_tokens = 512,
+      },
+    },
+    airun_autocomplete = {
+      __inherited_from = "openai",
+      endpoint = g.airun_endpoint,
+      allow_insecure = true,
+      api_key_name = "AI_RUN_TOKEN",
+      model = g.airun_autocomplete_model,
+    },
+  },
   rag_service = { -- RAG Service configuration
     enabled = false,
     host_mount = os.getenv("HOME"),
     runner = "nix", -- Runner for the RAG service (can use docker or nix)
     docker_extra_args = "",
+    llm = {
+      provider = "ollama",
+      endpoint = g.ollama_url,
+      api_key = "",
+      model = "orieg/gemma3-tools:4b",
+      extra = {
+        num_ctx = 131072,
+      },
+    },
+    embed = {
+      provider = "ollama",
+      endpoint = g.ollama_url,
+      api_key = "",
+      model = "embeddinggemma:latest",
+      extra = {
+        embed_batch_size = 10,
+      },
+    },
   },
 
   mappings = {
@@ -161,100 +205,12 @@ local opts = {
     provider = "fzf_lua",
   },
 }
--- ollama setup
-g.ollama_model = "orieg/gemma3-tools:4b"
-
-local ollama_modify_config = function(cfg)
-  cfg.provider = "ollama"
-  cfg.providers.ollama = {
-    endpoint = g.ollama_url,
-    model = g.ollama_model,
-    extra_request_body = {
-      -- num_ctx = 1024 * 20,
-      temperature = 0.5,
-    },
-  }
-  cfg.rag_service.llm = {
-    provider = "ollama",
-    endpoint = g.ollama_url,
-    api_key = "",
-    model = g.ollama_model,
-    extra = nil,
-  }
-  cfg.rag_service.embed = {
-    provider = "ollama",
-    endpoint = g.ollama_url,
-    api_key = "",
-    model = "nomic-embed-text:latest",
-    extra = {
-      embed_batch_size = 10,
-    },
-  }
-  require("avante").setup(cfg)
-end
-
-vim.api.nvim_create_user_command("AvanteOllama", function(_)
-  ollama_modify_config(opts)
-end, {})
-
--- airun setup
-g.airun_url = vim.env.AI_RUN_URL
-g.airun_endpoint = string.format("%s/v1", g.airun_url)
-g.airun_chat_endpoint = string.format("%s/v1/chat", g.airun_url)
-g.airun_model = vim.env.AI_RUN_MODEL
-g.airun_autocomplete_model = vim.env.AI_RUN_AUOTOCOMPLETE_MODEL
-g.airun_embedded_model = vim.env.AI_RUN_EMBEDDED_MODEL
-
-local airun_modify_config = function(cfg)
-  cfg.provider = "airun"
-  -- cfg.mode = "legacy"
-  cfg.auto_suggestions_provider = "airun_autocomplete"
-  cfg.providers.airun = {
-    __inherited_from = "openai",
-    endpoint = g.airun_endpoint,
-    api_key_name = "AI_RUN_TOKEN",
-    model = g.airun_model,
-    allow_insecure = true,
-    extra = {
-      temperature = 0.7,
-      max_tokens = 512,
-    },
-  }
-  cfg.providers.airun_autocomplete = {
-    __inherited_from = "openai",
-    endpoint = g.airun_endpoint,
-    allow_insecure = true,
-    api_key_name = "AI_RUN_TOKEN",
-    model = g.airun_autocomplete_model,
-  }
-  cfg.rag_service.enabled = false
-  cfg.rag_service.llm = {
-    provider = "airun",
-    endpoint = g.airun_endpoint,
-    allow_insecure = true,
-    api_key = "AI_RUN_TOKEN",
-    model = g.airun_model,
-    extra = {
-      temperature = 0.7,
-      max_tokens = 512,
-    },
-  }
-  cfg.rag_service.embed = {
-    provider = "airun",
-    endpoint = g.airun_endpoint,
-    allow_insecure = true,
-    api_key = "AI_RUN_TOKEN",
-    model = g.ai_run_embedded_model,
-    extra = {
-      embed_batch_size = 16,
-    },
-  }
-
-  require("avante").setup(cfg)
-end
 
 vim.api.nvim_create_user_command("AvanteAIRun", function(_)
-  airun_modify_config(opts)
+  opts.provider = "airun"
+  opts.auto_suggestions_provider = "airun_autocomplete"
+
+  require("avante").setup(opts)
 end, {})
 
 lze.load({
@@ -263,6 +219,6 @@ lze.load({
   on_require = { "avante", "avante_lib", "avante.api" },
   after = function()
     require("avante_lib").load()
-    airun_modify_config(opts)
+    require("avante").setup(opts)
   end,
 })
