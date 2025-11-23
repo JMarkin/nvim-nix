@@ -42,8 +42,11 @@ local opts = {
     ollama = {
       endpoint = g.ollama_url,
       model = "danielsheep/gpt-oss-20b-Unsloth:latest",
-      extra = {
-        num_ctx = 131072,
+      extra_request_body = {
+        options = {
+          num_ctx = 131072,
+          keep_alive = "5m",
+        },
       },
     },
     airun = {
@@ -52,7 +55,7 @@ local opts = {
       api_key_name = "AI_RUN_TOKEN",
       model = g.airun_model,
       allow_insecure = true,
-      extra = {
+      extra_request_body = {
         temperature = 0.7,
         max_tokens = 512,
       },
@@ -75,8 +78,10 @@ local opts = {
       endpoint = g.ollama_url,
       api_key = "",
       model = "orieg/gemma3-tools:4b",
-      extra = {
-        num_ctx = 131072,
+      extra_request_body = {
+        options = {
+          num_ctx = 131072,
+        },
       },
     },
     embed = {
@@ -84,8 +89,10 @@ local opts = {
       endpoint = g.ollama_url,
       api_key = "",
       model = "embeddinggemma:latest",
-      extra = {
-        embed_batch_size = 10,
+      extra_request_body = {
+        options = {
+          embed_batch_size = 10,
+        },
       },
     },
   },
