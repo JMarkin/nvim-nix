@@ -1,10 +1,19 @@
 { pkgs, ... }:
+
+let
+  gopls-proxy = pkgs.writeShellScriptBin "gopls-proxy" ''
+    #!${pkgs.bash}/bin/bash
+    exec ${pkgs.lspmux}/bin/lspmux client --server-path ${pkgs.gopls}/bin/gopls $@
+  '';
+in
+
 {
 
   packages = with pkgs; [
     go
     golangci-lint
     gopls
+    # gopls-proxy
     gotools
     delve
     mockgen
