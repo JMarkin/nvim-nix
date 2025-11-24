@@ -41,13 +41,18 @@ local opts = {
   providers = {
     ollama = {
       endpoint = g.ollama_url,
-      model = "danielsheep/gpt-oss-20b-Unsloth:latest",
+      model = "orieg/gemma3-tools:4b",
       extra_request_body = {
         options = {
           num_ctx = 131072,
-          keep_alive = "5m",
         },
       },
+    },
+    openrouter = {
+      __inherited_from = "openai",
+      endpoint = "https://openrouter.ai/api/v1",
+      api_key_name = "OPENROUTER_API_KEY",
+      model = "openai/gpt-oss-20b:free",
     },
     airun = {
       __inherited_from = "openai",
