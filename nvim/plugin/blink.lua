@@ -48,6 +48,9 @@ lze.load({
   after = function()
     local blink = require("blink-cmp")
     local opts = {
+      term = {
+        enabled = true,
+      },
       cmdline = {
         enabled = true,
         completion = { menu = { auto_show = false } },
@@ -89,6 +92,7 @@ lze.load({
           enabled = true,
         },
         trigger = {
+          prefetch_on_insert = true,
           show_in_snippet = true,
           show_on_keyword = true,
           show_on_trigger_character = true,

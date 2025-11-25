@@ -1,7 +1,8 @@
 {
-  description = "Neovim derivation";
+  description = "Nix-flaked Neovim configuration with extensive plugin management and AI tooling integration";
 
   nixConfig = {
+    # Custom binary cache for faster builds
     extra-substituters = [
       "http://tln.jmarkin.ru:8501"
     ];
@@ -11,28 +12,26 @@
   };
 
   inputs = {
+    # Core Nix infrastructure
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
-    neovim-nightly-overlay.inputs.nixpkgs.follows = "nixpkgs";
-    neovim-nightly-overlay.inputs.flake-parts.follows = "flake-parts";
-
     flake-parts.url = "github:hercules-ci/flake-parts";
+    
     gen-luarc.url = "github:mrcjkb/nix-gen-luarc-json";
     gen-luarc.inputs.nixpkgs.follows = "nixpkgs";
     gen-luarc.inputs.flake-parts.follows = "flake-parts";
 
-
+    # Theme and UI dependencies
     blink-pairs.url = "github:Saghen/blink.pairs?ref=574ce24d44526a76e0b76e921a92c6737a6b3954";
 
-    # kulala-nvim ecosystem
+    # Development and formatting tools
     kulala-nvim.url = "github:mistweaverco/kulala.nvim";
     kulala-nvim.flake = false;
     kulala-fmt.url = "github:mistweaverco/kulala-fmt";
     kulala-fmt.inputs.flake-parts.follows = "flake-parts";
     kulala-fmt.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Add bleeding-edge plugins here.
-    # They can be updated with `nix flake update` (make sure to commit the generated flake.lock)
+    # Bleeding-edge Neovim plugins
+    # These can be updated with `nix flake update` (remember to commit flake.lock)
 
     smart-splits-nvim = {
       url = "github:mrjones2014/smart-splits.nvim";
@@ -113,6 +112,7 @@
       };
     in
     flake-parts.lib.mkFlake { inherit inputs; } {
+        # Supported systems - add more as needed
       systems = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" "x86_64-darwin" ];
       perSystem = { system, pkgs, ... }:
         {
@@ -134,24 +134,29 @@
             nvim-minimal = pkgs.nvim-minimal;
             default = nvim;
 
+            # Development tools and language-specific packages
             codingPackages = pkgs.codingPackages;
           };
           devShells = {
             default = pkgs.mkShell {
               name = "nvim-devShell";
               buildInputs = with pkgs; [
-                # Tools for Lua and Nix development, useful for editing files in this repo
-                lua-language-server
-                nixd
-                stylua
-                luajitPackages.luacheck
-                nvim-dev
+                # Essential development tools for maintaining this flake
+                lua-language-server   # Lua language server for config development
+                nixd               # Nix language server
+                stylua           # Lua code formatter
+                luajitPackages.luacheck  # Lua linter
+                nvim-dev         # Development version of Neovim
               ];
               shellHook = ''
-                # symlink the .luarc.json generated in the overlay
+                # Symlink generated .luarc.json for IDE support
                 ln -fs ${pkgs.nvim-luarc-json} .luarc.json
-                # allow quick iteration of lua configs
+                
+                # Link configuration for development testing
+                # This allows testing changes with: nvim -u ~/.config/nvim-dev/init.lua
                 ln -Tfns $PWD/nvim ~/.config/nvim-dev
+
+                echo "Test with: nvim -u ~/.config/nvim-dev/init.lua"
               '';
             };
           };

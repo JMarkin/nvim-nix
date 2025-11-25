@@ -2,7 +2,7 @@ local Terminal = {}
 
 Terminal.close_augroup = "close_augroup"
 
-Terminal.set_keymaps = function(winnr, bufnr)
+Terminal.set_keymaps = function(bufnr)
   local opts = { buffer = bufnr }
 
   vim.keymap.set("t", "<c-\\><c-\\>", [[<C-\><C-n>]], opts)
@@ -14,10 +14,10 @@ Terminal.set_keymaps = function(winnr, bufnr)
   vim.keymap.set("t", "<C-w>", [[<C-\><C-n><C-w>]], opts)
 
   vim.keymap.set({ "n" }, { "<A-q>", "<leader>q", "<space>q" }, function()
-    vim.api.nvim_win_close(winnr, true)
+    vim.api.nvim_win_close(vim.api.nvim_get_current_win(), true)
   end, opts)
   vim.keymap.set({ "t" }, { "<A-q>" }, function()
-    vim.api.nvim_win_close(winnr, true)
+    vim.api.nvim_win_close(vim.api.nvim_get_current_win(), true)
   end, opts)
 end
 
@@ -58,13 +58,12 @@ vim.api.nvim_create_autocmd({ "TermOpen" }, {
       return
     end
     Terminal.configure()
-    local winnr = vim.api.nvim_get_current_win()
-    Terminal.set_keymaps(winnr, params.buf)
+    Terminal.set_keymaps(params.buf)
 
     vim.api.nvim_create_autocmd({ "TermClose" }, {
       callback = function()
         vim.schedule(function()
-          vim.api.nvim_buf_delete(params.buf, { force = true })
+          pcall(vim.api.nvim_buf_delete, params.buf, { force = true })
         end)
         vim.cmd("let &stl = &stl") -- redrawstatus | redrawtabline
       end,
