@@ -1,15 +1,5 @@
 { inputs, pkgs, mkNvimPlugin, ... }:
 with pkgs.vimPlugins; [
-  # {
-  #   plugin = codecompanion-nvim.overrideAttrs (oa: {
-  #     dependencies = with pkgs.vimPlugins; [
-  #       codecompanion-spinner-nvim
-  #       codecompanion-history-nvim
-  #     ];
-  #   });
-  #   type = "lua";
-  #   optional = false;
-  # }
   {
     plugin = avante-nvim.overrideAttrs (oa: {
       dependencies = with pkgs.vimPlugins; [
@@ -32,5 +22,4 @@ with pkgs.vimPlugins; [
       }
     '';
   }
-  (mkNvimPlugin inputs.gp-nvim "gp.nvim")
 ]

@@ -85,10 +85,10 @@
       flake = false;
     };
 
-    gp-nvim = {
-      url = "github:Robitx/gp.nvim";
-      flake = false;
-    };
+    # gp-nvim = {
+    #   url = "github:Robitx/gp.nvim";
+    #   flake = false;
+    # };
 
     # my
 
@@ -133,6 +133,8 @@
             nvim-small = pkgs.nvim-small;
             nvim-minimal = pkgs.nvim-minimal;
             default = nvim;
+
+            codingPackages = pkgs.codingPackages;
           };
           devShells = {
             default = pkgs.mkShell {

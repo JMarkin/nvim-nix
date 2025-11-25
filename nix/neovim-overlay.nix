@@ -325,6 +325,8 @@ with final.pkgs.lib; let
   ];
 in
 {
+
+  codingPackages = extraPackages;
   # This is the neovim derivation
   # returned by the overlay
   nvim-pkg = mkNeovim {
