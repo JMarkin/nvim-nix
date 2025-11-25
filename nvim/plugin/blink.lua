@@ -49,7 +49,7 @@ lze.load({
     local blink = require("blink-cmp")
     local opts = {
       term = {
-        enabled = true,
+        enabled = false,
       },
       cmdline = {
         enabled = true,
