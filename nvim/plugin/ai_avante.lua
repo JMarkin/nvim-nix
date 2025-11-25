@@ -29,7 +29,7 @@ local opts = {
     use_cwd_as_project_root = true,
     auto_focus_on_diff_view = true,
     auto_approve_tool_permissions = false,
-    auto_add_current_file = false,
+    auto_add_current_file = true,
     confirmation_ui_style = "popup",
   },
 
