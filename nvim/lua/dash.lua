@@ -65,7 +65,7 @@ local function fetch(dashboard)
   }, on_exit)
 end
 
-local height = tonumber(vim.api.nvim_command_output("echo &lines")) or 0
+local height = tonumber(vim.api.nvim_exec2("echo &lines", {})) or 0
 
 local dashboard = require("alpha.themes.dashboard")
 
@@ -75,9 +75,6 @@ dashboard.config.layout[1].val = 1
 dashboard.section.buttons.val = {
   dashboard.button("n", " " .. " New file", ":ene <BAR> startinsert <CR>"),
   dashboard.button("f", " " .. " Find file", ":FzfLua files<cr>"),
-  dashboard.button("a", "󰊳 " .. " AI", function()
-      require("avante.api").zen_mode()
-  end),
   dashboard.button("s", " " .. " Search", ":FzfLua grep_project<cr>"),
   dashboard.button(
     "r",
@@ -86,7 +83,6 @@ dashboard.section.buttons.val = {
   ),
   dashboard.button("g", "󰄉 " .. " Diff", ":DiffviewOpen <cr>"),
   dashboard.button("c", " " .. " Config", ":e .nvim.lua <CR>"),
-  dashboard.button("q", " " .. " Quit", ":qa<CR>"),
 }
 
 -- set highlight
