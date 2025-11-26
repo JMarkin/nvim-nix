@@ -18,6 +18,7 @@ with pkgs.vimPlugins; [
               mux = {
                 backend = "tmux",
                 enabled = true,
+                create =  "split",
               },
               picker = "fzf-lua",
 
