@@ -11,6 +11,12 @@ local api, lsp = vim.api, vim.lsp
 
 -- orig https://github.com/neovim/nvim-lspconfig/blob/master/plugin/lspconfig.lua
 
+vim.lsp.log.set_level(vim.log.levels.OFF)
+
+api.nvim_create_user_command("LspDebug", function()
+  vim.lsp.log.set_level(vim.log.levels.WARN)
+end, { desc = "enable lsp log" })
+
 api.nvim_create_user_command("LspInfo", ":checkhealth vim.lsp", { desc = "Alias to `:checkhealth vim.lsp`" })
 
 api.nvim_create_user_command("LspLog", function()

@@ -77,7 +77,7 @@ local function is_large_file(bufnr, as_bool, path)
       _type = FILE_TYPE.LARGE_SIZE
     else
       local _m = maxline(path)
-      if _m > vim.o.synmaxcol then
+      if _m > 10 * vim.o.synmaxcol then
         vim.notify("LONG LINE " .. _m, vim.log.levels.INFO)
         _type = FILE_TYPE.LONG_LINE
       end

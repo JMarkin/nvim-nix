@@ -225,4 +225,23 @@ function M.shorten_path(path)
   return table.concat(parts, "_")
 end
 
+function M.get_ts(buf)
+  local ok, large_buf = pcall(vim.api.nvim_buf_get_var, buf, "large_buf")
+
+  if not ok then
+    return nil
+  end
+  if large_buf ~= 0 then
+    return nil
+  end
+
+  local parser
+
+  ok, parser = pcall(vim.treesitter.get_parser, buf, vim.treesitter.language.get_lang(vim.bo[buf].ft))
+  if not ok then
+    return nil
+  end
+  return parser
+end
+
 return M

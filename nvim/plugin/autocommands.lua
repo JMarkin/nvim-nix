@@ -214,3 +214,12 @@ if vim.env.TERM == "alacritty" then
     desc = "Set cursor back to beam when leaving Neovim.",
   })
 end
+
+fn.augroup("after ui", {
+  { "UIEnter" },
+  {
+    callback = function(event)
+      vim.cmd.packadd("nohlsearch")
+    end,
+  },
+})

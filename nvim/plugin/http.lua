@@ -5,41 +5,11 @@ vim.g.did_load_http_plugin = true
 
 lze.load({
   "kulala.nvim",
-  keys = {
-    { "<leader>hr", desc = "Send request" },
-    { "<leader>ha", desc = "Send all requests" },
-    { "<leader>hb", desc = "Open scratchpad" },
-  },
   ft = { "http", "rest" },
   after = function()
     require("kulala").setup({
-      -- your configuration comes here
-      global_keymaps = {
-        ["Send request"] = { -- sets global mapping
-          "<leader>hr",
-          function()
-            require("kulala").run()
-          end,
-          mode = { "n", "v" }, -- optional mode, default is n
-          desc = "Send request", -- optional description, otherwise inferred from the key
-        },
-        ["Send all requests"] = {
-          "<leader>ha",
-          function()
-            require("kulala").run_all()
-          end,
-          mode = { "n", "v" },
-          ft = "http", -- sets mapping for *.http files only
-        },
-        ["Replay the last request"] = {
-          "<leader>hl",
-          function()
-            require("kulala").replay()
-          end,
-          ft = { "http", "rest" }, -- sets mapping for specified file types
-        },
-        ["Find request"] = false, -- set to false to disable
-      },
+      global_keymaps_prefix = "<leader>h",
+      kulala_keymaps_prefix = "<leader>k",
     })
   end,
 })

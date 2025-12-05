@@ -48,9 +48,6 @@ lze.load({
   after = function()
     local blink = require("blink-cmp")
     local opts = {
-      term = {
-        enabled = false,
-      },
       cmdline = {
         enabled = true,
         completion = { menu = { auto_show = false } },
@@ -92,7 +89,7 @@ lze.load({
           enabled = true,
         },
         trigger = {
-          prefetch_on_insert = true,
+          prefetch_on_insert = false,
           show_in_snippet = true,
           show_on_keyword = true,
           show_on_trigger_character = true,
@@ -114,7 +111,7 @@ lze.load({
           elseif funcs.in_treesitter_capture("comment") or funcs.in_syntax_group("Comment") then
             return { "diag-codes", "buffer", "snippets", "lsp" }
           end
-          return { "lsp", "buffer", "snippets" }
+          return { "lsp", "buffer", "tags", "snippets" }
         end,
         per_filetype = {
           sql = { "dadbod", "buffer", "snippets" },
@@ -122,6 +119,9 @@ lze.load({
           AvanteInput = { inherit_defaults = true, "avante" },
         },
         providers = {
+          buffer = {
+            max_items = 5,
+          },
           lazydev = {
             name = "LazyDev",
             module = "lazydev.integrations.blink",
@@ -134,6 +134,7 @@ lze.load({
             module = "blink.compat.source",
             score_offset = -2,
             opts = {
+              max_items = 5,
               exact_match = true,
               current_buffer_only = false,
             },
@@ -186,32 +187,6 @@ lze.load({
         },
       },
     }
-
-    local ok, _ = pcall(require, "minuet")
-    if ok then
-      opts.keymap["<c-x><c-z>"] = require("minuet").make_blink_map()
-
-      opts.sources.providers.minuet = {
-        name = "minuet",
-        module = "minuet.blink",
-        async = true,
-        -- Should match minuet.config.request_timeout * 1000,
-        -- since minuet.config.request_timeout is in seconds
-        timeout_ms = 3000,
-        score_offset = 50, -- Gives minuet higher priority among suggestions
-      }
-    end
-
-    ok, _ = pcall(require, "blink-cmp-avante")
-    if ok then
-      opts.sources.providers.avante = {
-        module = "blink-cmp-avante",
-        name = "Avante",
-        opts = {
-          -- options for blink-cmp-avante
-        },
-      }
-    end
 
     blink.setup(opts)
   end,

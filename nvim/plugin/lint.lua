@@ -3,6 +3,8 @@ if vim.g.did_load_lint_plugin then
 end
 vim.g.did_load_lint_plugin = true
 
+local fn = require("funcs")
+
 vim.g.linter_by_ft = {
   sql = { "codespell", "sqlfluff" },
   jinja = { "djlint" },
@@ -137,3 +139,22 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
   desc = "Inline nvim-lint autostart",
 })
+
+fn.augroup("Diagnostic", {
+  "DiagnosticChanged",
+  {
+    callback = function()
+      vim.diagnostic.setloclist({ open = false })
+    end,
+  },
+})
+
+vim.keymap.set("n", "<space>e", function(_)
+  vim.diagnostic.setloclist({ open = false })
+  require("quicker").toggle({ loclist = true })
+end, {})
+
+vim.keymap.set("n", "<space>E", function(_)
+  vim.diagnostic.setqflist({ open = false })
+  require("quicker").toggle()
+end, {})

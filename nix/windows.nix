@@ -8,18 +8,18 @@ with pkgs.vimPlugins; [
     type = "lua";
     optional = true;
     config = /*lua*/''
-      lze.load {
+      lze.load({
         "${tabby-nvim.pname}",
         event = "TabNew",
         after = function()
           require("tabby").setup({
+            preset = "tab_only",
             option = {
               lualine_theme = vim.g.lualine_theme or nil,
-              buf_name = { mode = "tail" },
             },
           })
         end,
-      }
+      })
     '';
   }
   {

@@ -1,6 +1,8 @@
 ### openai completion gemma
-POST {{ollama}}/v1/chat/completions
+
+POST {{ollama}}/v1/chat/completions HTTP/1.1
 Content-Type: application/json
+
 {
   "stream_options": {
     "include_usage": true

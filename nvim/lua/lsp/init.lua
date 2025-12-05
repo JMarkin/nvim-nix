@@ -17,6 +17,8 @@ local get_lsps = function()
     :totable()
 end
 
+M.get_lsps = get_lsps
+
 M.setup = function()
   local lsps = get_lsps()
 

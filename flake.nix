@@ -15,7 +15,7 @@
     # Core Nix infrastructure
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
-    
+
     gen-luarc.url = "github:mrcjkb/nix-gen-luarc-json";
     gen-luarc.inputs.nixpkgs.follows = "nixpkgs";
     gen-luarc.inputs.flake-parts.follows = "flake-parts";
@@ -29,6 +29,10 @@
     kulala-fmt.url = "github:mistweaverco/kulala-fmt";
     kulala-fmt.inputs.flake-parts.follows = "flake-parts";
     kulala-fmt.inputs.nixpkgs.follows = "nixpkgs";
+
+
+    nvim-treesitter-main.url = "github:iofq/nvim-treesitter-main";
+    nvim-treesitter-main.inputs.nixpkgs.follows = "nixpkgs";
 
     # Bleeding-edge Neovim plugins
     # These can be updated with `nix flake update` (remember to commit flake.lock)
@@ -112,13 +116,14 @@
       };
     in
     flake-parts.lib.mkFlake { inherit inputs; } {
-        # Supported systems - add more as needed
+      # Supported systems - add more as needed
       systems = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" "x86_64-darwin" ];
       perSystem = { system, pkgs, ... }:
         {
           _module.args.pkgs = import inputs.nixpkgs {
             inherit system;
             overlays = [
+              inputs.nvim-treesitter-main.overlays.default
               # Import the overlay, so that the final Neovim derivation(s) can be accessed via pkgs.<nvim-pkg>
               neovim-overlay
               # This adds a function can be used to generate a .luarc.json
@@ -128,25 +133,35 @@
             ];
             config = { };
           };
-          packages = rec {
-            nvim = pkgs.nvim-pkg;
-            nvim-small = pkgs.nvim-small;
-            nvim-minimal = pkgs.nvim-minimal;
-            default = nvim;
+          packages =
+            rec {
+              nvim = pkgs.nvim-pkg;
+              nvim-small = pkgs.nvim-small;
+              nvim-minimal = pkgs.nvim-minimal;
+              default = nvim;
+              bench-nvim = pkgs.writeShellScriptBin "bench-nvim" ''
+                ${pkgs.hyperfine}/bin/hyperfine --warmup 2 '${pkgs.nvim-pkg}/bin/nvim -c ":q"'
+              '';
+              bench-nvim-small = pkgs.writeShellScriptBin "bench-nvim-small" ''
+                ${pkgs.hyperfine}/bin/hyperfine --warmup 2 '${pkgs.nvim-small}/bin/nvim -c ":q"'
+              '';
+              bench-nvim-minimal = pkgs.writeShellScriptBin "bench-nvim-minimal" ''
+                ${pkgs.hyperfine}/bin/hyperfine --warmup 2 '${pkgs.nvim-minimal}/bin/nvim -c ":q"'
+              '';
 
-            # Development tools and language-specific packages
-            codingPackages = pkgs.codingPackages;
-          };
+              # Development tools and language-specific packages
+              codingPackages = pkgs.codingPackages;
+            };
           devShells = {
             default = pkgs.mkShell {
               name = "nvim-devShell";
               buildInputs = with pkgs; [
                 # Essential development tools for maintaining this flake
-                lua-language-server   # Lua language server for config development
-                nixd               # Nix language server
-                stylua           # Lua code formatter
-                luajitPackages.luacheck  # Lua linter
-                nvim-dev         # Development version of Neovim
+                lua-language-server # Lua language server for config development
+                nixd # Nix language server
+                stylua # Lua code formatter
+                luajitPackages.luacheck # Lua linter
+                nvim-dev # Development version of Neovim
               ];
               shellHook = ''
                 # Symlink generated .luarc.json for IDE support

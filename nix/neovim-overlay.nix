@@ -44,7 +44,6 @@ with final.pkgs.lib; let
   stayinpalce = (mkNvimPlugin inputs.stay-in-place-nvim "stay-in-place.nvim");
 
   toggle_plugins = val: /*vim*/''
-    let g:did_load_ai_plugin = v:${val}
     let g:did_load_blink_plugin = v:${val}
     let g:did_load_comment_plugin = v:${val}
     let g:did_load_format_plugin = v:${val}
@@ -228,28 +227,18 @@ with final.pkgs.lib; let
       '';
     }
 
-    # {
-    #   plugin = snacks-nvim;
-    #   optional = false;
-    #
-    #   config = /*lua*/''
-    #     END
-    #   '';
-    # }
-
   ]);
 
   all-plugins = smallset-plugins ++ (
     with pkgs.vimPlugins;
     [
       {
-        plugin = alpha-nvim;
-        optional = false;
+        plugin = which-key-nvim;
+        optional = true;
         config = /*vim*/''
           ${toggle_plugins "false"}
 
           lua << END
-          require("dash")
         '';
       }
     ]

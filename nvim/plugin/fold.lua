@@ -7,9 +7,7 @@ local fn = require("funcs")
 
 vim.o.foldenable = true
 vim.o.foldlevel = 99
--- vim.o.foldmethod = "marker"
-vim.o.foldmethod = "expr"
-vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.o.foldmethod = "marker"
 vim.o.foldtext = ""
 vim.opt.foldcolumn = "1"
 
