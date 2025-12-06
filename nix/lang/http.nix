@@ -4,12 +4,12 @@ let
 in
 {
   packages = [
-    kulala.fmt
+    # kulala.fmt
     pkgs.websocat
     pkgs.grpcurl
   ];
 
   plugins = [
-    kulala.nvim
+    # kulala.nvim
   ];
 }

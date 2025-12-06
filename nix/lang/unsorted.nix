@@ -1,12 +1,4 @@
 { inputs, mkNvimPlugin, pkgs, ... }:
-let
-
-  yaml-nvim = (mkNvimPlugin inputs.yaml-nvim "yaml.nvim");
-  gentags = (mkNvimPlugin inputs.gentags-lua "gentags.lua").overrideAttrs
-    {
-      dependencies = [ pkgs.vimPlugins.plenary-nvim ];
-    };
-in
 {
   packages = with pkgs; [
     bash-language-server
@@ -92,8 +84,7 @@ in
       '';
     }
 
-    (mkNvimPlugin inputs.namu-nvim "namu.nvim")
-
+    namu-nvim
     gentags
 
   ];

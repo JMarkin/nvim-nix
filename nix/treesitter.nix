@@ -1,28 +1,5 @@
 { inputs, pkgs, mkNvimPlugin, ... }:
-let
-  system = pkgs.system;
-  kulala = pkgs.callPackage ./kulala.nix { inherit inputs pkgs; };
-  nvim-treesitter = pkgs.vimPlugins.nvim-treesitter.withAllGrammars.overrideAttrs (old: {
-    postInstall = old.postInstall + ''
-      echo $out
-    '';
-  });
-  # nvim-yati = (mkNvimPlugin inputs.nvim-yati "nvim-yati").overrideAttrs
-  #   {
-  #     dependencies = [ nvim-treesitter ];
-  #   };
-  hlargs-nvim = (mkNvimPlugin inputs.hlargs-nvim "hlargs.nvim").overrideAttrs
-    {
-      dependencies = [ nvim-treesitter ];
-    };
-  context = pkgs.vimPlugins.nvim-treesitter-context.overrideAttrs
-    {
-      dependencies = [ nvim-treesitter ];
-    };
-  nvim-treesitter-textobjects = inputs.nvim-treesitter-main.packages.${system}.nvim-treesitter-textobjects.overrideAttrs {
-    dependencies = [ nvim-treesitter ];
-  };
-in
+with pkgs.vimPlugins;
 [
 
   {
@@ -35,12 +12,12 @@ in
   }
 
   {
-    plugin = context;
+    plugin = nvim-treesitter-context;
     type = "lua";
     optional = true;
     config = /*lua*/ ''
       lze.load({
-        "nvim-treesitter-context",
+        "${nvim-treesitter-context.pname}",
         on_require = "treesitter-context",
       })
     '';
@@ -52,7 +29,7 @@ in
     optional = true;
     config = /*lua*/''
       lze.load({
-        "hlargs.nvim",
+        "${hlargs-nvim.pname}",
         on_require = "hlargs",
       })
     '';
@@ -64,7 +41,7 @@ in
     optional = true;
     config = /*lua*/''
       lze.load({
-        "nvim-treesitter-textobjects",
+        "${nvim-treesitter-textobjects.pname}",
         on_plugin = "nvim-treesitter-textobjects",
       })
     '';

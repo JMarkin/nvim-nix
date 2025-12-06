@@ -140,13 +140,13 @@
               nvim-minimal = pkgs.nvim-minimal;
               default = nvim;
               bench-nvim = pkgs.writeShellScriptBin "bench-nvim" ''
-                ${pkgs.hyperfine}/bin/hyperfine --warmup 2 '${pkgs.nvim-pkg}/bin/nvim -c ":q"'
+                ${pkgs.hyperfine}/bin/hyperfine --warmup 4 '${pkgs.nvim-pkg}/bin/nvim -c ":q"'
               '';
               bench-nvim-small = pkgs.writeShellScriptBin "bench-nvim-small" ''
-                ${pkgs.hyperfine}/bin/hyperfine --warmup 2 '${pkgs.nvim-small}/bin/nvim -c ":q"'
+                ${pkgs.hyperfine}/bin/hyperfine --warmup 4 '${pkgs.nvim-small}/bin/nvim -c ":q"'
               '';
               bench-nvim-minimal = pkgs.writeShellScriptBin "bench-nvim-minimal" ''
-                ${pkgs.hyperfine}/bin/hyperfine --warmup 2 '${pkgs.nvim-minimal}/bin/nvim -c ":q"'
+                ${pkgs.hyperfine}/bin/hyperfine --warmup 4 '${pkgs.nvim-minimal}/bin/nvim -c ":q"'
               '';
 
               # Development tools and language-specific packages

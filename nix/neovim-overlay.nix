@@ -41,7 +41,6 @@ with final.pkgs.lib; let
   #   ...
   # }
 
-  stayinpalce = (mkNvimPlugin inputs.stay-in-place-nvim "stay-in-place.nvim");
 
   toggle_plugins = val: /*vim*/''
     let g:did_load_blink_plugin = v:${val}
@@ -207,8 +206,7 @@ with final.pkgs.lib; let
         }
       '';
     }
-
-    (mkNvimPluginNoCheck inputs.smart-splits-nvim "smart-splits.nvim")
+    smart-splits-nvim
     comment-nvim
     {
       plugin = mini-misc;
@@ -312,6 +310,45 @@ with final.pkgs.lib; let
   ];
 in
 {
+
+
+  vimPlugins = prev.vimPlugins.extend (
+    f: p: {
+      nvim-treesitter = p.nvim-treesitter.withAllGrammars;
+      nvim-treesitter-textobjects = p.nvim-treesitter-textobjects.overrideAttrs {
+        dependencies = [ f.nvim-treesitter ];
+      };
+
+      hlargs-nvim = (mkNvimPlugin inputs.hlargs-nvim "hlargs.nvim").overrideAttrs
+        {
+          dependencies = [ f.nvim-treesitter ];
+        };
+
+      nvim-treesitter-context = p.nvim-treesitter-context.overrideAttrs
+        {
+          dependencies = [ f.nvim-treesitter ];
+        };
+
+      cmp-diag-codes = (mkNvimPlugin inputs.cmp-diag-codes "cmp-diag-codes");
+
+      yaml-nvim = (mkNvimPlugin inputs.yaml-nvim "yaml.nvim");
+      gentags = (mkNvimPlugin inputs.gentags-lua "gentags.lua").overrideAttrs
+        {
+          dependencies = [ prev.vimPlugins.plenary-nvim ];
+        };
+
+      namu-nvim = (mkNvimPlugin inputs.namu-nvim "namu.nvim");
+
+      stayinpalce = (mkNvimPlugin inputs.stay-in-place-nvim "stay-in-place.nvim");
+
+      smart-splits-nvim = (mkNvimPluginNoCheck inputs.smart-splits-nvim "smart-splits.nvim");
+
+      local-highlight-nvim = (mkNvimPlugin inputs.local-highlight-nvim "local-highlight.nvim");
+      whatthejump-nvim = (mkNvimPlugin inputs.whatthejump-nvim "whatthejump.nvim");
+
+      nvim-window = (mkNvimPlugin inputs.nvim-window "nvim-window");
+    }
+  );
 
   codingPackages = pkgs.buildEnv {
     name = "coding-packages";

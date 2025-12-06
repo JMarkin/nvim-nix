@@ -1,7 +1,4 @@
 { inputs, pkgs, mkNvimPlugin, ... }:
-let
-  nvim-window = (mkNvimPlugin inputs.nvim-window "nvim-window");
-in
 with pkgs.vimPlugins; [
   {
     plugin = tabby-nvim;

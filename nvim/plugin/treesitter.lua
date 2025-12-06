@@ -5,8 +5,6 @@ vim.g.did_load_treesitter_plugin = true
 
 local funcs = require("funcs")
 
-vim.treesitter.language.register("htmldjango", "jinja")
-
 local colorpalette = {
   { fg = "#EB75D6" },
   { fg = "#D49DA5" },
@@ -18,16 +16,6 @@ local colorpalette = {
   { fg = "#7FEC35" },
   { fg = "#8FB272" },
 }
-
-vim.api.nvim_create_autocmd({ "DiagnosticChanged" }, {
-  callback = function()
-    local tsc = require("treesitter-context")
-    if tsc.enabled() then
-      tsc.disable()
-      tsc.enable()
-    end
-  end,
-})
 
 vim.api.nvim_create_autocmd(vim.g.post_load_events, {
   pattern = { "*" },
@@ -48,6 +36,16 @@ vim.api.nvim_create_autocmd(vim.g.post_load_events, {
           return false
         end
         return funcs.get_ts(buf) ~= nil
+      end,
+    })
+
+    vim.api.nvim_create_autocmd({ "DiagnosticChanged" }, {
+      callback = function()
+        local tsc = require("treesitter-context")
+        if tsc.enabled() then
+          tsc.disable()
+          tsc.enable()
+        end
       end,
     })
 
@@ -77,6 +75,8 @@ vim.api.nvim_create_autocmd(vim.g.post_load_events, {
       end,
       excluded_filetypes = { "jinja", "htmldjango" },
     })
+
+    vim.treesitter.language.register("htmldjango", "jinja")
   end,
 })
 

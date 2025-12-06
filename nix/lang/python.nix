@@ -59,7 +59,7 @@ in
 
       ruff
       # ty
-      zuban
+      # zuban
       uv
     ];
 

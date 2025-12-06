@@ -8,6 +8,7 @@ with pkgs.vimPlugins; [
       lze.load {
         "quicker.nvim",
         ft = "qf",
+        on_require = "quicker",
         after= function()
           require("quicker").setup{
             keys = {

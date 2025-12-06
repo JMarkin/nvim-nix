@@ -8,5 +8,5 @@ with pkgs.vimPlugins; [
   colorful-menu-nvim
   blink-compat
   cmp-nvim-tags
-  (mkNvimPlugin inputs.cmp-diag-codes "cmp-diag-codes")
+  cmp-diag-codes
 ]
