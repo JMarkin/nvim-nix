@@ -1,6 +1,5 @@
 { pkgs, lib, ... }:
 let
-
   zuban = pkgs.rustPlatform.buildRustPackage
     (finalAttrs:
       let
@@ -25,8 +24,8 @@ let
         src = pkgs.fetchFromGitHub {
           owner = "zubanls";
           repo = "zuban";
-          rev = "1adc194449720ce476b2b3f3ebf3975063d67f30";
-          sha256 = "sha256-FPWW4BRCy4O4RyMhFVq4Vd8u+0MjRqNpYJirvIV8RSw=";
+          rev = "3913c8e29886cc01fcbaf0d1920e2e93f1930b75";
+          sha256 = "sha256-atYsomAeN48cNBOSMS70VIM/M5Ujf0hSvzxWXu12zlg=";
         };
 
         buildAndTestSubdir = "crates/zuban";
@@ -58,7 +57,7 @@ in
       python313Packages.ipython
 
       ruff
-      # ty
+      ty
       # zuban
       uv
     ];

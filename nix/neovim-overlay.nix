@@ -248,8 +248,8 @@ with final.pkgs.lib; let
     ++ langs.plugins
     ++ (
     with pkgs.vimPlugins; [
-      eyeliner-nvim
-      demicolon-nvim
+      # eyeliner-nvim
+      # demicolon-nvim
       flash-nvim
 
       vim-easy-align

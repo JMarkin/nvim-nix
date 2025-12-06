@@ -3,9 +3,12 @@
 
 local M = {}
 
-local get_lsps = function()
+local get_lsps = function(arg)
+  if arg == nil then
+    arg = ""
+  end
   return vim
-    .iter(vim.api.nvim_get_runtime_file("lsp/*.lua", true))
+    .iter(vim.api.nvim_get_runtime_file(("lsp/%s*.lua"):format(arg), true))
     :filter(function(path)
       local exists, _ = string.find(path, "nvim/")
       return exists ~= nil

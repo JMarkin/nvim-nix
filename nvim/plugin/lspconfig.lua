@@ -27,7 +27,7 @@ end, {
 
 local complete_client = function(arg)
   return vim
-    .iter(require("lsp").get_lsps())
+    .iter(require("lsp").get_lsps(arg))
     :map(function(client)
       return client.name
     end)
@@ -38,17 +38,7 @@ local complete_client = function(arg)
 end
 
 local complete_config = function(arg)
-  return vim
-    .iter(vim.api.nvim_get_runtime_file(("lsp/%s*.lua"):format(arg), true))
-    :filter(function(path)
-      local exists, _ = string.find(path, "nvim/")
-      return exists ~= nil
-    end)
-    :map(function(path)
-      local file_name = path:match("[^/]*.lua$")
-      return file_name:sub(0, #file_name - 4)
-    end)
-    :totable()
+  return require("lsp").get_lsps(arg)
 end
 
 api.nvim_create_user_command("LspStart", function(info)
@@ -59,7 +49,7 @@ api.nvim_create_user_command("LspStart", function(info)
   -- otherwise they won't be present in the private `vim.lsp.config._configs` table.
   if #servers == 0 then
     local filetype = vim.bo.filetype
-    for name, _ in pairs(require("lsp").get_lsps()) do
+    for name, _ in pairs(require("lsp").get_lsps("")) do
       local filetypes = vim.lsp.config[name].filetypes
       if filetypes and vim.tbl_contains(filetypes, filetype) then
         table.insert(servers, name)
