@@ -1,15 +1,16 @@
 {
   description = "Nix-flaked Neovim configuration with extensive plugin management and AI tooling integration";
 
+
   nixConfig = {
-    # Custom binary cache for faster builds
     extra-substituters = [
-      "http://tln.jmarkin.ru:8501"
+      "https://nixcache.jmarkin.ru"
     ];
     extra-trusted-public-keys = [
-      "tln.jmarkin.ru:EOj0yG2nmqNFVZA1GWYKZ8JU8uZHbAzvYXglA8u+yKw="
+      "nixcache.jmarkin.ru:EM46eZT5GshZQEZHKtFZa3f/KTnxh2bdU/TSuwkAtQ0="
     ];
   };
+
 
   inputs = {
     # Core Nix infrastructure
