@@ -1,15 +1,14 @@
 { inputs, pkgs, lib, mkNvimPlugin, ... }:
-let
-  kulala = pkgs.callPackage ../kulala.nix { inherit pkgs inputs; };
-in
 {
   packages = [
-    # kulala.fmt
+    pkgs.kulala-fmt
     pkgs.websocat
     pkgs.grpcurl
+    pkgs.prettier
+    pkgs.libxml2
   ];
 
   plugins = [
-    # kulala.nvim
+    pkgs.vimPlugins.kulala-nvim
   ];
 }

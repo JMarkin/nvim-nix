@@ -25,15 +25,21 @@ misc.setup_restore_cursor({
   ignore_filetype = { "largefile", "gitcommit", "gitrebase", "svn", "hgcommit" },
 })
 
+misc.setup_termbg_sync()
+
 lze.load({
   {
     "mini.ai",
     event = "ModeChanged",
     after = function()
-      require("mini.ai").setup({
+      local ai = require("mini.ai")
+
+      ai.setup({
         -- Table with textobject id as fields, textobject specification as values.
         -- Also use this to disable builtin textobjects. See |MiniAi.config|.
-        custom_textobjects = nil,
+        custom_textobjects = {
+          f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }),
+        },
 
         -- Module mappings. Use `''` (empty string) to disable one.
         mappings = {

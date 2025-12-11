@@ -308,47 +308,70 @@ with final.pkgs.lib; let
     pkgs.fixjson
     pkgs.codespell
   ];
+
 in
+rec
 {
+  tree-sitter-kulala-http = prev.tree-sitter.buildGrammar
+    {
+      passthru.name = "kulala_http";
+      language = "kulala_http";
+      version = inputs.kulala-nvim.lastModifiedDate;
+      src = inputs.kulala-nvim;
+      location = "lua/tree-sitter";
+    };
+  kulala-fmt = inputs.kulala-fmt.packages.${prev.system}.default;
 
+  vimPlugins = prev.vimPlugins.extend
+    (
+      f: p: {
+      nvim-treesitter = (p.nvim-treesitter.withPlugins (_: [ tree-sitter-kulala-http ] ++ p.nvim-treesitter.allGrammars))
+        .overrideAttrs (old: {
+            postInstall = old.postInstall + ''
+            ln -sfT ${tree-sitter-kulala-http}/queries/kulala_http $out/queries/kulala_http
+          '';
+        });
 
-  vimPlugins = prev.vimPlugins.extend (
-    f: p: {
-      nvim-treesitter = p.nvim-treesitter.withAllGrammars;
-      nvim-treesitter-textobjects = p.nvim-treesitter-textobjects.overrideAttrs {
-        dependencies = [ f.nvim-treesitter ];
-      };
-
-      hlargs-nvim = (mkNvimPlugin inputs.hlargs-nvim "hlargs.nvim").overrideAttrs
-        {
+        kulala-nvim = p.kulala-nvim.overrideAttrs {
+          version = inputs.kulala-nvim.lastModifiedDate;
+          src = inputs.kulala-nvim;
+          dependencies = [ f.nvim-treesitter ];
+        };
+        nvim-treesitter-textobjects = p.nvim-treesitter-textobjects.overrideAttrs {
           dependencies = [ f.nvim-treesitter ];
         };
 
-      nvim-treesitter-context = p.nvim-treesitter-context.overrideAttrs
-        {
-          dependencies = [ f.nvim-treesitter ];
-        };
+        hlargs-nvim = (mkNvimPlugin inputs.hlargs-nvim "hlargs.nvim").overrideAttrs
+          {
+            dependencies = [ f.nvim-treesitter ];
+          };
 
-      cmp-diag-codes = (mkNvimPlugin inputs.cmp-diag-codes "cmp-diag-codes");
+        nvim-treesitter-context = p.nvim-treesitter-context.overrideAttrs
+          {
+            dependencies = [ f.nvim-treesitter ];
+          };
 
-      yaml-nvim = (mkNvimPlugin inputs.yaml-nvim "yaml.nvim");
-      gentags = (mkNvimPlugin inputs.gentags-lua "gentags.lua").overrideAttrs
-        {
-          dependencies = [ prev.vimPlugins.plenary-nvim ];
-        };
+        cmp-diag-codes = (mkNvimPlugin inputs.cmp-diag-codes "cmp-diag-codes");
 
-      namu-nvim = (mkNvimPlugin inputs.namu-nvim "namu.nvim");
+        yaml-nvim = (mkNvimPlugin inputs.yaml-nvim "yaml.nvim");
+        gentags = (mkNvimPlugin inputs.gentags-lua "gentags.lua").overrideAttrs
+          {
+            dependencies = [ prev.vimPlugins.plenary-nvim ];
+          };
 
-      stayinpalce = (mkNvimPlugin inputs.stay-in-place-nvim "stay-in-place.nvim");
+        namu-nvim = (mkNvimPlugin inputs.namu-nvim "namu.nvim");
 
-      smart-splits-nvim = (mkNvimPluginNoCheck inputs.smart-splits-nvim "smart-splits.nvim");
+        stayinpalce = (mkNvimPlugin inputs.stay-in-place-nvim "stay-in-place.nvim");
 
-      local-highlight-nvim = (mkNvimPlugin inputs.local-highlight-nvim "local-highlight.nvim");
-      whatthejump-nvim = (mkNvimPlugin inputs.whatthejump-nvim "whatthejump.nvim");
+        smart-splits-nvim = (mkNvimPluginNoCheck inputs.smart-splits-nvim "smart-splits.nvim");
 
-      nvim-window = (mkNvimPlugin inputs.nvim-window "nvim-window");
-    }
-  );
+        local-highlight-nvim = (mkNvimPlugin inputs.local-highlight-nvim "local-highlight.nvim");
+        whatthejump-nvim = (mkNvimPlugin inputs.whatthejump-nvim "whatthejump.nvim");
+
+        nvim-window = (mkNvimPlugin inputs.nvim-window "nvim-window");
+
+      }
+    );
 
   codingPackages = pkgs.buildEnv {
     name = "coding-packages";
