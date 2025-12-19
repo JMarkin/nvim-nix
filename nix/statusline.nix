@@ -10,6 +10,19 @@ with pkgs.vimPlugins; [
         event = vim.g.post_load_events,
         after = function()
           require("mini.statusline").setup()
+
+          local fn = require("funcs")
+
+          fn.augroup("disable statusline", {
+            "FileType",
+            {
+              pattern = {'AgenticChat', 'AgenticInput', 'AgenticCode', 'AgenticFiles'},
+              callback = function()
+                vim.b.ministatusline_disable = true
+              end,
+
+            }
+        })
         end,
       }
     '';

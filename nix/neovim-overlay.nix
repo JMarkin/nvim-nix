@@ -370,6 +370,8 @@ rec
 
         nvim-window = (mkNvimPlugin inputs.nvim-window "nvim-window");
 
+        agentic-nvim = (mkNvimPlugin inputs.agentic-nvim "agentic-nvim");
+
       }
     );
 

@@ -42,6 +42,7 @@ lze.load({
   "dropbar.nvim",
   event = "BufAdd",
   after = function()
+    local disabled_fts = { "AgenticChat", "AgenticInput", "AgenticCode", "AgenticFiles" }
     require("dropbar").setup({
       bar = {
         enable = function(bufnr, win, _)
@@ -56,6 +57,7 @@ lze.load({
             or vim.fn.win_gettype(win) ~= ""
             or vim.wo[win].winbar ~= ""
             or vim.bo[bufnr].ft == "help"
+            or vim.tbl_contains(disabled_fts, vim.bo[bufnr].ft)
           then
             return false
           end
@@ -117,4 +119,3 @@ lze.load({
     })
   end,
 })
-

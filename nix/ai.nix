@@ -1,8 +1,44 @@
 { inputs, pkgs, mkNvimPlugin, ... }:
 with pkgs.vimPlugins; [
+  # {
+  #   plugin = agentic-nvim;
+  #   type = "lua";
+  #   optional = true;
+  #   config = /*lua*/''
+  #     lze.load {
+  #       "${agentic-nvim.pname}",
+  #       after = function()
+  #         require("agentic").setup({
+  #           provider = "opencode-acp",
+  #         })
+  #       end,
+  #       on_require = {"agentic"},
+  #       keys = {
+  #         {
+  #           "<leader>aa", function() require("agentic").toggle() end,
+  #           mode = { "n", "v", "i" },
+  #           desc = "Toggle Agentic Chat"
+  #         },
+  #         {
+  #           "<leader>ad",
+  #           function() require("agentic").add_selection_or_file_to_context() end,
+  #           mode = { "n", "v" },
+  #           desc = "Add file or selection to Agentic to Context"
+  #         },
+  #         {
+  #           "<leader>an",
+  #           function() require("agentic").new_session() end,
+  #           mode = { "n", "v", "i" },
+  #           desc = "New Agentic Session"
+  #         },
+  #       },
+  #     }
+  #   '';
+  # }
   {
     plugin = sidekick-nvim.overrideAttrs (oa: {
       runtimeDeps = [
+        nvim-treesitter-textobjects
       ];
     });
     type = "lua";
@@ -15,12 +51,23 @@ with pkgs.vimPlugins; [
           require("sidekick").setup {
             nes = { enabled = false },
             cli = {
+              picker = "fzf-lua",
               mux = {
                 backend = "tmux",
                 enabled = true,
-                create =  "split",
+                create =  "window",
               },
-              picker = "fzf-lua",
+
+              tools = {
+                opencode = {
+                  cmd = { "opencode" },
+                  -- HACK: https://github.com/sst/opencode/issues/445
+                  env = { 
+                    OPENCODE_THEME = "system",
+                    OPENROUTER_API_KEY = vim.env.OPENROUTER_API_KEY,
+                  },
+                }
+              },
 
               --- CLI Tool Keymaps (default mode is `t`)
               ---@type table<string, sidekick.cli.Keymap|false>
@@ -36,14 +83,8 @@ with pkgs.vimPlugins; [
         end,
         keys = {
           {
-            "<c-.>",
-            function() require("sidekick.cli").toggle({name="crush"}) end,
-            desc = "Sidekick Toggle",
-            mode = { "n", "t", "i", "x" },
-          },
-          {
             "<leader>aa",
-            function() require("sidekick.cli").toggle({name="crush"}) end,
+            function() require("sidekick.cli").toggle({name="opencode"}) end,
             desc = "Sidekick Toggle CLI",
           },
           {

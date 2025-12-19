@@ -1,17 +1,6 @@
 {
   description = "Nix-flaked Neovim configuration with extensive plugin management and AI tooling integration";
 
-
-  nixConfig = {
-    extra-substituters = [
-      "https://nixcache.jmarkin.ru"
-    ];
-    extra-trusted-public-keys = [
-      "nixcache.jmarkin.ru:EM46eZT5GshZQEZHKtFZa3f/KTnxh2bdU/TSuwkAtQ0="
-    ];
-  };
-
-
   inputs = {
     # Core Nix infrastructure
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -69,11 +58,6 @@
       flake = false;
     };
 
-    # beacon-nvim = {
-    #   url = "github:DanilaMihailov/beacon.nvim";
-    #   flake = false;
-    # };
-
     stay-in-place-nvim = {
       url = "github:gbprod/stay-in-place.nvim";
       flake = false;
@@ -89,10 +73,10 @@
       flake = false;
     };
 
-    # gp-nvim = {
-    #   url = "github:Robitx/gp.nvim";
-    #   flake = false;
-    # };
+    agentic-nvim = {
+      url = "github:carlos-algms/agentic.nvim";
+      flake = false;
+    };
 
     # my
 
