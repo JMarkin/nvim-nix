@@ -73,8 +73,13 @@
       flake = false;
     };
 
-    agentic-nvim = {
-      url = "github:carlos-algms/agentic.nvim";
+    django-nvim = {
+      url = "github:mizisu/django.nvim";
+      flake = false;
+    };
+
+    opencode-nvim = {
+      url = "github:sudo-tee/opencode.nvim";
       flake = false;
     };
 

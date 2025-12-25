@@ -325,9 +325,8 @@ rec
   vimPlugins = prev.vimPlugins.extend
     (
       f: p: {
-      nvim-treesitter = (p.nvim-treesitter.withPlugins (_: [ tree-sitter-kulala-http ] ++ p.nvim-treesitter.allGrammars))
-        .overrideAttrs (old: {
-            postInstall = old.postInstall + ''
+        nvim-treesitter = (p.nvim-treesitter.withPlugins (_: [ tree-sitter-kulala-http ] ++ p.nvim-treesitter.allGrammars)).overrideAttrs (old: {
+          postInstall = old.postInstall + ''
             ln -sfT ${tree-sitter-kulala-http}/queries/kulala_http $out/queries/kulala_http
           '';
         });
@@ -370,7 +369,15 @@ rec
 
         nvim-window = (mkNvimPlugin inputs.nvim-window "nvim-window");
 
-        agentic-nvim = (mkNvimPlugin inputs.agentic-nvim "agentic-nvim");
+        django-nvim = (mkNvimPlugin inputs.django-nvim "django-nvim");
+        opencode-nvim = (mkNvimPlugin inputs.opencode-nvim "opencode-nvim").overrideAttrs {
+          dependencies = [
+            prev.vimPlugins.render-markdown-nvim
+            prev.vimPlugins.blink-cmp
+            prev.vimPlugins.fzf-lua
+            prev.vimPlugins.plenary-nvim
+          ];
+        };
 
       }
     );

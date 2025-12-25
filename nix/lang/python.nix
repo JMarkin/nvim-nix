@@ -62,6 +62,8 @@ in
       uv
     ];
 
-  plugins = [ ];
+  plugins = with pkgs.vimPlugins; [
+    django-nvim
+  ];
 
 }

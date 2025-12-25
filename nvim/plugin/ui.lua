@@ -99,7 +99,7 @@ lze.load({
 
 lze.load({
   "render-markdown.nvim",
-  ft = { "markdown", "codecompanion", "Avante" },
+  ft = { "markdown", "codecompanion", "Avante", "copilot-chat", "opencode_output" },
   after = function()
     require("render-markdown").setup({
       render_modes = true,

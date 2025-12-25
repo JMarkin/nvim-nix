@@ -188,6 +188,11 @@ lze.load({
       },
     }
 
+    blink.add_source_provider("opencode_mentions", {
+      module = "opencode.ui.completion.engines.blink_cmp",
+      async = true,
+    })
+
     blink.setup(opts)
   end,
 })

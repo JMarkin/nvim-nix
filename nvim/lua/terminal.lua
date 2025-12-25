@@ -45,8 +45,11 @@ local au_id = vim.api.nvim_create_augroup("terminal_nvim", { clear = true })
 
 vim.api.nvim_create_autocmd({ "WinEnter", "BufWinEnter", "TermOpen" }, {
   group = au_id,
-  callback = function(args)
-    if vim.startswith(vim.api.nvim_buf_get_name(args.buf), "term://") then
+  callback = function(params)
+    if vim.b[params.buf].ft == "sidekick_terminal" then
+      return
+    end
+    if vim.startswith(vim.api.nvim_buf_get_name(params.buf), "term://") then
       vim.cmd("startinsert!")
     end
   end,
@@ -54,6 +57,9 @@ vim.api.nvim_create_autocmd({ "WinEnter", "BufWinEnter", "TermOpen" }, {
 
 vim.api.nvim_create_autocmd({ "TermOpen" }, {
   callback = function(params)
+    if vim.b[params.buf].ft == "sidekick_terminal" then
+      return
+    end
     if vim.b[params.buf]["term_ignore"] == true then
       return
     end
