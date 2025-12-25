@@ -1,21 +1,5 @@
 {
   "nodes": {
-    "agentic-nvim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1766584795,
-        "narHash": "sha256-hRkamjFk9zBdA7FnEVllV5L+BPr59I4f4bl1yuX9Lxc=",
-        "owner": "carlos-algms",
-        "repo": "agentic.nvim",
-        "rev": "4ccd51e744d8b340e14dde6abe1673722038139e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "carlos-algms",
-        "repo": "agentic.nvim",
-        "type": "github"
-      }
-    },
     "blink-pairs": {
       "inputs": {
         "fenix": "fenix",
@@ -534,7 +518,6 @@
     },
     "root": {
       "inputs": {
-        "agentic-nvim": "agentic-nvim",
         "blink-pairs": "blink-pairs",
         "cmp-diag-codes": "cmp-diag-codes",
         "django-nvim": "django-nvim",
