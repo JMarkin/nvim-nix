@@ -40,11 +40,11 @@
     "django-nvim": {
       "flake": false,
       "locked": {
-        "lastModified": 1766409120,
-        "narHash": "sha256-LbBX6bIiQnR0oL0ogTYPL2GF589gb2kv72wzllt/KY0=",
+        "lastModified": 1766746866,
+        "narHash": "sha256-BoaApc8Nfnx0EuY65msPx90zNjfPhKqg7eJz6vKoiQA=",
         "owner": "mizisu",
         "repo": "django.nvim",
-        "rev": "94680405f6b5d673893b7110b732187d935e5032",
+        "rev": "8e4a251a530456d41a2a3c764b37cabdf249aa12",
         "type": "github"
       },
       "original": {
