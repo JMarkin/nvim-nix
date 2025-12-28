@@ -42,7 +42,10 @@ with pkgs.vimPlugins;
     config = /*lua*/''
       lze.load({
         "${nvim-treesitter-textobjects.pname}",
-        on_plugin = "nvim-treesitter-textobjects",
+        on_require = {"nvim-treesitter-textobjects", 
+          "nvim-treesitter-textobjects.repeatable_move", 
+          "nvim-treesitter-textobjects.move",
+          "nvim-treesitter-textobjects.swap"},
       })
     '';
   }

@@ -39,6 +39,9 @@ lze.load({
         -- Also use this to disable builtin textobjects. See |MiniAi.config|.
         custom_textobjects = {
           f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }),
+          C = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }),
+          l = ai.gen_spec.treesitter({ a = "@loop.outer", i = "@loop.inner" }),
+          i = ai.gen_spec.treesitter({ a = "@conditional.outer", i = "@conditional.inner" }),
         },
 
         -- Module mappings. Use `''` (empty string) to disable one.
@@ -48,10 +51,10 @@ lze.load({
           inside = "i",
 
           -- Next/last variants
-          around_next = "an",
-          inside_next = "in",
-          around_last = "al",
-          inside_last = "il",
+          around_next = "",
+          inside_next = "",
+          around_last = "",
+          inside_last = "",
 
           -- Move cursor to corresponding edge of `a` textobject
           goto_left = "g[",

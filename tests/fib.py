@@ -18,6 +18,8 @@ def print_n_fibonacchi_numbers(n, message_on_complete: str):
         t = ti
     print(message_on_complete)
 
+if 1 > 2:
+    print(123)
 
 t = time()
 for index, fibonacci_number in zip(range(100), fib()):

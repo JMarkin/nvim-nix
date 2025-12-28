@@ -331,11 +331,6 @@ rec
           '';
         });
 
-        kulala-nvim = p.kulala-nvim.overrideAttrs {
-          version = inputs.kulala-nvim.lastModifiedDate;
-          src = inputs.kulala-nvim;
-          dependencies = [ f.nvim-treesitter ];
-        };
         nvim-treesitter-textobjects = p.nvim-treesitter-textobjects.overrideAttrs {
           dependencies = [ f.nvim-treesitter ];
         };
@@ -349,6 +344,13 @@ rec
           {
             dependencies = [ f.nvim-treesitter ];
           };
+
+        kulala-nvim = p.kulala-nvim.overrideAttrs {
+          version = inputs.kulala-nvim.lastModifiedDate;
+          src = inputs.kulala-nvim;
+          dependencies = [ f.nvim-treesitter ];
+        };
+
 
         cmp-diag-codes = (mkNvimPlugin inputs.cmp-diag-codes "cmp-diag-codes");
 
