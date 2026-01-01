@@ -6,7 +6,7 @@ vim.g.did_load_lint_plugin = true
 local fn = require("funcs")
 
 vim.g.linter_by_ft = {
-  sql = { "codespell", "sqlfluff" },
+  sql = { "codespell" },
   jinja = { "djlint" },
   htmldjango = { "djlint" },
   python = { "codespell" },

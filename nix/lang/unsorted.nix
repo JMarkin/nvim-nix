@@ -24,11 +24,6 @@
           on_require = "lint",
           after = function()
             require("lint").linters_by_ft = vim.g.linter_by_ft
-            require("lint").linters.sqlfluff.args = {
-              "lint",
-              "--format=json",
-              "--dialect=postgres",
-            }
           end
         }
       '';
@@ -47,12 +42,6 @@
               formatters_by_ft = vim.g.formatters_by_ft,
               default_format_opts = {
                 lsp_format = "fallback",
-              },
-              -- Customize formatters
-              formatters = {
-                sqlfluff = {
-                  prepend_args = { "--dialect", "postgres" },
-                },
               },
             })
           end

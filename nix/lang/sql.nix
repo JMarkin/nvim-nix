@@ -2,7 +2,7 @@
 {
 
   packages = with pkgs; [
-    sqlfluff
+    sqruff
     postgresql
   ];
 
