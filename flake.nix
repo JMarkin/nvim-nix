@@ -10,8 +10,9 @@
     gen-luarc.inputs.nixpkgs.follows = "nixpkgs";
     gen-luarc.inputs.flake-parts.follows = "flake-parts";
 
-    # Theme and UI dependencies
-    blink-pairs.url = "github:Saghen/blink.pairs?ref=574ce24d44526a76e0b76e921a92c6737a6b3954";
+    # Bleeding-edge Neovim plugins
+    # These can be updated with `nix flake update` (remember to commit flake.lock)
+    blink-pairs.url = "github:Saghen/blink.pairs?ref=v0.4.1";
 
     # Development and formatting tools
     kulala-nvim.url = "github:mistweaverco/kulala.nvim";
@@ -21,11 +22,12 @@
     kulala-fmt.inputs.nixpkgs.follows = "nixpkgs";
 
 
+    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+    neovim-nightly-overlay.inputs.nixpkgs.follows = "nixpkgs";
+    neovim-nightly-overlay.inputs.flake-parts.follows = "flake-parts";
     nvim-treesitter-main.url = "github:iofq/nvim-treesitter-main";
     nvim-treesitter-main.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Bleeding-edge Neovim plugins
-    # These can be updated with `nix flake update` (remember to commit flake.lock)
 
     smart-splits-nvim = {
       url = "github:mrjones2014/smart-splits.nvim";

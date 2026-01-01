@@ -44,7 +44,7 @@ with lib;
 , # Add a "vim" binary to the build output as an alias?
   vimAlias ? appName == null || appName == "nvim"
 , wrapRc ? true
-,
+, pkg ? neovim-unwrapped
 }:
 let
   # This is the structure of a plugin definition.
@@ -213,7 +213,7 @@ let
       ''--suffix LUA_PATH ";" "${concatMapStringsSep ";" luaPackages.getLuaPath resolvedExtraLuaPackages}"'';
 
   # wrapNeovimUnstable is the nixpkgs utility function for building a Neovim derivation.
-  neovim-wrapped = wrapNeovimUnstable neovim-unwrapped (neovimConfig
+  neovim-wrapped = wrapNeovimUnstable pkg (neovimConfig
     // {
     luaRcContent = initLua;
     wrapperArgs =

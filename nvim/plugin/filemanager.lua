@@ -22,21 +22,13 @@ function _G.get_oil_winbar()
   end
 end
 
-vim.api.nvim_create_autocmd("User", {
-  pattern = "OilActionsPost",
-  callback = function(event)
-    if event.data.actions.type == "move" then
-      Snacks.rename.on_rename_file(event.data.actions.src_url, event.data.actions.dest_url)
-    end
-  end,
-})
-
 oil.setup({
   win_options = {
     winbar = "%!v:lua.get_oil_winbar()",
   },
   watch_for_changes = true,
   use_default_keymaps = false,
+  skip_confirm_for_simple_edits = true,
   keymaps = {
     ["g?"] = { "actions.show_help", mode = "n" },
     ["q"] = {

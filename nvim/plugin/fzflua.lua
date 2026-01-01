@@ -349,10 +349,9 @@ lze.load({
 
     require("fzf-lua").register_ui_select()
   end,
-  init = function()
-    vim.ui.select = function(...)
-      lze.trigger_load("fzf-lua")
-      return vim.ui.select(...)
-    end
-  end,
 })
+
+vim.ui.select = function(...)
+  lze.trigger_load("fzf-lua")
+  return vim.ui.select(...)
+end

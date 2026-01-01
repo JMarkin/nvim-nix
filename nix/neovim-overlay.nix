@@ -21,6 +21,8 @@ with final.pkgs.lib; let
   # otherwise it could have an incompatible signature when applying this overlay.
   pkgs-locked = inputs.nixpkgs.legacyPackages.${pkgs.system};
 
+  neovim-nightly = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
+
   # This is the helper function that builds the Neovim derivation.
   mkNeovim = pkgs.callPackage ./mkNeovim.nix {
     inherit (pkgs-locked) wrapNeovimUnstable neovimUtils;
@@ -393,11 +395,13 @@ rec
   # returned by the overlay
   nvim-pkg = mkNeovim {
     plugins = all-plugins;
+    pkg = neovim-nightly;
     inherit extraPackages;
   };
 
   nvim-small = mkNeovim {
     plugins = smallset-plugins;
+    pkg = final.pkgs.neovim-unwrapped;
     ignoreConfigRegexes = [
       "^lsp/.*.lua"
     ];
@@ -405,6 +409,7 @@ rec
 
   nvim-minimal = mkNeovim {
     plugins = minimal-plugins;
+    pkg = final.pkgs.neovim-unwrapped;
     ignoreConfigRegexes = [
       "^lsp/.*.lua"
     ];
@@ -415,6 +420,7 @@ rec
   # the Nix store, it is loaded from $XDG_CONFIG_HOME/nvim-dev
   nvim-dev = mkNeovim {
     plugins = all-plugins;
+    pkg = neovim-nightly;
     inherit extraPackages;
     appName = "nvim-dev";
     wrapRc = true;
@@ -422,6 +428,7 @@ rec
 
   nvim-dev-small = mkNeovim {
     plugins = smallset-plugins;
+    pkg = final.pkgs.neovim-unwrapped;
     appName = "nvim-dev-small";
     wrapRc = true;
     ignoreConfigRegexes = [
@@ -431,6 +438,7 @@ rec
 
   nvim-dev-minimal = mkNeovim {
     plugins = minimal-plugins;
+    pkg = final.pkgs.neovim-unwrapped;
     appName = "nvim-dev-minimal";
     wrapRc = true;
     ignoreConfigRegexes = [

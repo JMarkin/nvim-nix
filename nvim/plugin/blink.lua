@@ -45,6 +45,7 @@ lze.load({
 lze.load({
   "blink.cmp",
   event = { "InsertEnter", "CmdlineEnter" },
+  on_require = {"blink.cmp", "blink-cmp"},
   after = function()
     local blink = require("blink-cmp")
     local opts = {
@@ -187,11 +188,6 @@ lze.load({
         },
       },
     }
-
-    blink.add_source_provider("opencode_mentions", {
-      module = "opencode.ui.completion.engines.blink_cmp",
-      async = true,
-    })
 
     blink.setup(opts)
   end,
