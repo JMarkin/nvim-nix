@@ -172,22 +172,22 @@ with final.pkgs.lib; let
         }
       '';
     }
-    {
-      plugin = nvim-notify;
-      optional = false;
-      type = "lua";
-      config = /*lua*/ ''
-        local notif = require("notify")
-        notif.setup({
-            timeout = 1000,
-            stages = "static",
-            level = vim.log.levels.INFO,
-            top_down = true,
-        })
-        vim.notify = notif
-
-      '';
-    }
+    # {
+    #   plugin = nvim-notify;
+    #   optional = false;
+    #   type = "lua";
+    #   config = /*lua*/ ''
+    #     local notif = require("notify")
+    #     notif.setup({
+    #         timeout = 1000,
+    #         stages = "static",
+    #         level = vim.log.levels.INFO,
+    #         top_down = true,
+    #     })
+    #     vim.notify = notif
+    #
+    #   '';
+    # }
   ])
     ++ (callPackage ./treesitter.nix)
     ++ (callPackage ./statusline.nix)
