@@ -11,6 +11,9 @@
     cargo-nextest
   ];
 
+  luasetup = /*lua*/''
+    vim.lsp.enable("rust_analyzer", vim.g.lsp_autostart)
+  '';
 
   plugins = with pkgs.vimPlugins;[
     {

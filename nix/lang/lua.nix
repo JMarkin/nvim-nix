@@ -6,6 +6,10 @@
     stylua
   ];
 
+  luasetup = /*lua*/''
+    vim.lsp.enable("lua_ls", vim.g.lsp_autostart)
+  '';
+
   plugins = with pkgs.vimPlugins;[
     {
       plugin = lazydev-nvim;

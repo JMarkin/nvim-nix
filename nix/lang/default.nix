@@ -1,4 +1,4 @@
-{ pkgs, mkNvimPlugin, inputs, ... }:
+{ pkgs, mkNvimPlugin, lib, inputs, ... }:
 let
   callPackage = (file: pkgs.callPackage file {
     inherit inputs pkgs mkNvimPlugin;
@@ -14,6 +14,8 @@ let
   js = callPackage ./js.nix;
 
   langs = [ unsorted go lua rust nix sql python http js ];
+
+  setup = lib.strings.concatMapStrings (x: x.luasetup) langs;
 in
 {
   packages = [ pkgs.lspmux ] ++ builtins.concatMap (x: x.packages) langs;
@@ -21,13 +23,9 @@ in
     {
       plugin = nvim-lspconfig;
       type = "lua";
-      optional = true;
+      optional = false;
       config = /*lua*/''
-        vim.g.lspconfig = 1
-        lze.load {
-          "${nvim-lspconfig.pname}",
-          on_require = {"lspconfig", "lspconfig.utils"},
-        }
+        ${setup}
       '';
     }
     {

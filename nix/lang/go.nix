@@ -27,4 +27,9 @@ in
   ];
 
   plugins = [ ];
+
+  luasetup = /*lua*/''
+    vim.lsp.enable("gopls", vim.g.lsp_autostart)
+    vim.lsp.enable("golangci_lint_ls", vim.g.lsp_autostart)
+  '';
 }

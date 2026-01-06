@@ -11,4 +11,5 @@
   plugins = [
     pkgs.vimPlugins.kulala-nvim
   ];
+  luasetup = "";
 }

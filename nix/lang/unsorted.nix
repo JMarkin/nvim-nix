@@ -77,5 +77,11 @@
     gentags
 
   ];
+
+  luasetup = /*lua*/''
+    vim.lsp.enable("bashls", vim.g.lsp_autostart)
+    vim.lsp.enable("yamlls", vim.g.lsp_autostart)
+    vim.lsp.enable("jsonls", vim.g.lsp_autostart)
+  '';
 }
 

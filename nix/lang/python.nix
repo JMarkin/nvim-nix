@@ -62,6 +62,11 @@ in
       uv
     ];
 
+  luasetup = /*lua*/''
+    vim.lsp.enable("ty", vim.g.lsp_autostart)
+    vim.lsp.enable("ruff", vim.g.lsp_autostart)
+  '';
+
   plugins = with pkgs.vimPlugins; [
     django-nvim
   ];

@@ -13,6 +13,10 @@
     typescript
   ];
 
+  luasetup = /*lua*/''
+    vim.lsp.enable("biome", vim.g.lsp_autostart)
+    vim.lsp.enable("vtsls", vim.g.lsp_autostart)
+  '';
   plugins = with pkgs.vimPlugins; [
     {
       plugin = nvim-vtsls;
@@ -33,4 +37,5 @@
       '';
     }
   ];
+
 }

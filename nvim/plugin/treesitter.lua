@@ -161,8 +161,8 @@ vim.api.nvim_create_autocmd(vim.g.post_load_events, {
     end, { desc = "Previous conditional" })
 
     -- Repeat movement with ; and ,
-    vim.keymap.set({ "n", "x", "o" }, ".", ts_repeat.repeat_last_move_next)
-    vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat.repeat_last_move_previous)
+    -- vim.keymap.set({ "n", "x", "o" }, ".", ts_repeat.repeat_last_move_next)
+    -- vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat.repeat_last_move_previous)
 
     -- Make f, F, t, T repeatable
     vim.keymap.set({ "n", "x", "o" }, "f", ts_repeat.builtin_f_expr, { expr = true })

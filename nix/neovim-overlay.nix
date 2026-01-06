@@ -117,23 +117,23 @@ with final.pkgs.lib; let
         })
       '';
     }
-    {
-      plugin = stayinpalce;
-      optional = true;
-      type = "lua";
-      config = /*lua*/''
-        lze.load({
-          "${stayinpalce.pname}",
-          after=function()
-            require("stay-in-place").setup{
-              set_keymaps = true,
-              preserve_visual_selection = true,
-            }
-          end,
-          event = "ModeChanged",
-        })
-      '';
-    }
+    # {
+    #   plugin = stayinpalce;
+    #   optional = true;
+    #   type = "lua";
+    #   config = /*lua*/''
+    #     lze.load({
+    #       "${stayinpalce.pname}",
+    #       after=function()
+    #         require("stay-in-place").setup{
+    #           set_keymaps = true,
+    #           preserve_visual_selection = true,
+    #         }
+    #       end,
+    #       event = "ModeChanged",
+    #     })
+    #   '';
+    # }
 
     {
       plugin = indent-o-matic;

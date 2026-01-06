@@ -6,6 +6,10 @@
     postgresql
   ];
 
+  luasetup = /*lua*/''
+    vim.lsp.enable("sqruff", vim.g.lsp_autostart)
+  '';
+
   plugins = with pkgs.vimPlugins;[
     {
       plugin = vim-dadbod;

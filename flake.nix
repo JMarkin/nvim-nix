@@ -60,10 +60,10 @@
       flake = false;
     };
 
-    stay-in-place-nvim = {
-      url = "github:gbprod/stay-in-place.nvim";
-      flake = false;
-    };
+    # stay-in-place-nvim = {
+    #   url = "github:gbprod/stay-in-place.nvim";
+    #   flake = false;
+    # };
 
     namu-nvim = {
       url = "github:bassamsdata/namu.nvim";
