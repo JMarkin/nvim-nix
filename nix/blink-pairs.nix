@@ -14,7 +14,7 @@ in
     config = /*lua*/''
       lze.load{
       "${blink-pairs.pname}",
-      event=vim.g.post_load_events,
+      event = vim.g.post_load_events,
       after = function() 
           require("blink.pairs").setup{
             mappings = {

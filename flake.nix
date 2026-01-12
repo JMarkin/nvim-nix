@@ -162,12 +162,19 @@
                 # Link configuration for development testing
                 # This allows testing changes with: nvim -u ~/.config/nvim-dev/init.lua
                 ln -Tfns $PWD/nvim ~/.config/nvim-dev
-
-                echo "Test with: nvim -u ~/.config/nvim-dev/init.lua"
               '';
             };
           };
         };
-      flake.overlays.default = neovim-overlay;
+      flake = {
+        overlays.default = neovim-overlay;
+        homeManagerModules.default = ((import ./nix/integration.nix) "full");
+        homeManagerModules.minimal = ((import ./nix/integration.nix) "minimal");
+        homeManagerModules.small = ((import ./nix/integration.nix) "small");
+
+        nixosManagerModules.default = ((import ./nix/integration.nix) "full");
+        nixosManagerModules.minimal = ((import ./nix/integration.nix) "minimal");
+        nixosManagerModules.small = ((import ./nix/integration.nix) "small");
+      };
     };
 }

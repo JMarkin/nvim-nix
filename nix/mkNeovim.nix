@@ -230,12 +230,15 @@ let
   isCustomAppName = appName != null && appName != "nvim";
 in
 neovim-wrapped.overrideAttrs (oa: {
-  buildPhase =
+    buildPhase =
     oa.buildPhase
     # If a custom NVIM_APPNAME has been set, rename the `nvim` binary
     + lib.optionalString isCustomAppName ''
       mv $out/bin/nvim $out/bin/${lib.escapeShellArg appName}
     '';
+
+  meta.license = "";
+  meta.description = "";
   meta.mainProgram =
     if isCustomAppName
     then appName

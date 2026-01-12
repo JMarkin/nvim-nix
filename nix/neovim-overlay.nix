@@ -62,7 +62,11 @@ with final.pkgs.lib; let
     let g:did_load_ui_plugins = v:${val}
   '';
 
-
+  minimal-packages = with pkgs; [
+    fixjson
+    fswatch
+    fzf
+  ];
   minimal-plugins = with pkgs.vimPlugins; [
     # кастыль для neovim/nix там init.vim чтобы всё обернуть в lua << END
     # последний плагин в конце должен содержать END
@@ -150,6 +154,10 @@ with final.pkgs.lib; let
     }
   ];
 
+  smallset-packages = with pkgs; [
+    jaq
+    codespell
+  ] ++ minimal-packages;
   smallset-plugins = minimal-plugins
     ++ (with pkgs.vimPlugins; [
     {
@@ -172,22 +180,6 @@ with final.pkgs.lib; let
         }
       '';
     }
-    # {
-    #   plugin = nvim-notify;
-    #   optional = false;
-    #   type = "lua";
-    #   config = /*lua*/ ''
-    #     local notif = require("notify")
-    #     notif.setup({
-    #         timeout = 1000,
-    #         stages = "static",
-    #         level = vim.log.levels.INFO,
-    #         top_down = true,
-    #     })
-    #     vim.notify = notif
-    #
-    #   '';
-    # }
   ])
     ++ (callPackage ./treesitter.nix)
     ++ (callPackage ./statusline.nix)
@@ -303,13 +295,7 @@ with final.pkgs.lib; let
     ]
   );
 
-  extraPackages = langs.packages ++ [
-    pkgs.jaq
-    pkgs.fswatch
-
-    pkgs.fixjson
-    pkgs.codespell
-  ];
+  all-packages = langs.packages ++ smallset-packages;
 
 in
 rec
@@ -386,17 +372,31 @@ rec
       }
     );
 
-  codingPackages = pkgs.buildEnv {
+  coding-packages = pkgs.buildEnv {
     name = "coding-packages";
-    paths = extraPackages;
+    paths = all-packages;
     pathsToLink = [ "/bin" "/share" ];
   };
+  minimal-coding-packages = pkgs.buildEnv {
+    name = "coding-packages";
+    paths = minimal-packages;
+    pathsToLink = [ "/bin" "/share" ];
+  };
+  smallset-coding-packages = pkgs.buildEnv {
+    name = "coding-packages";
+    paths = smallset-packages;
+    pathsToLink = [ "/bin" "/share" ];
+  };
+
   # This is the neovim derivation
   # returned by the overlay
   nvim-pkg = mkNeovim {
     plugins = all-plugins;
     pkg = neovim-nightly;
-    inherit extraPackages;
+    extraPackages = all-packages;
+    ignoreConfigRegexes = [
+      "^snippets/.*"
+    ];
   };
 
   nvim-small = mkNeovim {
@@ -405,6 +405,7 @@ rec
     ignoreConfigRegexes = [
       "^lsp/.*.lua"
     ];
+    extraPackages = smallset-packages;
   };
 
   nvim-minimal = mkNeovim {
@@ -413,6 +414,7 @@ rec
     ignoreConfigRegexes = [
       "^lsp/.*.lua"
     ];
+    extraPackages = minimal-packages;
   };
 
   # This is meant to be used within a devshell.
@@ -421,9 +423,12 @@ rec
   nvim-dev = mkNeovim {
     plugins = all-plugins;
     pkg = neovim-nightly;
-    inherit extraPackages;
     appName = "nvim-dev";
     wrapRc = true;
+    extraPackages = all-packages;
+    ignoreConfigRegexes = [
+      "^snippets/.*"
+    ];
   };
 
   nvim-dev-small = mkNeovim {
@@ -434,6 +439,7 @@ rec
     ignoreConfigRegexes = [
       "^lsp/.*.lua"
     ];
+    extraPackages = smallset-packages;
   };
 
   nvim-dev-minimal = mkNeovim {
@@ -444,6 +450,7 @@ rec
     ignoreConfigRegexes = [
       "^lsp/.*.lua"
     ];
+    extraPackages = minimal-packages;
   };
 
   # This can be symlinked in the devShell's shellHook
