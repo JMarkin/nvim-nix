@@ -2,8 +2,7 @@
   description = "Nix-flaked Neovim configuration with extensive plugin management and AI tooling integration";
 
   inputs = {
-    # Core Nix infrastructure
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
 
     gen-luarc.url = "github:mrcjkb/nix-gen-luarc-json";
@@ -60,11 +59,6 @@
       flake = false;
     };
 
-    # stay-in-place-nvim = {
-    #   url = "github:gbprod/stay-in-place.nvim";
-    #   flake = false;
-    # };
-
     namu-nvim = {
       url = "github:bassamsdata/namu.nvim";
       flake = false;
@@ -91,10 +85,6 @@
       url = "github:JMarkin/cmp-diag-codes";
       flake = false;
     };
-    # diaglist-nvim = {
-    #   url = "github:JMarkin/diaglist.nvim";
-    #   flake = false;
-    # };
     gentags-lua = {
       url = "github:JMarkin/gentags.lua?ref=feat/neovim-0.10";
       flake = false;
@@ -109,7 +99,7 @@
     in
     flake-parts.lib.mkFlake { inherit inputs; } {
       # Supported systems - add more as needed
-      systems = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" "x86_64-darwin" ];
+      systems = [ "x86_64-linux" "aarch64-linux"];# "aarch64-darwin" "x86_64-darwin" ];
       perSystem = { system, pkgs, ... }:
         {
           _module.args.pkgs = import inputs.nixpkgs {
@@ -130,6 +120,11 @@
               nvim = pkgs.nvim-pkg;
               nvim-small = pkgs.nvim-small;
               nvim-minimal = pkgs.nvim-minimal;
+
+              coding-packages = pkgs.coding-packages;
+              small-coding-packages = pkgs.small-coding-packages;
+              minimal-coding-packages = pkgs.minimal-coding-packages;
+
               default = nvim;
               bench-nvim = pkgs.writeShellScriptBin "bench-nvim" ''
                 ${pkgs.hyperfine}/bin/hyperfine --warmup 4 '${pkgs.nvim-pkg}/bin/nvim -c ":q"'
@@ -140,14 +135,12 @@
               bench-nvim-minimal = pkgs.writeShellScriptBin "bench-nvim-minimal" ''
                 ${pkgs.hyperfine}/bin/hyperfine --warmup 4 '${pkgs.nvim-minimal}/bin/nvim -c ":q"'
               '';
-
-              # Development tools and language-specific packages
-              codingPackages = pkgs.codingPackages;
             };
           devShells = {
             default = pkgs.mkShell {
               name = "nvim-devShell";
               buildInputs = with pkgs; [
+                jq
                 # Essential development tools for maintaining this flake
                 lua-language-server # Lua language server for config development
                 nixd # Nix language server

@@ -14,9 +14,24 @@ let
     "minimal" = [ pkgs.nvim-minimal pkgs.minimal-coding-packages ];
     "small" = [ pkgs.nvim-small pkgs.small-coding-packages ];
   };
+  defaultPackages = [ pkgs.nvim-minimal pkgs.minimal-coding-packages ];
 
   getPackages = env: default:
     if packages ? ${env} then packages.${env} else default;
+
+
+  shellAliases = {
+    vim = "nvim";
+    v = "nvim";
+    vi = "nvim";
+    vimdiff = "nvim -d";
+  };
+
+  sessionVariables = {
+    EDITOR = "nvim";
+    VISUAL = "nvim";
+    MANPAGER = "nvim +Man!";
+  };
 
 
   homeConfig = { } // lib.optionalAttrs (builtins.hasAttr "home" options)
@@ -26,13 +41,17 @@ let
           ".local/share/nvim/site/spell/ru.utf-8.spl".source = nvim-spell-ru-utf8-dictionary;
           ".config/nvim/snippets".source = config.lib.file.mkOutOfStoreSymlink ../../nvim/snippets;
         };
-        packages = getPackages type [pkgs.nvim-minimal  pkgs.minimal-coding-packages ];
+        packages = getPackages type defaultPackages;
+        shellAliases = shellAliases;
+        sessionVariables = sessionVariables;
       };
     };
   nixOsConfig = { } // lib.optionalAttrs (builtins.hasAttr "environment" options)
     {
       environment = {
-        systemPackages = getPackages type [ pkgs.nvim-minimal pkgs.minimal-coding-packages ];
+        systemPackages = getPackages type defaultPackages;
+        shellAliases = shellAliases;
+        sessionVariables = sessionVariables;
       };
     };
 

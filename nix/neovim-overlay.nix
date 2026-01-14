@@ -154,7 +154,7 @@ with final.pkgs.lib; let
     }
   ];
 
-  smallset-packages = with pkgs; [
+  small-packages = with pkgs; [
     jaq
     codespell
   ] ++ minimal-packages;
@@ -295,7 +295,7 @@ with final.pkgs.lib; let
     ]
   );
 
-  all-packages = langs.packages ++ smallset-packages;
+  all-packages = langs.packages ++ small-packages;
 
 in
 rec
@@ -378,13 +378,13 @@ rec
     pathsToLink = [ "/bin" "/share" ];
   };
   minimal-coding-packages = pkgs.buildEnv {
-    name = "coding-packages";
+    name = "minimal-coding-packages";
     paths = minimal-packages;
     pathsToLink = [ "/bin" "/share" ];
   };
-  smallset-coding-packages = pkgs.buildEnv {
-    name = "coding-packages";
-    paths = smallset-packages;
+  small-coding-packages = pkgs.buildEnv {
+    name = "small-coding-packages";
+    paths = small-packages;
     pathsToLink = [ "/bin" "/share" ];
   };
 
@@ -405,7 +405,7 @@ rec
     ignoreConfigRegexes = [
       "^lsp/.*.lua"
     ];
-    extraPackages = smallset-packages;
+    extraPackages = small-packages;
   };
 
   nvim-minimal = mkNeovim {
@@ -439,7 +439,7 @@ rec
     ignoreConfigRegexes = [
       "^lsp/.*.lua"
     ];
-    extraPackages = smallset-packages;
+    extraPackages = small-packages;
   };
 
   nvim-dev-minimal = mkNeovim {

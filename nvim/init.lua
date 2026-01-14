@@ -213,15 +213,6 @@ vim.g.rainbow_delimiters_highlight = {
 }
 
 
--- ollama configs
-g.ollama_host = vim.env.OLLAMA_HOST or "localhost"
-g.ollama_port = vim.env.OLLAMA_PORT or "11434"
-g.ollama_url = string.format("http://%s:%s", g.ollama_host, g.ollama_port)
-g.ollama_generate_endpoint = string.format("%s/api/generate", g.ollama_url)
-g.ollama_chat_endpoint = string.format("%s/api/chat", g.ollama_url)
-g.ollama_chat_completions_endpoint = string.format("%s/v1/chat/completions", g.ollama_url)
-g.ollama_completions_endpoint = string.format("%s/api/generate", g.ollama_url)
-
 -- airun setup
 g.airun_url = vim.env.AI_RUN_URL
 g.airun_endpoint = string.format("%s/v1", g.airun_url)
