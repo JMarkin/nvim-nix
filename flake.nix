@@ -161,7 +161,6 @@
         };
       flake = {
         overlays.default = neovim-overlay;
-        overlays.treesitter = inputs.nvim-treesitter-main.overlays.default;
         homeManagerModules.default = ((import ./nix/integration.nix) "full");
         homeManagerModules.minimal = ((import ./nix/integration.nix) "minimal");
         homeManagerModules.small = ((import ./nix/integration.nix) "small");

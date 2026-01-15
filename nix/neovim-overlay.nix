@@ -296,7 +296,9 @@ with final.pkgs.lib; let
   );
 
   all-packages = langs.packages ++ small-packages;
-
+  
+  nvim-treesitter = inputs.nvim-treesitter-main.packages.${prev.system}.nvim-treesitter;
+  nvim-treesitter-textobjects = inputs.nvim-treesitter-main.packages.${prev.system}.nvim-treesitter-textobjects;
 in
 rec
 {
@@ -313,13 +315,13 @@ rec
   vimPlugins = prev.vimPlugins.extend
     (
       f: p: {
-        nvim-treesitter = (p.nvim-treesitter.withPlugins (_: [ tree-sitter-kulala-http ] ++ p.nvim-treesitter.allGrammars)).overrideAttrs (old: {
+        nvim-treesitter = (nvim-treesitter.withPlugins (_: [ tree-sitter-kulala-http ] ++ nvim-treesitter.allGrammars)).overrideAttrs (old: {
           postInstall = old.postInstall + ''
             ln -sfT ${tree-sitter-kulala-http}/queries/kulala_http $out/queries/kulala_http
           '';
         });
 
-        nvim-treesitter-textobjects = p.nvim-treesitter-textobjects.overrideAttrs {
+        nvim-treesitter-textobjects = nvim-treesitter-textobjects.overrideAttrs {
           dependencies = [ f.nvim-treesitter ];
         };
 
