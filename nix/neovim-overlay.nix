@@ -296,7 +296,7 @@ with final.pkgs.lib; let
   );
 
   all-packages = langs.packages ++ small-packages;
-  
+
   nvim-treesitter = inputs.nvim-treesitter-main.packages.${prev.system}.nvim-treesitter;
   nvim-treesitter-textobjects = inputs.nvim-treesitter-main.packages.${prev.system}.nvim-treesitter-textobjects;
 in
@@ -311,6 +311,8 @@ rec
       location = "lua/tree-sitter";
     };
   kulala-fmt = inputs.kulala-fmt.packages.${prev.system}.default;
+
+  smart-splits-nvim-src = inputs.smart-splits-nvim;
 
   vimPlugins = prev.vimPlugins.extend
     (
