@@ -16,6 +16,11 @@ with pkgs.vimPlugins; [
             preferred_completion = "blink",
             default_mode = 'ask',
             keymap_prefix = '<leader>o',
+            quick_chat = {
+              default_model = nil,
+              default_agent = 'ask',
+              instructions = nil,
+            },
           })
         end,
       }
