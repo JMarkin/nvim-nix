@@ -45,7 +45,9 @@ oil.setup({
     ["<C-c>"] = { "actions.close", mode = "n" },
     ["<C-r>"] = "actions.refresh",
     ["-"] = { "actions.parent", mode = "n" },
-    ["_"] = { "actions.open_cwd", mode = "n" },
+    ["_"] = function()
+      require("oil").open(vim.fn.getcwd(-1, 0))
+    end,
     ["<tab>"] = "actions.select",
     ["<s-tab>"] = { "actions.parent", mode = "n" },
     ["cd"] = { "actions.cd", opts = { scope = "tab" }, mode = "n" },

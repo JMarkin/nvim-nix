@@ -295,13 +295,16 @@ with final.pkgs.lib; let
     ]
   );
 
-  all-packages = langs.packages ++ small-packages;
+  opencode = inputs.opencode.packages.${prev.system}.opencode;
+  all-packages = langs.packages ++ small-packages ++ [ opencode ];
 
   nvim-treesitter = inputs.nvim-treesitter-main.packages.${prev.system}.nvim-treesitter;
   nvim-treesitter-textobjects = inputs.nvim-treesitter-main.packages.${prev.system}.nvim-treesitter-textobjects;
 in
 rec
 {
+  opencode = opencode;
+
   tree-sitter-kulala-http = prev.tree-sitter.buildGrammar
     {
       passthru.name = "kulala_http";

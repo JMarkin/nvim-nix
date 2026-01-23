@@ -5,12 +5,13 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
 
+    opencode.url = "github:anomalyco/opencode";
+    opencode.inputs.nixpkgs.follows = "nixpkgs";
+
     gen-luarc.url = "github:mrcjkb/nix-gen-luarc-json";
     gen-luarc.inputs.nixpkgs.follows = "nixpkgs";
     gen-luarc.inputs.flake-parts.follows = "flake-parts";
 
-    # Bleeding-edge Neovim plugins
-    # These can be updated with `nix flake update` (remember to commit flake.lock)
     blink-pairs.url = "github:Saghen/blink.pairs?ref=v0.4.1";
 
     # Development and formatting tools
@@ -26,7 +27,6 @@
     neovim-nightly-overlay.inputs.flake-parts.follows = "flake-parts";
     nvim-treesitter-main.url = "github:iofq/nvim-treesitter-main";
     nvim-treesitter-main.inputs.nixpkgs.follows = "nixpkgs";
-
 
     smart-splits-nvim = {
       url = "github:mrjones2014/smart-splits.nvim";

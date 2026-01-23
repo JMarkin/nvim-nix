@@ -161,8 +161,13 @@ lze.load({
     augroup(fzf, { clear = true })
     local actions = require("fzf-lua.actions")
     require("fzf-lua").setup({
-      -- fzf_bin = "sk",
       async_or_timeout = 3000,
+      globals = {
+        resume = false,
+        no_hide = true,
+        no_resume = true,
+        multiprocess = true,
+      },
       global_resume = false,
       global_resume_query = false,
       winopts = {
