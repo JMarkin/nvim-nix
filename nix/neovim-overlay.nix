@@ -295,15 +295,15 @@ with final.pkgs.lib; let
     ]
   );
 
-  opencode = inputs.opencode.packages.${prev.system}.opencode;
-  all-packages = langs.packages ++ small-packages ++ [ opencode ];
+  opencodePkg = inputs.opencode.packages.${prev.system}.opencode;
+  all-packages = langs.packages ++ small-packages ++ [ opencodePkg ];
 
   nvim-treesitter = inputs.nvim-treesitter-main.packages.${prev.system}.nvim-treesitter;
   nvim-treesitter-textobjects = inputs.nvim-treesitter-main.packages.${prev.system}.nvim-treesitter-textobjects;
 in
 rec
 {
-  opencode = opencode;
+  opencode = opencodePkg;
 
   tree-sitter-kulala-http = prev.tree-sitter.buildGrammar
     {
@@ -373,6 +373,8 @@ rec
             prev.vimPlugins.blink-cmp
             prev.vimPlugins.fzf-lua
             prev.vimPlugins.plenary-nvim
+
+            opencode
           ];
         };
 
