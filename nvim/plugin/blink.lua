@@ -45,7 +45,7 @@ lze.load({
 lze.load({
   "blink.cmp",
   event = { "InsertEnter", "CmdlineEnter" },
-  on_require = {"blink.cmp", "blink-cmp"},
+  on_require = { "blink.cmp", "blink-cmp" },
   after = function()
     local blink = require("blink-cmp")
     local opts = {
@@ -106,14 +106,6 @@ lze.load({
       },
 
       sources = {
-        default = function(ctx)
-          if lf.is_large_file(vim.api.nvim_get_current_buf(), true) then
-            return { "tags", "omni" }
-          elseif funcs.in_treesitter_capture("comment") or funcs.in_syntax_group("Comment") then
-            return { "diag-codes", "buffer", "snippets", "lsp" }
-          end
-          return { "lsp", "buffer", "tags", "snippets" }
-        end,
         per_filetype = {
           sql = { "dadbod", "buffer", "snippets" },
           lua = { inherit_defaults = true, "lazydev" },
@@ -189,6 +181,32 @@ lze.load({
       },
     }
 
+    local default_sources = { "lsp", "buffer", "tags", "snippets" }
+    local ok, _ = pcall(require, "minuet")
+    if ok then
+      opts.keymap["<c-x><c-z>"] = require("minuet").make_blink_map()
+
+      opts.sources.providers.minuet = {
+        name = "minuet",
+        module = "minuet.blink",
+        async = true,
+        -- Should match minuet.config.request_timeout * 1000,
+        -- since minuet.config.request_timeout is in seconds
+        timeout_ms = 3000,
+        score_offset = 120, -- Gives minuet higher priority among suggestions
+      }
+
+      default_sources = { "lsp", "buffer", "tags", "snippets", "minuet" }
+    end
+
+    opts.sources.default = function(ctx)
+      if lf.is_large_file(vim.api.nvim_get_current_buf(), true) then
+        return { "tags", "omni" }
+      elseif funcs.in_treesitter_capture("comment") or funcs.in_syntax_group("Comment") then
+        return { "diag-codes", "buffer", "snippets", "lsp" }
+      end
+      return default_sources
+    end
     blink.setup(opts)
   end,
 })

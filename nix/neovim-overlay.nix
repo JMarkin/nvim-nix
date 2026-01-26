@@ -221,6 +221,9 @@ with final.pkgs.lib; let
 
   ]);
 
+
+  ai = (callPackage ./ai.nix);
+
   all-plugins = smallset-plugins ++ (
     with pkgs.vimPlugins;
     [
@@ -235,7 +238,7 @@ with final.pkgs.lib; let
       }
     ]
   )
-    ++ (callPackage ./ai.nix)
+    ++ ai.plugins
     ++ (callPackage ./autocomplete.nix)
     ++ (callPackage ./blink-pairs.nix)
     ++ (callPackage ./ui.nix)
@@ -295,15 +298,19 @@ with final.pkgs.lib; let
     ]
   );
 
-  opencodePkg = inputs.opencode.packages.${prev.system}.opencode;
-  all-packages = langs.packages ++ small-packages ++ [ opencodePkg ];
+  all-packages = langs.packages ++ small-packages ++ ai.packages;
 
   nvim-treesitter = inputs.nvim-treesitter-main.packages.${prev.system}.nvim-treesitter;
   nvim-treesitter-textobjects = inputs.nvim-treesitter-main.packages.${prev.system}.nvim-treesitter-textobjects;
 in
 rec
 {
-  opencode = opencodePkg;
+  opencode = inputs.opencode.packages.${prev.system}.opencode;
+  vectorcode = prev.vectorcode.overrideAttrs {
+    meta.license = "MIT";
+    meta.platforms = prev.vectorcode.meta.platforms ++ [ "aarch64-unknown-linux-gnu" ];
+  };
+
 
   tree-sitter-kulala-http = prev.tree-sitter.buildGrammar
     {

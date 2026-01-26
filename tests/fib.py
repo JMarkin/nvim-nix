@@ -29,4 +29,13 @@ for index, fibonacci_number in zip(range(100), fib()):
 
 
 # Generate function where print first N of fibonachi numbers using fib function
-# def print_n_fibonacchi_numbers(n, messag_on_complete: str):
+def print_n_fibonacchi_numbers(n, messag_on_complete: str):
+    for index, f in zip(range(n), fib()):
+        ti = time()
+        print("{i:3}: {f: >21} {t:.3e}".format(i=index, f=f, t=ti - t))
+
+    print(messag_on_complete)
+
+print_n_fibonacchi_numbers(100, "End of 100 numbers")
+
+for

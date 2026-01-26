@@ -5,7 +5,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
 
-    opencode.url = "github:anomalyco/opencode";
+    opencode.url = "github:anomalyco/opencode?ref=v1.1.36";
     opencode.inputs.nixpkgs.follows = "nixpkgs";
 
     gen-luarc.url = "github:mrcjkb/nix-gen-luarc-json";
