@@ -270,6 +270,22 @@
         "type": "github"
       }
     },
+    "llama-vim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1769494870,
+        "narHash": "sha256-XfHCaKSYdat2/W/60lF9LM6mdOxJ2r4hTFJlci9n1Qs=",
+        "owner": "ggml-org",
+        "repo": "llama.vim",
+        "rev": "a2eb12c1a8629702117f82ff09eb6b2ce0f2d6a4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ggml-org",
+        "repo": "llama.vim",
+        "type": "github"
+      }
+    },
     "local-highlight-nvim": {
       "flake": false,
       "locked": {
@@ -329,11 +345,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1769299463,
-        "narHash": "sha256-RxUJUDLWIvBJ6Dv6p//Ept7gUPb03ZURSWGirjlYwSQ=",
+        "lastModified": 1769472400,
+        "narHash": "sha256-8iNQg6L/77PgmSHRMPfbrIAFCv5s84cVeDSzsAGTsqg=",
         "owner": "nix-community",
         "repo": "neovim-nightly-overlay",
-        "rev": "041b08bc200ba1b08850943797a7e1a7f4ad142b",
+        "rev": "950b7b20c18ee3e4fccdb1a0314da9e096abaa7b",
         "type": "github"
       },
       "original": {
@@ -345,11 +361,11 @@
     "neovim-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1769260606,
-        "narHash": "sha256-hTJJSGgYrPkVnpJCLXeCIKia6PM9y7D9/KBNmNafwOA=",
+        "lastModified": 1769469531,
+        "narHash": "sha256-BAEfUrEpH7KZLt86X1mMqESCo6CPHys4dmr7Ai2ZHk8=",
         "owner": "neovim",
         "repo": "neovim",
-        "rev": "57574db15460be27f056eb21a71b96312396a615",
+        "rev": "d30d91f3a49e19e61473b74e42adf68e9215220d",
         "type": "github"
       },
       "original": {
@@ -422,11 +438,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1769330179,
-        "narHash": "sha256-yxgb4AmkVHY5OOBrC79Vv6EVd4QZEotqv+6jcvA212M=",
+        "lastModified": 1769433173,
+        "narHash": "sha256-Gf1dFYgD344WZ3q0LPlRoWaNdNQq8kSBDLEWulRQSEs=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "48698d12cc10555a4f3e3222d9c669b884a49dfe",
+        "rev": "13b0f9e6ac78abbbb736c635d87845c4f4bee51b",
         "type": "github"
       },
       "original": {
@@ -564,11 +580,11 @@
     "opencode-nvim": {
       "flake": false,
       "locked": {
-        "lastModified": 1769369414,
-        "narHash": "sha256-xzwBgXO9PYtOcCFiBAA+DxMJjB3pwVZTNFMqHeyA6/o=",
+        "lastModified": 1769544951,
+        "narHash": "sha256-C8WOpubBb8euC+UFo1Nbl2gfwnIXdB2B/50bcC9rfXY=",
         "owner": "sudo-tee",
         "repo": "opencode.nvim",
-        "rev": "39080c693eb7fa9660fd404929a071e9b1bb5f43",
+        "rev": "d391ee8fbc765dbbfc5fc3c158d3f297b69b5d8e",
         "type": "github"
       },
       "original": {
@@ -588,6 +604,7 @@
         "hlargs-nvim": "hlargs-nvim",
         "kulala-fmt": "kulala-fmt",
         "kulala-nvim": "kulala-nvim",
+        "llama-vim": "llama-vim",
         "local-highlight-nvim": "local-highlight-nvim",
         "namu-nvim": "namu-nvim",
         "neovim-nightly-overlay": "neovim-nightly-overlay",
