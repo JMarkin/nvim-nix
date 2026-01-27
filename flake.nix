@@ -5,8 +5,6 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
 
-    opencode.url = "github:anomalyco/opencode?ref=v1.1.36";
-    opencode.inputs.nixpkgs.follows = "nixpkgs";
 
     gen-luarc.url = "github:mrcjkb/nix-gen-luarc-json";
     gen-luarc.inputs.nixpkgs.follows = "nixpkgs";
@@ -74,10 +72,23 @@
       flake = false;
     };
 
+    opencode.url = "github:anomalyco/opencode?ref=v1.1.36";
+    opencode.inputs.nixpkgs.follows = "nixpkgs";
     opencode-nvim = {
       url = "github:sudo-tee/opencode.nvim";
       flake = false;
     };
+
+    llama-vim = {
+      url = "github:ggml-org/llama.vim";
+      flake = false;
+    };
+
+    # cursortab-nvim = {
+    #   # url = "github:leonardcser/cursortab.nvim";
+    #   url = "path:/projects/jmarkin/cursortab.nvim";
+    #   flake = false;
+    # };
 
     # my
 

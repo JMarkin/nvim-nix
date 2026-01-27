@@ -222,7 +222,7 @@ with final.pkgs.lib; let
   ]);
 
 
-  ai = (callPackage ./ai.nix);
+  ai = (callPackage ./ai);
 
   all-plugins = smallset-plugins ++ (
     with pkgs.vimPlugins;
@@ -385,6 +385,8 @@ rec
           ];
         };
 
+        cursortab-nvim = (mkNvimPlugin inputs.cursortab-nvim "cursortab-nvim");
+        llama-vim = (mkNvimPlugin inputs.llama-vim "llama-vim");
       }
     );
 

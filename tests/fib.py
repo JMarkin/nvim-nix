@@ -9,33 +9,5 @@ def fib():
         a, b = b, a + b  # a will now be 1, and b will also be 1, (0 + 1)
 
 
-def print_n_fibonacchi_numbers(n, message_on_complete: str):
-    """Generate and print first N Fibonacci numbers."""
-    t = time()
-    for index, fibonacci_number in zip(range(n), fib()):
-        ti = time()
-        print("{i:3}: {f: >21} {t:.3e}".format(i=index, f=fibonacci_number, t=ti - t))
-        t = ti
-    print(message_on_complete)
-
-if 1 > 2:
-    print(123)
-
-t = time()
-for index, fibonacci_number in zip(range(100), fib()):
-    ti = time()
-    print("{i:3}: {f: >21} {t:.3e}".format(i=index, f=fibonacci_number, t=ti - t))
-    t = ti
-
-
 # Generate function where print first N of fibonachi numbers using fib function
 def print_n_fibonacchi_numbers(n, messag_on_complete: str):
-    for index, f in zip(range(n), fib()):
-        ti = time()
-        print("{i:3}: {f: >21} {t:.3e}".format(i=index, f=f, t=ti - t))
-
-    print(messag_on_complete)
-
-print_n_fibonacchi_numbers(100, "End of 100 numbers")
-
-for
