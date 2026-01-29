@@ -7,6 +7,7 @@
       optional = false;
       config = /*lua*/''
         vim.g.llama_config = {
+          auto_fim = false,
           endpoint_fim='http://127.0.0.1:8012/infill',
           endpoint_inst='http://127.0.0.1:8012/v1/chat/completions',
           enable_at_startup = true,

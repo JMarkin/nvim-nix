@@ -21,7 +21,7 @@ g.snips_github                                                         = vim.env
 
 opt.cmdheight                                                          = 0
 -- opt.colorcolumn                                   = '+1'
-opt.cursorlineopt                                                      = 'both'
+opt.cursorlineopt                                                      = 'number'
 opt.cursorline                                                         = true
 -- g.cursorhold_updatetime                           = 200
 g.default_winwidth                                                     = 20
@@ -41,7 +41,7 @@ opt.scrolloff                                                          = 4
 opt.sidescrolloff                                                      = 8
 opt.sidescroll                                                         = 0
 opt.signcolumn                                                         = 'yes:1'
-opt.swapfile                                                           = true
+opt.swapfile                                                           = false
 opt.undofile                                                           = true
 opt.wrap                                                               = false
 opt.linebreak                                                          = true
