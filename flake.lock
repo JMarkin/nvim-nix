@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "blink-edit-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1769841569,
+        "narHash": "sha256-arlx+95GYMLRCdu9TG0D39/IRp26K/VNbVkmuYSkjV8=",
+        "owner": "BlinkResearchLabs",
+        "repo": "blink-edit.nvim",
+        "rev": "933fbf41f74c8204a446e9309d8314fc101788cf",
+        "type": "github"
+      },
+      "original": {
+        "owner": "BlinkResearchLabs",
+        "repo": "blink-edit.nvim",
+        "type": "github"
+      }
+    },
     "blink-pairs": {
       "inputs": {
         "fenix": "fenix",
@@ -595,6 +611,7 @@
     },
     "root": {
       "inputs": {
+        "blink-edit-nvim": "blink-edit-nvim",
         "blink-pairs": "blink-pairs",
         "cmp-diag-codes": "cmp-diag-codes",
         "django-nvim": "django-nvim",
