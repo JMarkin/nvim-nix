@@ -10,4 +10,4 @@ def fib():
 
 
 # Generate function where print first N of fibonachi numbers using fib function
-def print_n_fibonacchi_numbers(n, messag_on_complete: str):
+def get_n_fibonacchi_numbers(n, messag_on_complete: str) -> list[int]:

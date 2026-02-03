@@ -7,11 +7,11 @@ let g:did_load_tests_plugin = v:true
 let g:test#prompt_for_unsaved_changes = 1
 
 
-nmap <silent> <leader>lt :TestNearest<CR>
-nmap <silent> <leader>lT :TestFile<CR>
-nmap <silent> <leader>la :TestSuite<CR>
-nmap <silent> <leader>ll :TestLast<CR>
-nmap <silent> <leader>lg :TestVisit<CR>
+nmap <silent> <leader>Tt :TestNearest<CR>
+nmap <silent> <leader>TT :TestFile<CR>
+nmap <silent> <leader>Ta :TestSuite<CR>
+nmap <silent> <leader>Tl :TestLast<CR>
+nmap <silent> <leader>Tg :TestVisit<CR>
 
 
 let test#strategy = "neovim"

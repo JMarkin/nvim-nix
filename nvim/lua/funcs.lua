@@ -119,19 +119,19 @@ function M.merge_tables(table1, table2)
   return merged_table
 end
 
-function M.debounce(ms, func)
-  local entry = { timer = nil, cancel = nil }
-
-  entry.timer = vim.uv.new_timer()
-  entry.timer:start(
-    ms,
-    0,
-    vim.schedule_wrap(function()
-      entry.cancel = func()
+function M.debounce(fn, ms)
+  local timer = vim.uv.new_timer()
+  return function(...)
+    local argv = {...}
+    timer:stop()
+    timer:start(ms, 0, function()
+      timer:stop()
+      -- vim.schedule ensures the function runs on the main Neovim thread
+      vim.schedule(function()
+        fn(unpack(argv))
+      end)
     end)
-  )
-
-  return entry
+  end
 end
 
 -- https://github.com/hrsh7th/nvim-cmp/blob/main/lua/cmp/utils/api.lua
@@ -155,6 +155,8 @@ end
 api.is_insert_mode = function()
   return api.get_mode() == "i"
 end
+
+M.is_insert_mode = api.is_insert_mode
 
 ---Check if cursor is in syntax group
 ---@param group string | []string

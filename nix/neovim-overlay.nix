@@ -196,7 +196,7 @@ with final.pkgs.lib; let
       config = /*lua*/''
         lze.load {
           "${plenary-nvim.pname}",
-          on_require = {"plenary.job", "plenary.path"},
+          on_require = {"plenary.job", "plenary.path", "plenary.functional", "plenary.compat"},
         }
       '';
     }
@@ -384,9 +384,6 @@ rec
             opencode
           ];
         };
-
-        cursortab-nvim = (mkNvimPlugin inputs.cursortab-nvim "cursortab-nvim");
-        llama-vim = (mkNvimPlugin inputs.llama-vim "llama-vim");
       }
     );
 

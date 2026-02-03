@@ -84,12 +84,6 @@
       flake = false;
     };
 
-    # cursortab-nvim = {
-    #   # url = "github:leonardcser/cursortab.nvim";
-    #   url = "path:/projects/jmarkin/cursortab.nvim";
-    #   flake = false;
-    # };
-
     # my
 
     cmp-diag-codes = {
@@ -110,7 +104,7 @@
     in
     flake-parts.lib.mkFlake { inherit inputs; } {
       # Supported systems - add more as needed
-      systems = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" "x86_64-darwin" ];
+      systems = [ "x86_64-linux" "aarch64-darwin" "x86_64-darwin" ];
       perSystem = { system, pkgs, ... }:
         {
           _module.args.pkgs = import inputs.nixpkgs {

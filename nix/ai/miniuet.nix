@@ -90,7 +90,7 @@
         local openai_fim_compatible = {
             api_key = 'TERM',
             name = 'Llama.cpp',
-            end_point = 'http://localhost:51536/v1/completions',
+            end_point = 'http://localhost:8012/v1/completions',
             model = 'PLACEHOLDER',
             optional = {
                 max_tokens = 60,
