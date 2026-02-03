@@ -970,7 +970,7 @@ function M.fim_accept(accept_type, fim_data)
       vim.fn.cursor(pos_y + #content - 1, #content[#content] + 1)
     end
   end
-  M.fim_hide()
+  fim_hide()
 end
 
 function M.inst_build(l0, l1, inst, inst_prev)

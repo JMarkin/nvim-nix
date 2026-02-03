@@ -166,13 +166,13 @@
         };
       flake = {
         overlays.default = neovim-overlay;
-        homeManagerModules.default = ((import ./nix/integration.nix) "full");
-        homeManagerModules.minimal = ((import ./nix/integration.nix) "minimal");
-        homeManagerModules.small = ((import ./nix/integration.nix) "small");
+        homeManagerModules.default = ((import ./nix/integration) "full");
+        homeManagerModules.minimal = ((import ./nix/integration) "minimal");
+        homeManagerModules.small = ((import ./nix/integration) "small");
 
-        nixosManagerModules.default = ((import ./nix/integration.nix) "full");
-        nixosManagerModules.minimal = ((import ./nix/integration.nix) "minimal");
-        nixosManagerModules.small = ((import ./nix/integration.nix) "small");
+        nixosManagerModules.default = ((import ./nix/integration) "full");
+        nixosManagerModules.minimal = ((import ./nix/integration) "minimal");
+        nixosManagerModules.small = ((import ./nix/integration) "small");
       };
     };
 }

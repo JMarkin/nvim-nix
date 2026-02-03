@@ -34,6 +34,7 @@ let
   };
 
 
+
   homeConfig = { } // lib.optionalAttrs (builtins.hasAttr "home" options)
     {
       home = {

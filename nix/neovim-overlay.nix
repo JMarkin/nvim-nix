@@ -65,7 +65,7 @@ with final.pkgs.lib; let
   minimal-packages = with pkgs; [
     fixjson
     fswatch
-    fzf
+    skim
   ];
   minimal-plugins = with pkgs.vimPlugins; [
     # кастыль для neovim/nix там init.vim чтобы всё обернуть в lua << END

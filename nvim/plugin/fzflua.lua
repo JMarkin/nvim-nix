@@ -161,15 +161,19 @@ lze.load({
     augroup(fzf, { clear = true })
     local actions = require("fzf-lua.actions")
     require("fzf-lua").setup({
-      async_or_timeout = 3000,
-      globals = {
-        resume = false,
-        no_hide = true,
-        no_resume = true,
-        multiprocess = true,
+      { "skim" },
+      fzf_opts = {
+        ["--ansi"] = "",
+        -- ["--algo"] = "frizbee",
+        ["--info"] = "inline",
+        -- ["--height"] = "100%",
+        -- ["--layout"] = "reverse",
+        ["--border"] = "none",
       },
-      global_resume = false,
-      global_resume_query = false,
+      resume = false,
+      no_hide = true,
+      no_resume = true,
+      multiprocess = true,
       winopts = {
         preview = { default = "builtin" },
         on_create = function()
@@ -229,14 +233,8 @@ lze.load({
           ["alt-f"] = actions.toggle_follow,
         },
       },
-      fzf_opts = {
-        ["--ansi"] = "",
-        -- ["--info"] = "inline",
-        -- ["--height"] = "100%",
-        -- ["--layout"] = "reverse",
-        -- ["--border"] = "none",
-      },
       lsp = {
+        async_or_timeout = 3000,
         code_actions = {
           previewer = "codeaction_native",
           preview_pager = [[delta --side-by-side --width=$COLUMNS --hunk-header-style="omit" --file-style="omit"]],
