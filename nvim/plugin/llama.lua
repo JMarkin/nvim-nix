@@ -1,7 +1,7 @@
-if vim.g.did_load_llama_plugin then
-  return
-end
-vim.g.did_load_llama_plugin = true
+-- if vim.g.did_load_llama_plugin then
+--   return
+-- end
+-- vim.g.did_load_llama_plugin = true
 
 -- AI+ rewrite of the original vimscript `llama.vim`.
 -- -------------------------------------------------------------------------
@@ -11,7 +11,7 @@ local LRU = require("lru")
 local funcs = require("funcs")
 local curl = require("curl")
 
-local M = {}
+local LLAMA = {}
 
 local function set_hl(name, attrs)
   vim.api.nvim_set_hl(0, name, attrs)
@@ -24,12 +24,14 @@ set_hl("llama_hl_inst_virt_proc", { fg = "#77ff2f" })
 set_hl("llama_hl_inst_virt_gen", { fg = "#77ff2f" })
 set_hl("llama_hl_inst_virt_ready", { fg = "#ff772f" })
 
-M.config = {
-  endpoint_fim = "http://127.0.0.1:8012/infill",
-  endpoint_inst = "http://127.0.0.1:8012/v1/chat/completions",
+local base_url = vim.env.LLAMA_CPP_BASE_URL or "http://127.0.0.1:8012"
+
+LLAMA.config = {
+  endpoint_fim = base_url .. "/infill",
+  endpoint_inst = base_url .. "/v1/chat/completions",
   model_fim = "fim-small",
   model_inst = "gpt-oss",
-  api_key = "",
+  api_key = vim.env.LLAMA_CPP_API_KEY or "",
   n_prefix = 256,
   n_suffix = 64,
   n_predict = 128,
@@ -39,15 +41,15 @@ M.config = {
   show_info = 2,
   auto_fim = true,
   max_line_suffix = 8,
-  max_cache_keys = 250,
+  max_cache_keys = 256,
   ring_n_chunks = 16,
   ring_chunk_size = 64,
   ring_scope = 1024,
   ring_update_ms = 1000,
-  keymap_fim_trigger = "<c-f>",
-  keymap_fim_accept_full = "<s-tab>",
-  keymap_fim_accept_line = "<tab>",
-  keymap_fim_accept_word = "<c-tab>",
+  keymap_fim_trigger = "<c-x><c-z>",
+  keymap_fim_accept_line = "<c-z>",
+  keymap_fim_accept_full = "<c-f>",
+  keymap_fim_accept_word = "<c-m>",
   keymap_inst_trigger = "<leader>ai",
   keymap_inst_rerun = "<leader>ar",
   keymap_inst_continue = "<leader>ac",
@@ -63,7 +65,7 @@ local function debug_log(msg, ...)
   -- vim.api.nvim_echo({ { table.concat(args, " "), "Normal" } }, true, {})
 end
 
-local cache = LRU.new(M.config.max_cache_keys)
+local cache = LRU.new(LLAMA.config.max_cache_keys)
 
 local function cache_insert(key, value)
   cache:set(key, value)
@@ -109,7 +111,7 @@ local state = {
   t_last_move = vim.uv.hrtime(),
   current_job_fim = nil,
   inst_reqs = {},
-  inst_req_id = 0,
+  inst_req_id = rand(1, 999999),
   hlgroup_hint = "llama_hl_fim_hint",
   hlgroup_info = "llama_hl_fim_info",
   hlgroup_inst = "llama_hl_inst_src",
@@ -121,14 +123,15 @@ local state = {
 
 local function fim_hide(_)
   state.fim_hint_shown = false
+  state.can_accept = false
   local bufnr = vim.api.nvim_get_current_buf()
 
   local ns = vim.api.nvim_create_namespace("vt_fim")
   vim.api.nvim_buf_clear_namespace(bufnr, ns, 0, -1)
 
-  pcall(vim.keymap.del, "i", M.config.keymap_fim_accept_full, { buffer = bufnr })
-  pcall(vim.keymap.del, "i", M.config.keymap_fim_accept_line, { buffer = bufnr })
-  pcall(vim.keymap.del, "i", M.config.keymap_fim_accept_word, { buffer = bufnr })
+  pcall(vim.keymap.del, "i", LLAMA.config.keymap_fim_accept_full, { buffer = bufnr })
+  pcall(vim.keymap.del, "i", LLAMA.config.keymap_fim_accept_line, { buffer = bufnr })
+  pcall(vim.keymap.del, "i", LLAMA.config.keymap_fim_accept_word, { buffer = bufnr })
 end
 
 local function disable()
@@ -136,12 +139,12 @@ local function disable()
   vim.api.nvim_clear_autocmds({ group = "llama" })
   vim.api.nvim_del_augroup_by_name("llama")
 
-  vim.keymap.del("i", M.config.keymap_fim_trigger)
-  vim.keymap.del("v", M.config.keymap_inst_trigger)
-  vim.keymap.del("n", M.config.keymap_inst_rerun)
-  vim.keymap.del("n", M.config.keymap_inst_continue)
-  vim.keymap.del("n", M.config.keymap_inst_accept)
-  vim.keymap.del("n", M.config.keymap_inst_cancel)
+  vim.keymap.del("i", LLAMA.config.keymap_fim_trigger)
+  vim.keymap.del("v", LLAMA.config.keymap_inst_trigger)
+  vim.keymap.del("n", LLAMA.config.keymap_inst_rerun)
+  vim.keymap.del("n", LLAMA.config.keymap_inst_continue)
+  vim.keymap.del("n", LLAMA.config.keymap_inst_accept)
+  vim.keymap.del("n", LLAMA.config.keymap_inst_cancel)
 
   state.enabled = false
   debug_log("plugin disabled")
@@ -160,8 +163,13 @@ local skip_fts = {
   "gitsigns-blame",
   "tsplayground",
   "oil",
+  "namu_prompt",
 }
 
+--- Autocmd creates auto-commands for the given group.
+--- @param group integer|string
+--- @param events string|string[]
+--- @param func function
 local function autocmd(group, events, func)
   vim.api.nvim_create_autocmd(events, {
     group = group,
@@ -193,66 +201,67 @@ local function enable()
     return
   end
 
-  if M.config.keymap_inst_trigger ~= "" then
-    vim.keymap.set("v", M.config.keymap_inst_trigger, ":LlamaInstruct<CR>", { silent = true, noremap = true })
+  if LLAMA.config.keymap_inst_trigger ~= "" then
+    vim.keymap.set("v", LLAMA.config.keymap_inst_trigger, ":LlamaInstruct<CR>", { silent = true, noremap = true })
   end
-  if M.config.keymap_inst_rerun ~= "" then
-    vim.keymap.set("n", M.config.keymap_inst_rerun, M.inst_rerun, { silent = true, noremap = true })
+  if LLAMA.config.keymap_inst_rerun ~= "" then
+    vim.keymap.set("n", LLAMA.config.keymap_inst_rerun, LLAMA.inst_rerun, { silent = true, noremap = true })
   end
-  if M.config.keymap_inst_continue ~= "" then
-    vim.keymap.set("n", M.config.keymap_inst_continue, M.inst_continue, { silent = true, noremap = true })
+  if LLAMA.config.keymap_inst_continue ~= "" then
+    vim.keymap.set("n", LLAMA.config.keymap_inst_continue, LLAMA.inst_continue, { silent = true, noremap = true })
   end
-  if M.config.keymap_inst_accept ~= "" then
-    vim.keymap.set("n", M.config.keymap_inst_accept, M.inst_accept, { silent = true, noremap = true })
+  if LLAMA.config.keymap_inst_accept ~= "" then
+    vim.keymap.set("n", LLAMA.config.keymap_inst_accept, LLAMA.inst_accept, { silent = true, noremap = true })
   end
-  if M.config.keymap_inst_cancel ~= "" then
-    vim.keymap.set("n", M.config.keymap_inst_cancel, M.inst_cancel, { silent = true, noremap = true })
+  if LLAMA.config.keymap_inst_cancel ~= "" then
+    vim.keymap.set("n", LLAMA.config.keymap_inst_cancel, LLAMA.inst_cancel, { silent = true, noremap = true })
   end
 
   -- Setup autocommands
   local group = vim.api.nvim_create_augroup("llama", { clear = true })
 
-  if M.config.keymap_fim_trigger ~= "" then
+  if LLAMA.config.keymap_fim_trigger ~= "" then
     autocmd(group, "InsertEnter", function()
-      vim.keymap.set("i", M.config.keymap_fim_trigger, function()
-        M.fim_manual()
+      vim.keymap.set("i", LLAMA.config.keymap_fim_trigger, function()
+        LLAMA.fim_manual()
       end, { expr = true, silent = true, noremap = true })
     end)
   end
 
   autocmd(group, { "InsertLeavePre", "CompleteChanged", "CompleteDone" }, fim_hide)
-  if M.config.auto_fim then
-    autocmd(group, { "CursorMoved", "CursorMovedI" }, M.on_move)
+  if LLAMA.config.auto_fim then
+    autocmd(group, { "CursorMoved", "CursorMovedI" }, LLAMA.on_move)
     autocmd(group, "CursorMovedI", function(_)
-      M.fim(-1, -1, true, {}, true)
+      LLAMA.fim(-1, -1, true, {}, true)
     end)
   end
   autocmd(group, "TextYankPost", function(ev)
     if ev.operator == "y" then
-      M.pick_chunk(ev.regcontents, false, true)
+      LLAMA.pick_chunk(ev.regcontents, false, true)
     end
   end)
   autocmd(group, { "BufEnter", "BufLeave", "BufWritePost" }, function(_)
+    local pos = vim.api.nvim_win_get_cursor(0)
     local l = get_lines(
-      math.max(0, vim.fn.line(".") - M.config.ring_chunk_size / 2),
-      math.min(vim.fn.line("$"), vim.fn.line(".") + M.config.ring_chunk_size / 2)
+      math.max(0, pos[1] - LLAMA.config.ring_chunk_size / 2),
+      math.min(vim.api.nvim_buf_line_count(0), pos[1] + LLAMA.config.ring_chunk_size / 2)
     )
-    M.pick_chunk(l, true, true)
+    LLAMA.pick_chunk(l, true, true)
   end)
 
   -- Start ring buffer updater if needed
-  if M.config.ring_n_chunks > 0 then
-    M.ring_update()
+  if LLAMA.config.ring_n_chunks > 0 then
+    LLAMA.ring_update()
   end
 
   state.enabled = true
   debug_log("plugin enabled")
 end
 
-M.enable = enable
-M.disable = disable
+LLAMA.enable = enable
+LLAMA.disable = disable
 
-function M.toggle()
+function LLAMA.toggle()
   if state.enabled then
     disable()
   else
@@ -260,28 +269,29 @@ function M.toggle()
   end
 end
 
-function M.toggle_auto_fim()
+function LLAMA.toggle_auto_fim()
   if not state.enabled then
     return
   end
-  M.config.auto_fim = not M.config.auto_fim
+  LLAMA.config.auto_fim = not LLAMA.config.auto_fim
   vim.api.nvim_clear_autocmds({ group = "llama" })
   vim.api.nvim_create_augroup("llama", { clear = true })
-  if M.config.auto_fim then
-    autocmd("llama", { "CursorMoved", "CursorMovedI" }, M.on_move)
+  if LLAMA.config.auto_fim then
+    autocmd("llama", { "CursorMoved", "CursorMovedI" }, LLAMA.on_move)
     autocmd("llama", "CursorMovedI", function(_)
-      M.fim(-1, -1, true, {}, true)
+      LLAMA.fim(-1, -1, true, {}, true)
     end)
   end
 end
 
+--- @return vim.SystemObj
 local function request(url, body, opts)
   local headers = {
     ["Content-Type"] = "application/json",
   }
 
-  if M.config.api_key ~= "" then
-    headers["Authorization"] = "Bearer " .. M.config.api_key
+  if LLAMA.config.api_key ~= "" then
+    headers["Authorization"] = "Bearer " .. LLAMA.config.api_key
   end
 
   opts = vim.tbl_deep_extend("force", opts, {
@@ -292,26 +302,31 @@ local function request(url, body, opts)
   return curl.post(url, opts)
 end
 
+---Computes similarity between two chunks based on common token count.
+---@param c0 table<string>
+---@param c1 table<string>
+---@return number
 local function chunk_sim(c0, c1)
-  local tokens0 = vim.split(vim.fn.join(c0, "\n"), "\\W\\+")
-  local tokens1 = vim.split(vim.fn.join(c1, "\n"), "\\W\\+")
-  local set0 = {}
-  for _, tok in ipairs(tokens0) do
-    set0[tok] = true
+  local s0 = table.concat(c0, "\n")
+  local s1 = table.concat(c1, "\n")
+  local tokens = {}
+  for tok in s0:gmatch("%w+") do
+    tokens[tok] = true
   end
   local common = 0
-  for _, tok in ipairs(tokens1) do
-    if set0[tok] then
+  for tok in s1:gmatch("%w+") do
+    if tokens[tok] then
       common = common + 1
     end
   end
-  if (#tokens0 + #tokens1) == 0 then
+  local total = #c0 + #c1
+  if total == 0 then
     return 1.0
   end
-  return 2.0 * common / (#tokens0 + #tokens1)
+  return 2.0 * common / total
 end
 
-function M.pick_chunk(text, no_mod, do_evict)
+function LLAMA.pick_chunk(text, no_mod, do_evict)
   if
     no_mod
     and (
@@ -322,7 +337,7 @@ function M.pick_chunk(text, no_mod, do_evict)
   then
     return
   end
-  if M.config.ring_n_chunks <= 0 then
+  if LLAMA.config.ring_n_chunks <= 0 then
     return
   end
   if #text < 3 then
@@ -330,17 +345,17 @@ function M.pick_chunk(text, no_mod, do_evict)
   end
 
   local chunk, chunk_str
-  if #text + 1 < M.config.ring_chunk_size then
+  if #text + 1 < LLAMA.config.ring_chunk_size then
     chunk = text
   else
-    local l0 = rand(0, math.max(0, #text - M.config.ring_chunk_size / 2))
-    local l1 = math.min(l0 + M.config.ring_chunk_size / 2, #text)
+    local l0 = rand(0, math.max(0, #text - LLAMA.config.ring_chunk_size / 2))
+    local l1 = math.min(l0 + LLAMA.config.ring_chunk_size / 2, #text)
     chunk = {}
     for i = l0 + 1, l1 do
       table.insert(chunk, text[i])
     end
   end
-  chunk_str = vim.fn.join(chunk, "\n") .. "\n"
+  chunk_str = table.concat(chunk, "\n") .. "\n"
 
   -- check if already present
   for _, c in ipairs(state.ring_chunks) do
@@ -393,8 +408,8 @@ local function ring_get_extra()
   return extra
 end
 
-function M.ring_update()
-  vim.defer_fn(M.ring_update, M.config.ring_update_ms)
+function LLAMA.ring_update()
+  vim.defer_fn(LLAMA.ring_update, LLAMA.config.ring_update_ms)
 
   if vim.fn.mode() ~= "n" and (vim.uv.hrtime() - state.t_last_move) / 1e9 < 3 then
     return
@@ -403,7 +418,7 @@ function M.ring_update()
     return
   end
 
-  if #state.ring_chunks == M.config.ring_n_chunks then
+  if #state.ring_chunks == LLAMA.config.ring_n_chunks then
     table.remove(state.ring_chunks, 1)
   end
   table.insert(state.ring_chunks, table.remove(state.ring_queued, 1))
@@ -424,11 +439,11 @@ function M.ring_update()
     t_max_predict_ms = 1,
     response_fields = { "" },
   }
-  if M.config.model_fim ~= "" then
-    body.model = M.config.model_fim
+  if LLAMA.config.model_fim ~= "" then
+    body.model = LLAMA.config.model_fim
   end
 
-  request(M.config.endpoint_fim, body, { stream = true })
+  request(LLAMA.config.endpoint_fim, body, {})
 end
 
 local function fim_ctx_local(pos_x, pos_y, prev)
@@ -439,8 +454,8 @@ local function fim_ctx_local(pos_x, pos_y, prev)
     line_cur = vim.fn.getline(pos_y)
     line_cur_prefix = vim.fn.strpart(line_cur, 0, pos_x)
     line_cur_suffix = vim.fn.strpart(line_cur, pos_x)
-    lines_prefix = vim.fn.getline(math.max(1, pos_y - M.config.n_prefix), pos_y - 1)
-    lines_suffix = vim.fn.getline(pos_y + 1, math.min(max_y, pos_y + M.config.n_suffix))
+    lines_prefix = vim.fn.getline(math.max(1, pos_y - LLAMA.config.n_prefix), pos_y - 1)
+    lines_suffix = vim.fn.getline(pos_y + 1, math.min(max_y, pos_y + LLAMA.config.n_suffix))
 
     if vim.fn.match(line_cur, "^\\s*$") >= 0 then
       indent = 0
@@ -457,14 +472,14 @@ local function fim_ctx_local(pos_x, pos_y, prev)
     end
     line_cur_prefix = line_cur
     line_cur_suffix = ""
-    lines_prefix = vim.fn.getline(math.max(1, pos_y - M.config.n_prefix + #prev - 1), pos_y - 1)
+    lines_prefix = vim.fn.getline(math.max(1, pos_y - LLAMA.config.n_prefix + #prev - 1), pos_y - 1)
     if #prev > 1 then
       table.insert(lines_prefix, vim.fn.getline(pos_y) .. prev[1])
       for i = 2, #prev - 1 do
         table.insert(lines_prefix, prev[i])
       end
     end
-    lines_suffix = vim.fn.getline(pos_y + 1, math.min(max_y, pos_y + M.config.n_suffix))
+    lines_suffix = vim.fn.getline(pos_y + 1, math.min(max_y, pos_y + LLAMA.config.n_suffix))
     indent = state.indent_last
   end
 
@@ -483,23 +498,23 @@ local function fim_ctx_local(pos_x, pos_y, prev)
   }
 end
 
-function M.fim_manual()
+function LLAMA.fim_manual()
   if not state.enabled then
     return ""
   end
   if state.fim_hint_shown then
-    M.fim_hide()
+    LLAMA.fim_hide()
     return ""
   end
-  M.fim(-1, -1, false, {}, false)
+  LLAMA.fim(-1, -1, false, {}, false)
   return ""
 end
 
 local debounced_fim = funcs.debounce(function(pos_x, pos_y, prev, use_cache)
-  M.fim(pos_x, pos_y, true, prev, use_cache)
+  LLAMA.fim(pos_x, pos_y, true, prev, use_cache)
 end, 100)
 
-function M.fim(pos_x, pos_y, is_auto, prev, use_cache)
+function LLAMA.fim(pos_x, pos_y, is_auto, prev, use_cache)
   local pos = vim.api.nvim_win_get_cursor(0)
   pos_x = pos_x < 0 and pos[2] or pos_x
   pos_y = pos_y < 0 and pos[1] or pos_y
@@ -512,11 +527,11 @@ function M.fim(pos_x, pos_y, is_auto, prev, use_cache)
   local ctx = fim_ctx_local(pos_x, pos_y, prev)
   local prefix, middle, suffix, indent = ctx.prefix, ctx.middle, ctx.suffix, ctx.indent
 
-  if is_auto and #ctx.line_cur_suffix > M.config.max_line_suffix then
+  if is_auto and #ctx.line_cur_suffix > LLAMA.config.max_line_suffix then
     return
   end
 
-  local t_max_predict_ms = M.config.t_max_predict_ms
+  local t_max_predict_ms = LLAMA.config.t_max_predict_ms
   if not prev or #prev == 0 then
     t_max_predict_ms = 250
   end
@@ -545,15 +560,15 @@ function M.fim(pos_x, pos_y, is_auto, prev, use_cache)
 
   local curr_line = pos[1]
   local line_count = vim.api.nvim_buf_line_count(0)
-  local half_chunk = M.config.ring_chunk_size / 2
+  local half_chunk = LLAMA.config.ring_chunk_size / 2
 
   local start_idx = math.max(0, curr_line - half_chunk - 1)
   local end_idx = math.min(line_count, curr_line + half_chunk)
 
   local text = get_lines(start_idx, end_idx)
 
-  local l0 = rand(0, math.max(0, #text - M.config.ring_chunk_size / 2))
-  local l1 = math.min(l0 + M.config.ring_chunk_size / 2, #text)
+  local l0 = rand(0, math.max(0, #text - LLAMA.config.ring_chunk_size / 2))
+  local l1 = math.min(l0 + LLAMA.config.ring_chunk_size / 2, #text)
   local chunk = {}
   for i = l0 + 1, l1 do
     table.insert(chunk, text[i])
@@ -573,15 +588,15 @@ function M.fim(pos_x, pos_y, is_auto, prev, use_cache)
     input_suffix = suffix,
     input_extra = extra,
     prompt = middle,
-    n_predict = M.config.n_predict,
-    stop = M.config.stop_strings,
+    n_predict = LLAMA.config.n_predict,
+    stop = LLAMA.config.stop_strings,
     n_indent = indent,
     top_k = 40,
     top_p = 0.90,
     samplers = { "top_k", "top_p", "infill" },
     stream = false,
     cache_prompt = true,
-    t_max_prompt_ms = M.config.t_max_prompt_ms,
+    t_max_prompt_ms = LLAMA.config.t_max_prompt_ms,
     t_max_predict_ms = t_max_predict_ms,
     response_fields = {
       "content",
@@ -597,24 +612,25 @@ function M.fim(pos_x, pos_y, is_auto, prev, use_cache)
       "tokens_cached",
     },
   }
-  if M.config.model_fim ~= "" then
-    body.model = M.config.model_fim
+  if LLAMA.config.model_fim ~= "" then
+    body.model = LLAMA.config.model_fim
   end
 
-  if state.current_job_fim then
-    state.current_job_fim:shutdown()
+  if state.current_job_fim ~= nil and state.current_job_fim.pid then
+    vim.uv.kill(state.current_job_fim.pid, 15)
     state.current_job_fim = nil
   end
 
-  state.current_job_fim = request(M.config.endpoint_fim, body, {
+  state.current_job_fim = request(LLAMA.config.endpoint_fim, body, {
     stream = function(_, data)
-      M.fim_on_response(hashes, _, data)
+      LLAMA.fim_on_response(hashes, _, data)
     end,
-    on_exit = function(_, code, err)
-      if code ~= 0 and code ~= nil then
-        vim.notify(err, vim.log.levels.ERROR)
+    --- @param obj vim.SystemCompleted
+    on_exit = function(obj)
+      if obj.code ~= 0 then
+        vim.notify(obj.stderr, vim.log.levels.ERROR)
       end
-      M.fim_on_exit(_, code)
+      LLAMA.fim_on_exit(_, obj.code)
     end,
   })
 
@@ -625,8 +641,8 @@ function M.fim(pos_x, pos_y, is_auto, prev, use_cache)
     -- First chunk (Prefix scope)
     -- start_line: pos_y - scope - 1 (convert 1-indexed to 0-indexed)
     -- end_line: pos_y - n_prefix (already exclusive since n_prefix is usually >= 1)
-    M.pick_chunk(
-      get_lines(math.max(0, pos_y - M.config.ring_scope - 1), math.max(0, pos_y - M.config.n_prefix)),
+    LLAMA.pick_chunk(
+      get_lines(math.max(0, pos_y - LLAMA.config.ring_scope - 1), math.max(0, pos_y - LLAMA.config.n_prefix)),
       false,
       false
     )
@@ -634,10 +650,10 @@ function M.fim(pos_x, pos_y, is_auto, prev, use_cache)
     -- Second chunk (Suffix chunk)
     -- start_line: pos_y + n_suffix - 1 (convert 1-indexed to 0-indexed)
     -- end_line: min(max_y, pos_y + n_suffix + ring_chunk_size)
-    M.pick_chunk(
+    LLAMA.pick_chunk(
       get_lines(
-        math.min(max_y, pos_y + M.config.n_suffix - 1),
-        math.min(max_y, pos_y + M.config.n_suffix + M.config.ring_chunk_size)
+        math.min(max_y, pos_y + LLAMA.config.n_suffix - 1),
+        math.min(max_y, pos_y + LLAMA.config.n_suffix + LLAMA.config.ring_chunk_size)
       ),
       false,
       false
@@ -663,22 +679,22 @@ local function fim_on_response(hashes, _, data)
   end
   if not state.fim_hint_shown or not state.fim_data.can_accept then
     debug_log("fim_on_response", res.content or "")
-    M.fim_try_hint()
+    LLAMA.fim_try_hint()
   end
 end
-M.fim_on_response = vim.schedule_wrap(fim_on_response)
+LLAMA.fim_on_response = vim.schedule_wrap(fim_on_response)
 
-function M.fim_on_exit(_, _)
+function LLAMA.fim_on_exit(_, _)
   state.current_job_fim = nil
 end
 
-function M.on_move(_)
+function LLAMA.on_move(_)
   state.t_last_move = vim.uv.hrtime()
   fim_hide()
-  M.fim_try_hint()
+  LLAMA.fim_try_hint()
 end
 
-function M.fim_try_hint()
+function LLAMA.fim_try_hint()
   if not funcs.is_insert_mode() then
     return
   end
@@ -725,9 +741,9 @@ function M.fim_try_hint()
   end
 
   if raw then
-    M.fim_render(pos_x, pos_y, raw)
+    LLAMA.fim_render(pos_x, pos_y, raw)
     if state.fim_hint_shown then
-      M.fim(pos_x, pos_y, true, state.fim_data.content, true)
+      LLAMA.fim(pos_x, pos_y, true, state.fim_data.content, true)
     end
   end
 end
@@ -823,7 +839,7 @@ local function process_suggestion(content, pos_x, pos_y)
   return content, can_accept, line_cur
 end
 
-function M.fim_render(pos_x, pos_y, data)
+function LLAMA.fim_render(pos_x, pos_y, data)
   if vim.fn.pumvisible() == 1 then
     return
   end
@@ -867,25 +883,25 @@ function M.fim_render(pos_x, pos_y, data)
   local id_vt_fim = vim.api.nvim_create_namespace("vt_fim")
 
   local info = ""
-  if M.config.show_info > 0 and has_info then
+  if LLAMA.config.show_info > 0 and has_info then
     local prefix = "   "
     if truncated then
       info = string.format(
         "%s | WARNING: the context is full: %d, increase the server context size or reduce g:llama_config.ring_n_chunks",
-        M.config.show_info == 2 and prefix or "llama.vim",
+        LLAMA.config.show_info == 2 and prefix or "llama.vim",
         n_cached
       )
     else
       info = string.format(
         "%s | c: %d, r: %d/%d, e: %d, q: %d/16, C: %d/%d | p: %d (%.2f ms, %.2f t/s) | g: %d (%.2f ms, %.2f t/s)",
-        M.config.show_info == 2 and prefix or "llama.vim",
+        LLAMA.config.show_info == 2 and prefix or "llama.vim",
         n_cached,
         #state.ring_chunks,
-        M.config.ring_n_chunks,
+        LLAMA.config.ring_n_chunks,
         state.ring_n_evict,
         #state.ring_queued,
         cache.size,
-        M.config.max_cache_keys,
+        LLAMA.config.max_cache_keys,
         n_prompt,
         t_prompt_ms,
         s_prompt,
@@ -894,7 +910,7 @@ function M.fim_render(pos_x, pos_y, data)
         s_predict
       )
     end
-    if M.config.show_info == 1 then
+    if LLAMA.config.show_info == 1 then
       vim.opt_local.statusline = info
       info = ""
     end
@@ -920,24 +936,28 @@ function M.fim_render(pos_x, pos_y, data)
   }
   state.fim_data = fim_data
 
-  if M.config.keymap_fim_accept_full ~= "" then
-    vim.keymap.set("i", M.config.keymap_fim_accept_full, function()
-      M.fim_accept("full", fim_data)
-    end, { silent = true, noremap = true })
-  end
-  if M.config.keymap_fim_accept_line ~= "" then
-    vim.keymap.set("i", M.config.keymap_fim_accept_line, function()
-      M.fim_accept("line", fim_data)
-    end, { silent = true, noremap = true })
-  end
-  if M.config.keymap_fim_accept_word ~= "" then
-    vim.keymap.set("i", M.config.keymap_fim_accept_word, function()
-      M.fim_accept("word", fim_data)
-    end, { silent = true, noremap = true })
+  if can_accept then
+    if LLAMA.config.keymap_fim_accept_full ~= "" then
+      vim.keymap.set("i", LLAMA.config.keymap_fim_accept_full, function()
+        LLAMA.fim_accept("full", fim_data)
+      end, { silent = true, noremap = true })
+    end
+    if LLAMA.config.keymap_fim_accept_line ~= "" then
+      vim.keymap.set("i", LLAMA.config.keymap_fim_accept_line, function()
+        LLAMA.fim_accept("line", fim_data)
+      end, { silent = true, noremap = true })
+    end
+    if LLAMA.config.keymap_fim_accept_word ~= "" then
+      vim.keymap.set("i", LLAMA.config.keymap_fim_accept_word, function()
+        LLAMA.fim_accept("word", fim_data)
+      end, { silent = true, noremap = true })
+    end
   end
 end
 
-function M.fim_accept(accept_type, fim_data)
+--- @param accept_type string type of acceptance ("full","line","word")
+--- @param fim_data table containing fim data (pos_x, pos_y, line_cur, can_accept, content)
+function LLAMA.fim_accept(accept_type, fim_data)
   local pos_x, pos_y = fim_data.pos_x, fim_data.pos_y
   local line_cur = fim_data.line_cur
   local can_accept = fim_data.can_accept
@@ -973,10 +993,16 @@ function M.fim_accept(accept_type, fim_data)
   fim_hide()
 end
 
-function M.inst_build(l0, l1, inst, inst_prev)
-  local prefix = vim.fn.getline(math.max(1, l0 - M.config.n_prefix), l0 - 1)
-  local selection = vim.fn.getline(l0, l1)
-  local suffix = vim.fn.getline(l1 + 1, math.min(vim.fn.line("$"), l1 + M.config.n_suffix))
+--- Builds the message payload for an inst request.
+--- @param l0 integer start line number
+--- @param l1 integer end line number
+--- @param inst string instruction
+--- @param inst_prev table|nil previous instructions
+function LLAMA.inst_build(l0, l1, inst, inst_prev)
+  local prefix = vim.api.nvim_buf_get_lines(0, math.max(l0 - LLAMA.config.n_prefix - 1, 0), l0 - 1, false)
+  local selection = vim.api.nvim_buf_get_lines(0, l0 - 1, l1, false)
+  local last_line = vim.api.nvim_buf_line_count(0)
+  local suffix = vim.api.nvim_buf_get_lines(0, l1, math.min(last_line, l1 + LLAMA.config.n_suffix) + 1, false)
 
   local messages
   if inst_prev and #inst_prev > 0 then
@@ -988,13 +1014,13 @@ function M.inst_build(l0, l1, inst, inst_prev)
     local extra = ring_get_extra()
     system_prompt = system_prompt .. "\n"
     system_prompt = system_prompt .. "--- CONTEXT     " .. string.rep("-", 40) .. "\n"
-    system_prompt = system_prompt .. vim.fn.join(extra, "\n") .. "\n"
+    system_prompt = system_prompt .. table.concat(extra, "\n") .. "\n"
     system_prompt = system_prompt .. "--- PREFIX      " .. string.rep("-", 40) .. "\n"
-    system_prompt = system_prompt .. vim.fn.join(prefix, "\n") .. "\n"
+    system_prompt = system_prompt .. table.concat(prefix, "\n") .. "\n"
     system_prompt = system_prompt .. "--- SELECTION   " .. string.rep("-", 40) .. "\n"
-    system_prompt = system_prompt .. vim.fn.join(selection, "\n") .. "\n"
+    system_prompt = system_prompt .. table.concat(selection, "\n") .. "\n"
     system_prompt = system_prompt .. "--- SUFFIX      " .. string.rep("-", 40) .. "\n"
-    system_prompt = system_prompt .. vim.fn.join(suffix, "\n") .. "\n"
+    system_prompt = system_prompt .. table.concat(suffix, "\n") .. "\n"
 
     local system_message = {
       role = "system",
@@ -1012,11 +1038,13 @@ function M.inst_build(l0, l1, inst, inst_prev)
   return messages
 end
 
-function M.inst(l0, l1)
+--- @param l0 integer start line number
+--- @param l1 integer end line number
+function LLAMA.inst(l0, l1)
   local req_id = state.inst_req_id
   state.inst_req_id = state.inst_req_id + 1
 
-  local messages = M.inst_build(l0, l1, "")
+  local messages = LLAMA.inst_build(l0, l1, "", nil)
 
   local body = {
     id_slot = req_id,
@@ -1027,26 +1055,19 @@ function M.inst(l0, l1)
     cache_prompt = true,
     response_fields = { "" },
   }
-  if M.config.model_inst ~= "" then
-    body.model = M.config.model_inst
+  if LLAMA.config.model_inst ~= "" then
+    body.model = LLAMA.config.model_inst
   end
-
-  request(M.config.endpoint_inst, body, { stream = true })
-
-  local inst = vim.fn.input("Instruction: ")
-  if inst == "" then
-    return
-  end
-  debug_log("inst_send | " .. inst)
 
   local bufnr = vim.api.nvim_get_current_buf()
+
   local req = {
     id = req_id,
     bufnr = bufnr,
     range = { l0, l1 },
     status = "proc",
     result = "",
-    inst = inst,
+    think = "",
     inst_prev = {},
     job = nil,
     n_gen = 0,
@@ -1062,47 +1083,53 @@ function M.inst(l0, l1)
     end_col = #vim.fn.getline(l1),
     hl_group = "llama_hl_inst_src",
   })
+  req.inst = ""
+  LLAMA.inst_update(req.id, "proc")
 
-  M.inst_update(req_id, "proc")
-  req.inst_prev = M.inst_build(l0, l1, inst)
-  M.inst_send(req_id, req.inst_prev)
+  request(LLAMA.config.endpoint_inst, body, {
+    on_exit = vim.schedule_wrap(function(_)
+      local inst = vim.fn.input("Instruction: ")
+      if inst == "" then
+        return
+      end
+      debug_log("inst_send | " .. inst)
+      req.inst = inst
+      LLAMA.inst_update(req.id, "proc")
+      req.inst_prev = LLAMA.inst_build(l0, l1, inst)
+      LLAMA.inst_update(req.id, "proc")
+      LLAMA.inst_send(req.id, req.inst_prev)
+    end),
+  })
 end
 
-function M.inst_send(req_id, messages)
+function LLAMA.inst_send(req_id, messages)
   debug_log("inst_send", messages)
   local req = state.inst_reqs[req_id]
   local body = {
     id_slot = req_id,
     messages = messages,
-    min_p = 0.1,
-    temperature = 0.1,
-    samplers = { "min_p", "temperature" },
     stream = true,
     cache_prompt = true,
   }
-  if M.config.model_inst ~= "" then
-    body.model = M.config.model_inst
+  if LLAMA.config.model_inst ~= "" then
+    body.model = LLAMA.config.model_inst
   end
-  local job = request(M.config.endpoint_inst, body, {
+  req.job = request(LLAMA.config.endpoint_inst, body, {
     stream = function(_, data)
-      vim.schedule(function()
-        M.inst_on_response(req_id, data)
-      end)
+      LLAMA.inst_on_response(req_id, data)
     end,
-    on_exit = function(_, code, err)
-      if code ~= 0 and code ~= nil then
-        vim.notify(err, vim.log.levels.ERROR)
+    --- @param obj vim.SystemCompleted
+    on_exit = function(obj)
+      if obj.code ~= 0 then
+        vim.notify(obj.stderr, vim.log.levels.ERROR)
       end
-      vim.schedule(function()
-        M.inst_on_exit(req_id, code)
-      end)
-      state.current_job_fim = nil
+      LLAMA.inst_on_exit(req_id, obj.code)
     end,
   })
-  req.job = job
+  print(req.job)
 end
 
-function M.inst_update_pos(req)
+function LLAMA.inst_update_pos(req)
   -- Update position if buffer moved
   local ns = vim.api.nvim_create_namespace("vt_inst")
   local pos = vim.api.nvim_buf_get_extmark_by_id(req.bufnr, ns, req.extmark, {})
@@ -1114,14 +1141,14 @@ function M.inst_update_pos(req)
   req.range[1] = line
 end
 
-function M.inst_update(req_id, status)
+function LLAMA.inst_update(req_id, status)
   local req = state.inst_reqs[req_id]
   if not req then
     return
   end
   req.status = status
   local ns = vim.api.nvim_create_namespace("vt_inst")
-  M.inst_update_pos(req)
+  LLAMA.inst_update_pos(req)
 
   local inst_trunc = req.inst
   if #inst_trunc > 128 then
@@ -1139,21 +1166,23 @@ function M.inst_update(req_id, status)
     hl = "llama_hl_inst_virt_proc"
     virt_lines = {
       { { sep, hl } },
-      { { string.format("Endpoint:    %s", M.config.endpoint_inst), hl } },
-      { { string.format("Model:       %s", M.config.model_inst), hl } },
+      { { string.format("Endpoint:    %s", LLAMA.config.endpoint_inst), hl } },
+      { { string.format("Model:       %s", LLAMA.config.model_inst), hl } },
       { { string.format("Instruction: %s", inst_trunc), hl } },
       { { "Processing ...", hl } },
     }
   elseif status == "gen" then
     local preview = req.result:gsub(".*\n%s*", "")
-    if #req.result == 0 then
+    if #req.result == 0 and #req.think == 0 then
       preview = "[thinking]"
+    elseif #req.result == 0 and #req.think ~= 0 then
+      preview = req.think:gsub(".*\n%s*", "")
     end
     hl = "llama_hl_inst_virt_gen"
     virt_lines = {
       { { sep, hl } },
-      { { string.format("Endpoint:    %s", M.config.endpoint_inst), hl } },
-      { { string.format("Model:       %s", M.config.model_inst), hl } },
+      { { string.format("Endpoint:    %s", LLAMA.config.endpoint_inst), hl } },
+      { { string.format("Model:       %s", LLAMA.config.model_inst), hl } },
       { { string.format("Instruction: %s", inst_trunc), hl } },
       { { string.format("Generating:  %4d tokens | %s", req.n_gen, preview), hl } },
     }
@@ -1169,7 +1198,9 @@ function M.inst_update(req_id, status)
   end
 end
 
-function M.inst_on_response(req_id, data)
+--- @param req_id integer request id
+--- @param data string response data
+local function inst_on_response(req_id, data)
   if not data then
     return
   end
@@ -1179,6 +1210,7 @@ function M.inst_on_response(req_id, data)
   end
 
   local content = ""
+  local thinking = ""
   for _, line in ipairs(lines) do
     if #line > 6 and vim.startswith(line, "data: ") then
       line = line:sub(7)
@@ -1197,6 +1229,11 @@ function M.inst_on_response(req_id, data)
             content = content .. delta.content
           end
         end
+        if delta.reasoning_content then
+          if type(delta.reasoning_content) == "string" then
+            thinking = thinking .. delta.reasoning_content
+          end
+        end
       elseif choices[1] and choices[1].message then
         delta = choices[1].message.content
         if type(delta) == "string" then
@@ -1213,27 +1250,36 @@ function M.inst_on_response(req_id, data)
   if not req then
     return
   end
-  M.inst_update(req_id, "gen")
+  LLAMA.inst_update(req_id, "gen")
+  if thinking ~= "" then
+    req.think = req.think .. thinking
+    req.n_gen = req.n_gen + 1
+  end
   if content ~= "" then
     req.result = req.result .. content
     req.n_gen = req.n_gen + 1
   end
 end
+LLAMA.inst_on_response = vim.schedule_wrap(inst_on_response)
 
-function M.inst_on_exit(req_id, code)
+local function inst_on_exit(req_id, code)
   if code ~= 0 and code ~= nil then
-    M.inst_remove(req_id)
+    LLAMA.inst_remove(req_id)
     return
   end
   local req = state.inst_reqs[req_id]
   if not req then
     return
   end
-  M.inst_update(req_id, "ready")
+  LLAMA.inst_update(req_id, "ready")
   table.insert(req.inst_prev, { role = "assistant", content = req.result })
 end
+LLAMA.inst_on_exit = vim.schedule_wrap(inst_on_exit)
 
-function M.inst_remove(req_id)
+--- Removes an instantiated request and cleans up the buffer.
+--- @param req_id number request id
+--- @return nil
+function LLAMA.inst_remove(req_id)
   local req = state.inst_reqs[req_id]
   if not req then
     return
@@ -1243,14 +1289,21 @@ function M.inst_remove(req_id)
   if req.extmark_virt ~= -1 then
     vim.api.nvim_buf_del_extmark(req.bufnr, ns, req.extmark_virt)
   end
-  if req.job then
-    req.job:shutdown()
+  if req.job ~= nil and req.job.pid then
+    vim.uv.kill(req.job.pid, 15)
+    req.job = nil
   end
-  req.job = nil
   state.inst_reqs[req_id] = nil
 end
 
-function M.inst_callback(bufnr, l0, l1, result)
+--- Replaces the selected lines in the buffer with the given result text.
+--- This function is called after an LLM request has finished.
+--- @param bufnr number buffer number
+--- @param l0 integer start line (1-based)
+--- @param l1 integer end line (1-based)
+--- @param result string replacement text
+--- @return nil
+function LLAMA.inst_callback(bufnr, l0, l1, result)
   local result_lines = vim.split(result, "\n", { stub = true, trimempty = true })
   while #result_lines > 0 and result_lines[#result_lines] == "" do
     table.remove(result_lines)
@@ -1258,14 +1311,14 @@ function M.inst_callback(bufnr, l0, l1, result)
   vim.api.nvim_buf_set_lines(bufnr, l0 - 1, l1, false, result_lines)
 end
 
-function M.inst_accept()
+function LLAMA.inst_accept()
   local line = vim.fn.line(".")
   for _, req in pairs(state.inst_reqs) do
     if req.status == "ready" then
-      M.inst_update_pos(req)
+      LLAMA.inst_update_pos(req)
       if line >= req.range[1] and line <= req.range[2] then
-        M.inst_remove(req.id)
-        M.inst_callback(req.bufnr, req.range[1], req.range[2], req.result)
+        LLAMA.inst_remove(req.id)
+        LLAMA.inst_callback(req.bufnr, req.range[1], req.range[2], req.result)
         return
       end
     end
@@ -1273,37 +1326,37 @@ function M.inst_accept()
   vim.api.nvim_feedkeys("\t", "n", false)
 end
 
-function M.inst_cancel()
+function LLAMA.inst_cancel()
   local line = vim.fn.line(".")
   for _, req in pairs(state.inst_reqs) do
     if line >= req.range[1] and line <= req.range[2] then
-      M.inst_remove(req.id)
+      LLAMA.inst_remove(req.id)
       return
     end
   end
 end
 
-function M.inst_rerun()
+function LLAMA.inst_rerun()
   local lnum = vim.fn.line(".")
   for _, req in pairs(state.inst_reqs) do
-    M.inst_update_pos(req)
+    LLAMA.inst_update_pos(req)
     if req.status == "ready" and lnum >= req.range[1] and lnum <= req.range[2] then
       debug_log("inst_rerun")
       req.result = ""
       req.status = "proc"
       req.n_gen = 0
       table.remove(req.inst_prev)
-      M.inst_update(req.id, "proc")
-      M.inst_send(req.id, req.inst_prev)
+      LLAMA.inst_update(req.id, "proc")
+      LLAMA.inst_send(req.id, req.inst_prev)
       return
     end
   end
 end
 
-function M.inst_continue()
+function LLAMA.inst_continue()
   local lnum = vim.fn.line(".")
   for _, req in pairs(state.inst_reqs) do
-    M.inst_update_pos(req)
+    LLAMA.inst_update_pos(req)
     if req.status == "ready" and lnum >= req.range[1] and lnum <= req.range[2] then
       local inst = vim.fn.input("Next instruction: ")
       if inst == "" then
@@ -1314,28 +1367,31 @@ function M.inst_continue()
       req.status = "proc"
       req.inst = inst
       req.n_gen = 0
-      M.inst_update(req.id, "proc")
-      req.inst_prev = M.inst_build(req.range[1], req.range[2], inst, req.inst_prev)
-      M.inst_send(req.id, req.inst_prev)
+      LLAMA.inst_update(req.id, "proc")
+      req.inst_prev = LLAMA.inst_build(req.range[1], req.range[2], inst, req.inst_prev)
+      LLAMA.inst_send(req.id, req.inst_prev)
       return
     end
   end
 end
 
 vim.api.nvim_create_user_command("LlamaEnable", function()
-  M.enable()
+  LLAMA.enable()
 end, {})
 vim.api.nvim_create_user_command("LlamaDisable", function()
-  M.disable()
+  LLAMA.disable()
 end, {})
 vim.api.nvim_create_user_command("LlamaToggle", function()
-  M.toggle()
+  LLAMA.toggle()
 end, {})
 vim.api.nvim_create_user_command("LlamaToggleAutoFim", function()
-  M.toggle_auto_fim()
+  LLAMA.toggle_auto_fim()
 end, {})
 vim.api.nvim_create_user_command("LlamaInstruct", function(opts)
-  M.inst(opts.line1, opts.line2)
+  LLAMA.inst(opts.line1, opts.line2)
 end, { range = true })
+vim.api.nvim_create_user_command("LlamaInstructContinue", function()
+  LLAMA.inst_continue()
+end, {})
 
-M.enable()
+enable()

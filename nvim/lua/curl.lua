@@ -34,7 +34,6 @@ local util, parse = {}, {}
 -- Helpers --------------------------------------------------
 -------------------------------------------------------------
 local F = require("plenary.functional")
-local J = require("plenary.job")
 local P = require("plenary.path")
 local compat = require("plenary.compat")
 
@@ -275,6 +274,7 @@ parse.response = function(lines, dump_path, code)
   }
 end
 
+--- @return vim.SystemObj | string
 local request = function(specs)
   local response = {}
   local args, opts = parse.request(vim.tbl_extend("force", {
@@ -287,60 +287,60 @@ local request = function(specs)
     return args
   end
 
+  local cmd = { "curl", unpack(args) }
+
   local job_opts = {
-    command = vim.g.plenary_curl_bin_path or "curl",
-    args = args,
+    text = true,
   }
 
   if opts.stream then
-    job_opts.on_stdout = opts.stream
+    job_opts.stdout = opts.stream
   end
 
-  job_opts.on_exit = function(j, code)
-    if code ~= 0 then
-      local stderr = vim.inspect(j:stderr_result())
-      local message = string.format("%s %s - curl error exit_code=%s stderr=%s", opts.method, opts.url, code, stderr)
-      if opts.on_exit then
-        return opts.on_exit(j, code, message)
-      end
+  --- @param obj vim.SystemCompleted
+  local on_exit = function(obj)
+    if opts.on_exit then
+      return opts.on_exit(obj)
+    end
+
+    if obj.code ~= 0 then
+      local stderr = vim.inspect(obj.stderr)
+      local message =
+        string.format("%s %s - curl error exit_code=%s stderr=%s", opts.method, opts.url, obj.code, stderr)
       if opts.on_error then
         return opts.on_error({
+          code = obj.code,
           message = message,
           stderr = stderr,
-          exit = code,
         })
       else
         error(message)
       end
     end
-    if opts.on_exit then
-      return opts.on_exit(j, code, "")
-    end
 
-    local output = parse.response(j:result(), opts.dump[2], code)
+    local output = parse.response(obj.stdout, opts.dump[2], obj.code)
     if opts.callback then
-      print("callback", output)
       return opts.callback(output)
     else
       response = output
     end
   end
-  local job = J:new(job_opts)
 
-  if opts.callback or opts.stream then
-    job:start()
-    return job
-  else
-    local timeout = opts.timeout or 10000
-    job:sync(timeout)
+  if opts.timeout then
+    job_opts.timeout = opts.timeout
+  end
+  local job = vim.system(cmd, job_opts, on_exit)
+
+  if opts.callback then
+    job:wait()
     return response
   end
+  return job
 end
 
--- Main ----------------------------------------------------
-------------------------------------------------------------
 return (function()
   local partial = function(method)
+    --- @return vim.SystemObj | string
     return function(url, opts)
       local spec = {}
       opts = opts or {}
