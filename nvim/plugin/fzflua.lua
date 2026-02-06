@@ -161,7 +161,6 @@ lze.load({
     augroup(fzf, { clear = true })
     local actions = require("fzf-lua.actions")
     require("fzf-lua").setup({
-      { "skim" },
       fzf_opts = {
         ["--ansi"] = "",
         -- ["--algo"] = "frizbee",
