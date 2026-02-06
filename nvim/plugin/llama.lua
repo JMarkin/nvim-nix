@@ -1,7 +1,7 @@
--- if vim.g.did_load_llama_plugin then
---   return
--- end
--- vim.g.did_load_llama_plugin = true
+if vim.g.did_load_llama_plugin then
+  return
+end
+vim.g.did_load_llama_plugin = true
 
 -- AI+ rewrite of the original vimscript `llama.vim`.
 -- -------------------------------------------------------------------------
@@ -49,7 +49,7 @@ LLAMA.config = {
   keymap_fim_trigger = "<c-x><c-z>",
   keymap_fim_accept_line = "<c-z>",
   keymap_fim_accept_full = "<c-f>",
-  keymap_fim_accept_word = "<c-m>",
+  keymap_fim_accept_word = "<c-w>",
   keymap_inst_trigger = "<leader>ai",
   keymap_inst_rerun = "<leader>ar",
   keymap_inst_continue = "<leader>ac",
@@ -623,7 +623,7 @@ function LLAMA.fim(pos_x, pos_y, is_auto, prev, use_cache)
 
   state.current_job_fim = request(LLAMA.config.endpoint_fim, body, {
     stream = function(_, data)
-      LLAMA.fim_on_response(hashes, _, data)
+      LLAMA.fim_on_response(hashes, data)
     end,
     --- @param obj vim.SystemCompleted
     on_exit = function(obj)
@@ -662,9 +662,11 @@ function LLAMA.fim(pos_x, pos_y, is_auto, prev, use_cache)
   end
 end
 
-local function fim_on_response(hashes, _, data)
+--- @param hashes table
+--- @param data string
+local function fim_on_response(hashes, data)
   local raw = data
-  if #raw == 0 then
+  if not raw or #raw == 0 then
     return
   end
   if not raw:match("^%s*{") or not raw:match('%"content"%s*:') then
@@ -1012,6 +1014,11 @@ function LLAMA.inst_build(l0, l1, inst, inst_prev)
     system_prompt = system_prompt
       .. [[You are a text-editing assistant. Respond ONLY with the result of applying INSTRUCTION to SELECTION given the CONTEXT. Maintain the existing text indentation. Do not add extra code blocks. Respond only with the modified block. If the INSTRUCTION is a question, answer it directly. Do not output any extra separators. Consider the local context before (PREFIX) and after (SUFFIX) the SELECTION.]]
     local extra = ring_get_extra()
+    debug_log(extra)
+    debug_log(prefix)
+    debug_log(selection)
+    debug_log(suffix)
+
     system_prompt = system_prompt .. "\n"
     system_prompt = system_prompt .. "--- CONTEXT     " .. string.rep("-", 40) .. "\n"
     system_prompt = system_prompt .. table.concat(extra, "\n") .. "\n"

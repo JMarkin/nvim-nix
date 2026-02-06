@@ -175,7 +175,7 @@ lze.load({
       no_resume = true,
       multiprocess = true,
       winopts = {
-        preview = { default = "builtin" },
+        preview = { default = "bat" },
         on_create = function()
           vim.b.term_ignore = true
           vim.keymap.set("t", "<C-n>", "<Down>", { silent = true, buffer = true })

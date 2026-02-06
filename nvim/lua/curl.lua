@@ -246,8 +246,6 @@ parse.request = function(opts)
   return compat.flatten(result), opts
 end
 
--- Parse response ------------------------------------------
-------------------------------------------------------------
 parse.response = function(lines, dump_path, code)
   local headers = P.readlines(dump_path)
   local status = nil
@@ -318,6 +316,10 @@ local request = function(specs)
       end
     end
 
+    if not obj.stdout then
+      return
+    end
+
     local output = parse.response(obj.stdout, opts.dump[2], obj.code)
     if opts.callback then
       return opts.callback(output)
@@ -331,7 +333,7 @@ local request = function(specs)
   end
   local job = vim.system(cmd, job_opts, on_exit)
 
-  if opts.callback then
+  if not (opts.callback and opts.stream) then
     job:wait()
     return response
   end
