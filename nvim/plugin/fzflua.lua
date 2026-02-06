@@ -161,7 +161,7 @@ lze.load({
     augroup(fzf, { clear = true })
     local actions = require("fzf-lua.actions")
     require("fzf-lua").setup({
-      { "skim", "max-perf" },
+      { "skim" },
       fzf_opts = {
         ["--ansi"] = "",
         -- ["--algo"] = "frizbee",
@@ -175,7 +175,7 @@ lze.load({
       no_resume = true,
       multiprocess = true,
       winopts = {
-        -- preview = { default = "bat" },
+        preview = { default = "builtin" },
         on_create = function()
           vim.b.term_ignore = true
           vim.keymap.set("t", "<C-n>", "<Down>", { silent = true, buffer = true })
