@@ -261,7 +261,7 @@ parse.response = function(lines, dump_path, code)
     end
   end
 
-  local body = F.join(lines, "\n")
+  local body = lines
   vim.loop.fs_unlink(dump_path)
 
   return {
