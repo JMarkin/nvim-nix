@@ -105,7 +105,6 @@ vim.api.nvim_create_autocmd(vim.g.post_load_events, {
     })
 
     -- Movement keymaps using repeatable_move
-    local ts_repeat = require("nvim-treesitter-textobjects.repeatable_move")
     local move = require("nvim-treesitter-textobjects.move")
 
     -- FUNCTION
@@ -165,10 +164,10 @@ vim.api.nvim_create_autocmd(vim.g.post_load_events, {
     -- vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat.repeat_last_move_previous)
 
     -- Make f, F, t, T repeatable
-    vim.keymap.set({ "n", "x", "o" }, "f", ts_repeat.builtin_f_expr, { expr = true })
-    vim.keymap.set({ "n", "x", "o" }, "F", ts_repeat.builtin_F_expr, { expr = true })
-    vim.keymap.set({ "n", "x", "o" }, "t", ts_repeat.builtin_t_expr, { expr = true })
-    vim.keymap.set({ "n", "x", "o" }, "T", ts_repeat.builtin_T_expr, { expr = true })
+    -- vim.keymap.set({ "n", "x", "o" }, "f", ts_repeat.builtin_f_expr, { expr = true })
+    -- vim.keymap.set({ "n", "x", "o" }, "F", ts_repeat.builtin_F_expr, { expr = true })
+    -- vim.keymap.set({ "n", "x", "o" }, "t", ts_repeat.builtin_t_expr, { expr = true })
+    -- vim.keymap.set({ "n", "x", "o" }, "T", ts_repeat.builtin_T_expr, { expr = true })
 
     -- Swap keymaps with <leader>cs prefix
     local swap = require("nvim-treesitter-textobjects.swap")

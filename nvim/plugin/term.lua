@@ -31,26 +31,3 @@ end
 vim.keymap.set("n", "<A-t>", term_open, { desc = "Open terminal" })
 vim.keymap.set("t", "<A-t>", term_open, { desc = "Open terminal" })
 
-vim.keymap.set("n", "<space>k", function()
-  local out = vim.system({ "fd", "-a", "--glob", "*yaml", vim.env.HOME .. "/.kube/configs" }, { text = true }):wait()
-  local selects = {}
-  for segment in string.gmatch(out.stdout, "[^\n]+") do
-    table.insert(selects, segment)
-  end
-
-  vim.ui.select(selects, {
-    prompt = "Select kubeconfig in ~/.kube/configs:",
-    format_item = function(item)
-      return item
-    end,
-  }, function(choice)
-    if not choice then
-      return
-    end
-    local bufnr =
-      term.open(string.format("k9s --insecure-skip-tls-verify --all-namespaces --kubeconfig %s", choice), nil)
-
-    vim.keymap.set("t", "<c-\\><c-\\>", [[<C-\><C-n>^]], { buffer = bufnr })
-    vim.keymap.set("t", "<c-\\><c-n>", [[<C-\><C-n>^]], { buffer = bufnr })
-  end)
-end, { desc = "K9S" })

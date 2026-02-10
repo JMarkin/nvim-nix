@@ -2,11 +2,14 @@ set -x
 nix flake archive --json |
 	jq -r '.path,(.inputs|to_entries[].value.path)' |
 	cachix push jmarkin
+
+SYSTEM=$1
+
 for target in $(
-	nix flake show --json --all-systems | jq '
+	nix flake show --json --all-systems |  SYSTEM="$SYSTEM" jq '
 	.["packages"] | 
 	to_entries[] | 
-	select(.key | . != "aarch64-darwin" and . != "x86_64-darwin") | 
+	select(.key | . == env.SYSTEM) | 
 	.key as $arch | 
 	.value | 
 	keys[] | 

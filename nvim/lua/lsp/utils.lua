@@ -53,20 +53,6 @@ M.keys = {
     { desc = "Lang: diagnistic", table.unpack(opts_l) },
   },
   {
-    "]d",
-    function()
-      vim.diagnostic.jump({ count = vim.v.count1 })
-    end,
-    { desc = "Jump to the next diagnostic in the current buffer", table.unpack(opts_l) },
-  },
-  {
-    "[d",
-    function()
-      vim.diagnostic.jump({ count = -vim.v.count1 })
-    end,
-    { desc = "Jump to the previous diagnostic in the current buffer", table.unpack(opts_l) },
-  },
-  {
     "]e",
     function()
       vim.diagnostic.jump({ count = vim.v.count1, severity = vim.diagnostic.severity.ERROR })

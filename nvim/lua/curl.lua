@@ -333,7 +333,7 @@ local request = function(specs)
   end
   local job = vim.system(cmd, job_opts, on_exit)
 
-  if not (opts.callback and opts.stream) then
+  if not (opts.callback or opts.stream) then
     job:wait()
     return response
   end

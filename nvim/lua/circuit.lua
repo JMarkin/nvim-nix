@@ -14,7 +14,6 @@ end
 function CircuitBreaker:call(func, ...)
   local now = os.time()
 
-  -- Check if we should move from OPEN to HALF-OPEN (Retry)
   if self.state == "OPEN" then
     if now - self.last_failure_time > self.reset_timeout then
       self.state = "HALF-OPEN"
@@ -23,7 +22,6 @@ function CircuitBreaker:call(func, ...)
     end
   end
 
-  -- Execute the protected function
   local success, result = pcall(func, ...)
 
   if success then

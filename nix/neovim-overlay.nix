@@ -63,6 +63,7 @@ with final.pkgs.lib; let
   '';
 
   minimal-packages = with pkgs; [
+    curl
     fixjson
     fswatch
   ];
@@ -240,12 +241,13 @@ with final.pkgs.lib; let
     ++ ai.plugins
     ++ (callPackage ./autocomplete.nix)
     ++ (callPackage ./blink-pairs.nix)
+    ++ (callPackage ./kube.nix)
     ++ (callPackage ./ui.nix)
     ++ langs.plugins
     ++ (
     with pkgs.vimPlugins; [
-      # eyeliner-nvim
-      # demicolon-nvim
+      eyeliner-nvim
+      demicolon-nvim
       flash-nvim
 
       vim-easy-align

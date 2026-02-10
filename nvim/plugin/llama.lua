@@ -1,7 +1,7 @@
-if vim.g.did_load_llama_plugin then
-  return
-end
-vim.g.did_load_llama_plugin = true
+-- if vim.g.did_load_llama_plugin then
+--   return
+-- end
+-- vim.g.did_load_llama_plugin = true
 
 -- AI+ rewrite of the original vimscript `llama.vim`.
 -- -------------------------------------------------------------------------
@@ -285,7 +285,7 @@ function LLAMA.toggle_auto_fim()
 end
 
 --- @return vim.SystemObj
-local function request(url, body, opts)
+local function request(url, body, opts, on_exit)
   local headers = {
     ["Content-Type"] = "application/json",
   }
@@ -297,6 +297,7 @@ local function request(url, body, opts)
   opts = vim.tbl_deep_extend("force", opts, {
     headers = headers,
     body = json_encode(body),
+    on_exit = function(obj) end,
   })
 
   return curl.post(url, opts)
@@ -628,7 +629,8 @@ function LLAMA.fim(pos_x, pos_y, is_auto, prev, use_cache)
     --- @param obj vim.SystemCompleted
     on_exit = function(obj)
       if obj.code ~= 0 then
-        vim.notify(obj.stderr, vim.log.levels.ERROR)
+        funcs.schedule_notify(obj.stderr, vim.log.levels.ERROR)
+        disable()
       end
       LLAMA.fim_on_exit(_, obj.code)
     end,
@@ -1128,7 +1130,7 @@ function LLAMA.inst_send(req_id, messages)
     --- @param obj vim.SystemCompleted
     on_exit = function(obj)
       if obj.code ~= 0 then
-        vim.notify(obj.stderr, vim.log.levels.ERROR)
+        funcs.schedule_notify(obj.stderr, vim.log.levels.ERROR)
       end
       LLAMA.inst_on_exit(req_id, obj.code)
     end,

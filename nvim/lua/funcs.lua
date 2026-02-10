@@ -246,4 +246,6 @@ function M.get_ts(buf)
   return parser
 end
 
+M.schedule_notify = vim.schedule_wrap(vim.notify)
+
 return M

@@ -25,6 +25,7 @@ let
     v = "nvim";
     vi = "nvim";
     vimdiff = "nvim -d";
+    k8s = "nvim -c 'lua require(\"kubectl\").toggle({tab=true})'";
   };
 
   sessionVariables = {

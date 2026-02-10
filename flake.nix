@@ -11,6 +11,7 @@
     gen-luarc.inputs.flake-parts.follows = "flake-parts";
 
     blink-pairs.url = "github:Saghen/blink.pairs?ref=v0.4.1";
+    kubectl-nvim.url = "github:Ramilito/kubectl.nvim/?ref=v2.39.2";
 
     # Development and formatting tools
     kulala-nvim.url = "github:mistweaverco/kulala.nvim";
@@ -104,7 +105,7 @@
     in
     flake-parts.lib.mkFlake { inherit inputs; } {
       # Supported systems - add more as needed
-      systems = [ "x86_64-linux" "aarch64-darwin" "x86_64-darwin" ];
+      systems = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" "x86_64-darwin" ];
       perSystem = { system, pkgs, ... }:
         {
           _module.args.pkgs = import inputs.nixpkgs {
