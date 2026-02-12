@@ -16,6 +16,7 @@ in
       lze.load{
       "${kubectl-nvim.pname}",
       cmd = { 'Kubectl', 'Kubectx', 'Kubens' },
+      on_require = {"kubectl"},
       keys = {
         { '<space>k', '<cmd>lua require("kubectl").toggle({tab=true})<cr>' },
         { '7', '<Plug>(kubectl.view_nodes)', ft = 'k8s_*' },

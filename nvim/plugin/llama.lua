@@ -1,7 +1,7 @@
--- if vim.g.did_load_llama_plugin then
---   return
--- end
--- vim.g.did_load_llama_plugin = true
+if vim.g.did_load_llama_plugin then
+  return
+end
+vim.g.did_load_llama_plugin = true
 
 -- AI+ rewrite of the original vimscript `llama.vim`.
 -- -------------------------------------------------------------------------
@@ -50,9 +50,9 @@ LLAMA.config = {
   keymap_fim_accept_line = "<c-z>",
   keymap_fim_accept_full = "<c-f>",
   keymap_fim_accept_word = "<c-w>",
-  keymap_inst_trigger = "<leader>ai",
-  keymap_inst_rerun = "<leader>ar",
-  keymap_inst_continue = "<leader>ac",
+  keymap_inst_trigger = "<leader>li",
+  keymap_inst_rerun = "<leader>lr",
+  keymap_inst_continue = "<leader>lc",
   keymap_inst_accept = "<Tab>",
   keymap_inst_cancel = "<Esc>",
   enable_at_startup = true,
@@ -176,7 +176,10 @@ local function autocmd(group, events, func)
     pattern = "*",
     callback = function(ev)
       local buf = ev.buf
-      if vim.bo[buf].buftype == "" and not vim.bo[buf].modified then
+      if not vim.bo[buf].modified then
+        return
+      end
+      if vim.bo[buf].buftype == "prompt" then
         return
       end
       local ft = vim.bo[buf].ft
@@ -297,7 +300,6 @@ local function request(url, body, opts, on_exit)
   opts = vim.tbl_deep_extend("force", opts, {
     headers = headers,
     body = json_encode(body),
-    on_exit = function(obj) end,
   })
 
   return curl.post(url, opts)

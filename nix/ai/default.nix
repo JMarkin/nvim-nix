@@ -5,15 +5,18 @@ let
   });
 
   opencode = callPackage ./opencode.nix;
+  # aider = callPackage ./aider.nix;
   # cursortab = callPackage ./cursortab.nix;
 in
 {
   plugins = [ ]
     ++ opencode.plugins
+    # ++ aider.plugins
     # ++ miniet.plugins
   ;
   packages = [ ]
     ++ opencode.packages
+    # ++ aider.packages
     # ++ miniet.packages
   ;
 }

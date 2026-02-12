@@ -15,11 +15,10 @@
             require("opencode").setup({
               preferred_picker = "fzf-lua",
               preferred_completion = "blink",
-              default_mode = 'ask',
-              keymap_prefix = '<leader>o',
+              default_mode = 'plan',
+              keymap_prefix = '<leader>a',
               quick_chat = {
                 default_model = nil,
-                default_agent = 'ask',
                 instructions = nil,
               },
             })

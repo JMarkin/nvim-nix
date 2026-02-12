@@ -627,6 +627,44 @@
         "type": "github"
       }
     },
+    "opencode": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1770921998,
+        "narHash": "sha256-/K7xhJn71eWK+yoA6bbyU1bPn4DgNXw791gXTtl6qME=",
+        "owner": "anomalyco",
+        "repo": "opencode",
+        "rev": "ac018e3a35fe75b57d55ae349a91624609e11448",
+        "type": "github"
+      },
+      "original": {
+        "owner": "anomalyco",
+        "ref": "v1.1.63",
+        "repo": "opencode",
+        "type": "github"
+      }
+    },
+    "opencode-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1770928144,
+        "narHash": "sha256-itFNpw30uDW/PD7PglQaEAkjBOYzpfKG5rcWqC19f08=",
+        "owner": "sudo-tee",
+        "repo": "opencode.nvim",
+        "rev": "22ee4f0f76e7b7de60a57f9a524893e50f0edbc4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "sudo-tee",
+        "repo": "opencode.nvim",
+        "rev": "22ee4f0f76e7b7de60a57f9a524893e50f0edbc4",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "blink-pairs": "blink-pairs",
@@ -648,6 +686,8 @@
         "nvim-window": "nvim-window",
         "nvim-yati": "nvim-yati",
         "oil-nvim": "oil-nvim",
+        "opencode": "opencode",
+        "opencode-nvim": "opencode-nvim",
         "smart-splits-nvim": "smart-splits-nvim",
         "whatthejump-nvim": "whatthejump-nvim",
         "yaml-nvim": "yaml-nvim"

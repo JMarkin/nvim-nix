@@ -32,6 +32,22 @@ let
     EDITOR = "nvim";
     VISUAL = "nvim";
     MANPAGER = "nvim +Man!";
+
+
+    # aider settings
+    AIDER_PRETTY = "True";
+    AIDER_AUTO_COMMITS = "False";
+    AIDER_STREAM = "True";
+    AIDER_SHOW_MODEL_WARNINGS = "False";
+    AIDER_VERIFY_SSL = "False";
+    AIDER_ANALYTICS_DISABLE = "True";
+    AIDER_THINKING_TOKENS = "1024";
+    AIDER_CACHE_PROMPTS = "True";
+    AIDER_CHECK_UPDATE = "False";
+
+    AIDER_MODEL = lib.mkDefault "openai/gpt-oss";
+    OPENAI_API_BASE = lib.mkDefault "http://localhost:8012/v1";
+    OPENAI_API_KEY = lib.mkDefault "local-key";
   };
 
 

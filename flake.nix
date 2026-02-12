@@ -73,15 +73,15 @@
       flake = false;
     };
 
-    opencode.url = "github:anomalyco/opencode?ref=v1.1.36";
+    opencode.url = "github:anomalyco/opencode?ref=v1.1.63";
     opencode.inputs.nixpkgs.follows = "nixpkgs";
     opencode-nvim = {
-      url = "github:sudo-tee/opencode.nvim";
+      url = "github:sudo-tee/opencode.nvim?ref=22ee4f0f76e7b7de60a57f9a524893e50f0edbc4";
       flake = false;
     };
-
-    llama-vim = {
-      url = "github:ggml-org/llama.vim";
+    
+    nvim-aider = {
+      url = "github:GeorgesAlkhouri/nvim-aider";
       flake = false;
     };
 

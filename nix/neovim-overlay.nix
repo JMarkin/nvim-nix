@@ -54,12 +54,12 @@ with final.pkgs.lib; let
     let g:did_load_lint_plugin = v:${val}
     let g:did_load_lspconfig_plugin = v:${val}
     let g:did_load_mini_plugin = v:${val}
-    let g:did_load_snacks_plugin = v:${val}
     let g:did_load_smart_plugin = v:${val}
     let g:did_load_split_join_plugin = v:${val}
     let g:did_load_tags_plugin = v:${val}
     let g:did_load_treesitter_plugin = v:${val}
     let g:did_load_ui_plugins = v:${val}
+    let g:did_load_llama_plugins = v:${val}
   '';
 
   minimal-packages = with pkgs; [
@@ -167,7 +167,6 @@ with final.pkgs.lib; let
       config = /*vim*/''
         let g:did_load_mini_plugin = v:false
         let g:did_load_smart_plugin = v:false
-        let g:did_load_snacks_plugin = v:false
         let g:did_load_comment_plugin = v:false
         let g:did_load_treesitter_plugin = v:false
 
@@ -246,6 +245,18 @@ with final.pkgs.lib; let
     ++ langs.plugins
     ++ (
     with pkgs.vimPlugins; [
+      {
+        plugin = snacks-nvim;
+        type = "lua";
+        optional = true;
+        config = /*lua*/''
+          lze.load {
+            "${snacks-nvim.pname}",
+          on_require = {"snacks", "snacks.picker"},
+          }
+        '';
+      }
+
       eyeliner-nvim
       demicolon-nvim
       flash-nvim
@@ -375,6 +386,7 @@ rec
         nvim-window = (mkNvimPlugin inputs.nvim-window "nvim-window");
 
         django-nvim = (mkNvimPlugin inputs.django-nvim "django-nvim");
+
         opencode-nvim = (mkNvimPlugin inputs.opencode-nvim "opencode-nvim").overrideAttrs {
           dependencies = [
             prev.vimPlugins.render-markdown-nvim
@@ -383,6 +395,12 @@ rec
             prev.vimPlugins.plenary-nvim
 
             opencode
+          ];
+        };
+
+        nvim-aider = (mkNvimPluginNoCheck inputs.nvim-aider "nvim-aider").overrideAttrs {
+          dependencies = [
+            prev.vimPlugins.snacks-nvim
           ];
         };
       }
