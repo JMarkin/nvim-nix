@@ -96,6 +96,7 @@ with final.pkgs.lib; let
                 enabled = true, -- highlight yanked text
                 timeout = 100,
               },
+              validate_yank = false,
             })
             vim.api.nvim_create_autocmd("FocusGained", {
               callback = function()
