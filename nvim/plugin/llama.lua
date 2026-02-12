@@ -1137,7 +1137,6 @@ function LLAMA.inst_send(req_id, messages)
       LLAMA.inst_on_exit(req_id, obj.code)
     end,
   })
-  print(req.job)
 end
 
 function LLAMA.inst_update_pos(req)
