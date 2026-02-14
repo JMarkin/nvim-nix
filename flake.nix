@@ -73,6 +73,16 @@
       flake = false;
     };
 
+    camouflage-nvim = {
+      url = "github:zeybek/camouflage.nvim";
+      flake = false;
+    };
+
+    bionic-reading-nvim = {
+      url = "github:FluxxField/bionic-reading.nvim";
+      flake = false;
+    };
+
     # opencode.url = "github:anomalyco/opencode?ref=v1.1.63";
     # opencode.inputs.nixpkgs.follows = "nixpkgs";
     # opencode-nvim = {

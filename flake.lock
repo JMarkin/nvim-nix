@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "bionic-reading-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1770585849,
+        "narHash": "sha256-nv2I0p4haLHcFHSTR+pFr01zSoXL2fkfWG89hJQJ1aE=",
+        "owner": "FluxxField",
+        "repo": "bionic-reading.nvim",
+        "rev": "c129fca72ac91c66002a2321968af719dc7ac4ac",
+        "type": "github"
+      },
+      "original": {
+        "owner": "FluxxField",
+        "repo": "bionic-reading.nvim",
+        "type": "github"
+      }
+    },
     "blink-pairs": {
       "inputs": {
         "fenix": "fenix",
@@ -18,6 +34,22 @@
         "owner": "Saghen",
         "ref": "v0.4.1",
         "repo": "blink.pairs",
+        "type": "github"
+      }
+    },
+    "camouflage-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1771065284,
+        "narHash": "sha256-dCh0Zw9iD7TTI0GpWD13PYo9nWHG80jId6W5dP8wCBI=",
+        "owner": "zeybek",
+        "repo": "camouflage.nvim",
+        "rev": "2a042cf586c5033514510f80e092f6a836ea756b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "zeybek",
+        "repo": "camouflage.nvim",
         "type": "github"
       }
     },
@@ -613,7 +645,9 @@
     },
     "root": {
       "inputs": {
+        "bionic-reading-nvim": "bionic-reading-nvim",
         "blink-pairs": "blink-pairs",
+        "camouflage-nvim": "camouflage-nvim",
         "cmp-diag-codes": "cmp-diag-codes",
         "django-nvim": "django-nvim",
         "flake-parts": "flake-parts_2",

@@ -187,7 +187,63 @@ with final.pkgs.lib; let
     ++ (callPackage ./quickfix.nix)
 
     ++ (with pkgs.vimPlugins; [
-
+    {
+      plugin = camouflage-nvim;
+      optional = true;
+      type = "lua";
+      config = /*lua*/''
+        lze.load {
+          "${camouflage-nvim.pname}",
+          event = vim.g.pre_load_events,
+          keys = {
+            { '<leader>ct', '<cmd>CamouflageToggle<cr>', desc = 'Toggle Camouflage' },
+            { '<leader>cr', '<cmd>CamouflageReveal<cr>', desc = 'Reveal Line' },
+            { '<leader>cy', '<cmd>CamouflageYank<cr>', desc = 'Yank Value' },
+            { '<leader>cf', '<cmd>CamouflageFollowCursor<cr>', desc = 'Follow Cursor' },
+          },
+          after = function()
+            require('camouflage').setup()
+          end
+        }
+      '';
+    }
+    {
+      plugin = bionic-reading-nvim;
+      optional = true;
+      type = "lua";
+      config = /*lua*/''
+        lze.load {
+          "${bionic-reading-nvim.pname}",
+          after = function()
+            require('bionic-reading').setup({
+              auto_highlight = true,
+              file_types = {
+                ["text"] = "any",
+                ["markdown"] = "any",
+                ["lua"] = {
+                  "comment",
+                },
+                ["nix"] = {
+                  "comment",
+                },
+                ["golang"] = {
+                  "comment",
+                },
+                ["python"] = {
+                  "comment",
+                },
+              },
+              hl_group_value = {
+                bold = true,
+              },
+              prompt_user = true,
+              treesitter = true,
+              update_in_insert_mode = true,
+            })
+          end
+        }
+      '';
+    }
 
     {
       plugin = plenary-nvim;
@@ -404,6 +460,9 @@ rec
             prev.vimPlugins.snacks-nvim
           ];
         };
+
+        camouflage-nvim = (mkNvimPlugin inputs.camouflage-nvim "camouflage-nvim");
+        bionic-reading-nvim  = (mkNvimPlugin inputs.bionic-reading-nvim "bionic-reading-nvim");
       }
     );
 
