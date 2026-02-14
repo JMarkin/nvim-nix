@@ -204,7 +204,7 @@ with final.pkgs.lib; let
           after = function()
             require('camouflage').setup({
               pwned = {
-                enabled = true,
+                enabled = false,
                 auto_check = true,            -- Check on BufEnter
                 check_on_save = true,         -- Check on BufWritePost
                 check_on_change = false,       -- Check on TextChanged with debounce
