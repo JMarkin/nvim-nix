@@ -202,7 +202,35 @@ with final.pkgs.lib; let
             { '<leader>cf', '<cmd>CamouflageFollowCursor<cr>', desc = 'Follow Cursor' },
           },
           after = function()
-            require('camouflage').setup()
+            require('camouflage').setup({
+              pwned = {
+                enabled = true,
+                auto_check = true,            -- Check on BufEnter
+                check_on_save = true,         -- Check on BufWritePost
+                check_on_change = false,       -- Check on TextChanged with debounce
+                show_sign = false,             -- Show sign column indicator
+                show_virtual_text = true,     -- Show virtual text with breach count
+                show_line_highlight = true,   -- Highlight the line
+                sign_text = '!',
+                sign_hl = 'DiagnosticWarn',
+                virtual_text_format = 'PWNED (%s)',
+                virtual_text_hl = 'DiagnosticWarn',
+                line_hl = 'CamouflagePwned',
+              },
+              project_config = {
+                enabled = false,
+              }
+            })
+
+            require('camouflage').on('variable_detected', function(bufnr, var)
+              local sensitive_patterns = { 'PASS', 'TOKEN', 'PRIVATE', 'URL', "DSN", "ACCESS_KEY", "SECRET" }
+              for _, pattern in ipairs(sensitive_patterns) do
+                if var.key:upper():match(pattern) then
+                  return true
+                end
+              end
+              return false
+            end)
           end
         }
       '';
@@ -462,7 +490,7 @@ rec
         };
 
         camouflage-nvim = (mkNvimPlugin inputs.camouflage-nvim "camouflage-nvim");
-        bionic-reading-nvim  = (mkNvimPlugin inputs.bionic-reading-nvim "bionic-reading-nvim");
+        bionic-reading-nvim = (mkNvimPlugin inputs.bionic-reading-nvim "bionic-reading-nvim");
       }
     );
 
