@@ -24,9 +24,9 @@ vim.keymap.set({ "n" }, "<C-w><", "10<C-w><")
 vim.keymap.set({ "n" }, "<C-w>+", "5<C-w>+")
 vim.keymap.set({ "n" }, "<C-w>-", "5<C-w>-")
 
-vim.keymap.set({ "n" }, "o", "o<Esc>", { desc = "Add line under" })
-vim.keymap.set({ "n" }, "O", "O<Esc>", { desc = "Add line prev" })
-vim.keymap.set({ "v" }, "p", "pgvy", { desc = "Disable yank on paste" })
+-- vim.keymap.set({ "n" }, "o", "o<Esc>", { desc = "Add line under" })
+-- vim.keymap.set({ "n" }, "O", "O<Esc>", { desc = "Add line prev" })
+vim.keymap.set({ "v" }, "p", "_dP", { desc = "Disable yank on paste" })
 
 vim.keymap.set({ "n" }, { "<leader>w", "<leader>'" }, ":w<CR>", { silent = true, desc = "normal mode: save" })
 vim.keymap.set(
@@ -102,3 +102,6 @@ vim.keymap.set(
 -- https://github.com/mhinz/vim-galore#saner-behavior-of-n-and-n
 vim.keymap.set({ "n", "x", "o" }, "n", "'Nn'[v:searchforward]", { expr = true, desc = "Next search result" })
 vim.keymap.set({ "n", "x", "o" }, "N", "'nN'[v:searchforward]", { expr = true, desc = "Prev search result" })
+
+-- git log linex
+vim.keymap.set("x", "<leader>gl", ":<C-u>execute 'Git log -L ' . line(\"'<\") . ',' . line(\"'>\") . ':%'<CR>")

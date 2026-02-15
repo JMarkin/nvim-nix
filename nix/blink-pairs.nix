@@ -29,6 +29,7 @@ in
               matchparen = {
                 enabled = true,
                 group = "MatchParen",
+
               },
             },
             debug = false,

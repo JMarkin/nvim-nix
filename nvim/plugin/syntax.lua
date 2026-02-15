@@ -8,12 +8,12 @@ local fn = require("funcs")
 vim.cmd([[
         syntax on
     ]])
-vim.g.polyglot_disabled = { "ftdetect", "autoindent" }
+-- vim.g.polyglot_disabled = { "ftdetect", "autoindent" }
 
-lze.load({
-  "vim-polyglot",
-  event = vim.g.pre_load_events,
-})
+-- lze.load({
+--   "vim-polyglot",
+--   event = vim.g.pre_load_events,
+-- })
 
 -- fastsyntax
 fn.augroup("fastsyntax", {

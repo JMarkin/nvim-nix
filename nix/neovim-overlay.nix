@@ -70,7 +70,7 @@ with final.pkgs.lib; let
   minimal-plugins = with pkgs.vimPlugins; [
     # кастыль для neovim/nix там init.vim чтобы всё обернуть в lua << END
     # последний плагин в конце должен содержать END
-    vim-polyglot
+    # vim-polyglot
     {
       plugin = lze;
       optional = false;
@@ -324,7 +324,7 @@ with final.pkgs.lib; let
   )
     ++ ai.plugins
     ++ (callPackage ./autocomplete.nix)
-    ++ (callPackage ./blink-pairs.nix)
+    # ++ (callPackage ./blink-pairs.nix)
     ++ (callPackage ./kube.nix)
     ++ (callPackage ./ui.nix)
     ++ langs.plugins
