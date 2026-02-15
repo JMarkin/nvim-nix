@@ -223,7 +223,7 @@ with final.pkgs.lib; let
             })
 
             require('camouflage').on('variable_detected', function(bufnr, var)
-              local sensitive_patterns = { 'PASS', 'TOKEN', 'PRIVATE', 'URL', "DSN", "ACCESS_KEY", "SECRET" }
+              local sensitive_patterns = { 'PASS', 'TOKEN', 'PRIVATE', 'URL', "DSN", "ACCESS_KEY", "SECRET", "API_KEY" }
               for _, pattern in ipairs(sensitive_patterns) do
                 if var.key:upper():match(pattern) then
                   return true
