@@ -60,6 +60,7 @@ with final.pkgs.lib; let
     let g:did_load_treesitter_plugin = v:${val}
     let g:did_load_ui_plugins = v:${val}
     let g:did_load_llama_plugins = v:${val}
+    let g:did_load_secrets_plugins = v:${val}
   '';
 
   minimal-packages = with pkgs; [
@@ -170,6 +171,7 @@ with final.pkgs.lib; let
         let g:did_load_smart_plugin = v:false
         let g:did_load_comment_plugin = v:false
         let g:did_load_treesitter_plugin = v:false
+        let g:did_load_secrets_plugin = v:false
 
         lua << END
         lze.load {
@@ -191,49 +193,6 @@ with final.pkgs.lib; let
       plugin = camouflage-nvim;
       optional = true;
       type = "lua";
-      config = /*lua*/''
-        lze.load {
-          "${camouflage-nvim.pname}",
-          event = vim.g.pre_load_events,
-          keys = {
-            { '<leader>ct', '<cmd>CamouflageToggle<cr>', desc = 'Toggle Camouflage' },
-            { '<leader>cr', '<cmd>CamouflageReveal<cr>', desc = 'Reveal Line' },
-            { '<leader>cy', '<cmd>CamouflageYank<cr>', desc = 'Yank Value' },
-            { '<leader>cf', '<cmd>CamouflageFollowCursor<cr>', desc = 'Follow Cursor' },
-          },
-          after = function()
-            require('camouflage').setup({
-              pwned = {
-                enabled = false,
-                auto_check = true,            -- Check on BufEnter
-                check_on_save = true,         -- Check on BufWritePost
-                check_on_change = false,       -- Check on TextChanged with debounce
-                show_sign = false,             -- Show sign column indicator
-                show_virtual_text = true,     -- Show virtual text with breach count
-                show_line_highlight = true,   -- Highlight the line
-                sign_text = '!',
-                sign_hl = 'DiagnosticWarn',
-                virtual_text_format = 'PWNED (%s)',
-                virtual_text_hl = 'DiagnosticWarn',
-                line_hl = 'CamouflagePwned',
-              },
-              project_config = {
-                enabled = false,
-              }
-            })
-
-            require('camouflage').on('variable_detected', function(bufnr, var)
-              local sensitive_patterns = { 'PASS', 'TOKEN', 'PRIVATE', 'URL', "DSN", "ACCESS_KEY", "SECRET", "API_KEY" }
-              for _, pattern in ipairs(sensitive_patterns) do
-                if var.key:upper():match(pattern) then
-                  return true
-                end
-              end
-              return false
-            end)
-          end
-        }
-      '';
     }
     {
       plugin = bionic-reading-nvim;
@@ -356,40 +315,40 @@ with final.pkgs.lib; let
       diffview-nvim
       gitsigns-nvim
 
-      {
-        plugin = nvim-scissors;
-        type = "lua";
-        optional = true;
-        config = /*lua*/''
-          lze.load {
-            "${nvim-scissors.pname}",
-            after = function()
-              require("scissors").setup{
-                  snippetDir = vim.fn.stdpath("config") .. "/snippets",
-                  jsonFormatter = "jaq",
-              }
-            end,
-            keys = {
-              {
-                "<leader>Se",
-                function()
-                  require("scissors").editSnippet()
-                end,
-                desc = "Snippet: Edit",
-              },
-              {
-                "<leader>Sn",
-                function()
-                  require("scissors").addNewSnippet()
-                end,
-                mode = { "n", "x", "v" },
-                desc = "Snippet: New",
-              },
-            },
-          }
-          END
-        '';
-      }
+      # {
+      #   plugin = nvim-scissors;
+      #   type = "lua";
+      #   optional = true;
+      #   config = /*lua*/''
+      #     lze.load {
+      #       "${nvim-scissors.pname}",
+      #       after = function()
+      #         require("scissors").setup{
+      #             snippetDir = vim.fn.stdpath("config") .. "/snippets",
+      #             jsonFormatter = "jaq",
+      #         }
+      #       end,
+      #       keys = {
+      #         {
+      #           "<leader>Se",
+      #           function()
+      #             require("scissors").editSnippet()
+      #           end,
+      #           desc = "Snippet: Edit",
+      #         },
+      #         {
+      #           "<leader>Sn",
+      #           function()
+      #             require("scissors").addNewSnippet()
+      #           end,
+      #           mode = { "n", "x", "v" },
+      #           desc = "Snippet: New",
+      #         },
+      #       },
+      #     }
+      #     END
+      #   '';
+      # }
       # vim plugins
       { plugin = vim-test; optional = false; type = "vim"; }
     ]
