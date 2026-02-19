@@ -3,7 +3,17 @@ if vim.g.did_load_secrets_plugin then
 end
 vim.g.did_load_secrets_plugin = true
 
-vim.g.sensitive_patterns = { "PASS", "TOKEN", "PRIVATE", "ACCESS_KEY", "SECRET", "API_KEY" }
+vim.g.sensitive_patterns = {
+  "PASS",
+  "TOKEN",
+  "PRIVATE",
+  "ACCESS_KEY",
+  "SECRET",
+  "API_KEY",
+  "authority-data",
+  "key-data",
+  "certificate-data",
+}
 
 lze.load({
   "camouflage-nvim",
