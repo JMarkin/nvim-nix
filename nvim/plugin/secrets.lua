@@ -6,7 +6,7 @@ vim.g.did_load_secrets_plugin = true
 vim.g.sensitive_patterns = { "PASS", "TOKEN", "PRIVATE", "ACCESS_KEY", "SECRET", "API_KEY" }
 
 lze.load({
-  "${camouflage-nvim.pname}",
+  "camouflage-nvim",
   event = vim.g.pre_load_events,
   keys = {
     { "<leader>ct", "<cmd>CamouflageToggle<cr>", desc = "Toggle Camouflage" },
