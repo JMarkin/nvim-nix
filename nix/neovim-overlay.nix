@@ -450,6 +450,9 @@ rec
 
         camouflage-nvim = (mkNvimPlugin inputs.camouflage-nvim "camouflage-nvim");
         bionic-reading-nvim = (mkNvimPlugin inputs.bionic-reading-nvim "bionic-reading-nvim");
+
+
+        wiremux-nvim = (mkNvimPlugin inputs.wiremux-nvim "wiremux-nvim");
       }
     );
 

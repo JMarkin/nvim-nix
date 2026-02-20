@@ -90,6 +90,12 @@
       flake = false;
     };
 
+    wiremux-nvim = {
+      url = "github:MSmaili/wiremux.nvim";
+      flake = false;
+    };
+
+
     # nvim-aider = {
     #   url = "github:GeorgesAlkhouri/nvim-aider";
     #   flake = false;
