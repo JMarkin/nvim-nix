@@ -416,11 +416,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1771459510,
-        "narHash": "sha256-ZlLdKt0MpgzPIjBraJvKDdy62wj2ffLllMgZNLUjxsM=",
+        "lastModified": 1771545891,
+        "narHash": "sha256-aaVUfc/9q2pCsELZmYhf+uvYRMCUlBvccgL1VS27R+o=",
         "owner": "nix-community",
         "repo": "neovim-nightly-overlay",
-        "rev": "93414035e92a7ebc016b2931af9b7ffb01d398ba",
+        "rev": "917b72d5e27bc217440655b81f701d7062bdd198",
         "type": "github"
       },
       "original": {
@@ -432,11 +432,11 @@
     "neovim-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1771458370,
-        "narHash": "sha256-rtLD1cwnEGPNQdGpZClJJZfcuWJl3pNYKaaoIhbVMd0=",
+        "lastModified": 1771541613,
+        "narHash": "sha256-1Rpt5B4pNW/MNkWoEamqwCa5I4/9G84dSqp4eHS5zsA=",
         "owner": "neovim",
         "repo": "neovim",
-        "rev": "ac84a3f3b6eebd4b3ba426b2d60a99204b05f436",
+        "rev": "e3d46a63375c84b7bd409f1f07ef56eb985eae50",
         "type": "github"
       },
       "original": {
@@ -707,6 +707,7 @@
         "opencode-nvim": "opencode-nvim",
         "smart-splits-nvim": "smart-splits-nvim",
         "whatthejump-nvim": "whatthejump-nvim",
+        "wiremux-nvim": "wiremux-nvim",
         "yaml-nvim": "yaml-nvim"
       }
     },
@@ -751,11 +752,11 @@
     "smart-splits-nvim": {
       "flake": false,
       "locked": {
-        "lastModified": 1771001580,
-        "narHash": "sha256-E5cRG148es2P2FTOc3o5mR2/lAzNj6OSwqQ3Yb7YaMA=",
+        "lastModified": 1771609007,
+        "narHash": "sha256-jKTdzvYDO/Xg6s1gLcelDwUr6IpaE0VfORZAnY6z0zg=",
         "owner": "mrjones2014",
         "repo": "smart-splits.nvim",
-        "rev": "b9d563ea52c4926a4d91e5e795c68bb8f89f8ba0",
+        "rev": "23f1e57d5af462c69e988642c020430449a7b1b0",
         "type": "github"
       },
       "original": {
@@ -792,6 +793,22 @@
       "original": {
         "owner": "lewis6991",
         "repo": "whatthejump.nvim",
+        "type": "github"
+      }
+    },
+    "wiremux-nvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1771415842,
+        "narHash": "sha256-fESXxv+BVGti5roLcK1WIyqao+guQmzdL4T1CuIKRQs=",
+        "owner": "MSmaili",
+        "repo": "wiremux.nvim",
+        "rev": "dfc3d9482f5edc0df505f3ca10ed59d4dd030bfe",
+        "type": "github"
+      },
+      "original": {
+        "owner": "MSmaili",
+        "repo": "wiremux.nvim",
         "type": "github"
       }
     },
