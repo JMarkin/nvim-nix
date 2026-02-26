@@ -35,10 +35,43 @@ lze.load({
   {
     "gitsigns.nvim",
     after = function()
-      require("gitsigns").setup({})
+      require("gitsigns").setup({
+        on_attach = function(bufnr)
+          local gs = package.loaded.gitsigns
+
+          local function map(mode, l, r, opts)
+            opts = opts or {}
+            opts.buffer = bufnr
+            vim.keymap.set(mode, l, r, opts)
+          end
+
+          -- Navigation
+          map("n", "]c", function()
+            if vim.wo.diff then
+              return "]c"
+            end
+            vim.schedule(function()
+              gs.next_hunk({ preview = false })
+            end)
+            return "<Ignore>"
+          end, { expr = true, desc = "Git: next hunk" })
+
+          map("n", "[c", function()
+            if vim.wo.diff then
+              return "[c"
+            end
+            vim.schedule(function()
+              gs.prev_hunk({ preview = false })
+            end)
+            return "<Ignore>"
+          end, { expr = true, desc = "Git: prev hunk" })
+        end,
+      })
     end,
     event = vim.g.pre_load_events,
     keys = {
+      "[c",
+      "]c",
       { "<leader>gb", ":Gitsign blame_line<cr>", desc = "Git: blake line" },
       { "<leader>gB", ":Gitsign blame<cr>", desc = "Git: blame" },
       { "<leader>gs", ":Gitsign stage_hunk<cr>", desc = "Git: stage hunk", mode = { "n", "v" } },

@@ -35,9 +35,9 @@ LLAMA.config = {
   ring_scope = 1024,
   ring_update_ms = 1000,
   keymap_fim_trigger = "<c-x><c-z>",
-  keymap_fim_accept_line = "<c-z>",
   keymap_fim_accept_full = "<c-f>",
-  keymap_fim_accept_word = "<c-w>",
+  keymap_fim_accept_line = "<a-z>",
+  keymap_fim_accept_word = "<a-w>",
   keymap_inst_trigger = "<leader>li",
   keymap_inst_rerun = "<leader>lr",
   keymap_inst_continue = "<leader>lc",
@@ -140,7 +140,9 @@ local function fim_hide(_)
 end
 
 local function disable()
-  fim_hide()
+  vim.schedule(function()
+    fim_hide()
+  end)
   vim.api.nvim_clear_autocmds({ group = "llama" })
   vim.api.nvim_del_augroup_by_name("llama")
 
