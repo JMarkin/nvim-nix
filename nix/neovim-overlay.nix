@@ -361,7 +361,6 @@ with final.pkgs.lib; let
 in
 rec
 {
-  opencode = inputs.opencode.packages.${prev.system}.opencode;
   vectorcode = prev.vectorcode.overrideAttrs {
     meta.license = "MIT";
     meta.platforms = prev.vectorcode.meta.platforms ++ [ "aarch64-unknown-linux-gnu" ];

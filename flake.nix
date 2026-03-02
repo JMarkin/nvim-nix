@@ -83,8 +83,6 @@
       flake = false;
     };
 
-    opencode.url = "github:anomalyco/opencode?ref=v1.2.6";
-    opencode.inputs.nixpkgs.follows = "nixpkgs";
     opencode-nvim = {
       url = "github:sudo-tee/opencode.nvim?ref=22ee4f0f76e7b7de60a57f9a524893e50f0edbc4";
       flake = false;

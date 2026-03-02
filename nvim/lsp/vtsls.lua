@@ -9,8 +9,6 @@ return {
     "typescript.tsx",
   },
 
-  root_markers = { "tsconfig.json", "jsonconfig.json", "package.json", ".git" },
-
   settings = {
     typescript = {
       updateImportsOnFileMove = "always",

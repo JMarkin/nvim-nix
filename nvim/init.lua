@@ -89,17 +89,6 @@ g.root_pattern                                                         = {
                                                                             "Makefile",
                                                                             ".git",
                                                                          }
-g.js_root_pattern                                                      = {
-                                                                          "package-lock.json",
-                                                                          "yarn.lock",
-                                                                          "pnpm-lock.yaml",
-                                                                          "bun.lockb",
-                                                                          "bun.lock",
-                                                                          "biome.json",
-                                                                          "biome.jsonc",
-                                                                          ".nvim.lua",
-                                                                          ".git",
-                                                                         }
 opt.list                                                               = true
 opt.listchars                                                          = {
                                                                           tab    = '→ ',

@@ -15,5 +15,4 @@ return {
     "typescriptreact",
     "vue",
   },
-  root_dir = vim.g.js_root_pattern,
 }
