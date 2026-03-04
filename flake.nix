@@ -83,11 +83,6 @@
       flake = false;
     };
 
-    opencode-nvim = {
-      url = "github:sudo-tee/opencode.nvim?ref=22ee4f0f76e7b7de60a57f9a524893e50f0edbc4";
-      flake = false;
-    };
-
     wiremux-nvim = {
       url = "github:MSmaili/wiremux.nvim";
       flake = false;
