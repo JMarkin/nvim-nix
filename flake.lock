@@ -525,11 +525,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1772585379,
-        "narHash": "sha256-zomLtA51H/qXAcjczveQFXPi/GuJUkPdpDeyu5bGI4M=",
+        "lastModified": 1772615108,
+        "narHash": "sha256-lC0KbklwgeSqS+sTkaYpnSYr/HDeVMzYUZqV/dT31Lo=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "0fd2db475afdde93c9e4b1625aafb8eb41b99807",
+        "rev": "0c39f3b5a9a234421d4ad43ab9c7cf64840172d0",
         "type": "github"
       },
       "original": {
@@ -643,23 +643,6 @@
         "type": "github"
       }
     },
-    "opencode-nvim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1770928144,
-        "narHash": "sha256-itFNpw30uDW/PD7PglQaEAkjBOYzpfKG5rcWqC19f08=",
-        "owner": "sudo-tee",
-        "repo": "opencode.nvim",
-        "rev": "22ee4f0f76e7b7de60a57f9a524893e50f0edbc4",
-        "type": "github"
-      },
-      "original": {
-        "owner": "sudo-tee",
-        "repo": "opencode.nvim",
-        "rev": "22ee4f0f76e7b7de60a57f9a524893e50f0edbc4",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
         "bionic-reading-nvim": "bionic-reading-nvim",
@@ -682,7 +665,6 @@
         "nvim-window": "nvim-window",
         "nvim-yati": "nvim-yati",
         "oil-nvim": "oil-nvim",
-        "opencode-nvim": "opencode-nvim",
         "smart-splits-nvim": "smart-splits-nvim",
         "whatthejump-nvim": "whatthejump-nvim",
         "wiremux-nvim": "wiremux-nvim",
