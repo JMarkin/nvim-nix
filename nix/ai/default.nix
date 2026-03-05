@@ -4,7 +4,7 @@ let
     inherit inputs pkgs mkNvimPlugin;
   });
 
-  opencode = callPackage ./opencode.nix;
+  # opencode = callPackage ./opencode.nix;
   # aider = callPackage ./aider.nix;
   # cursortab = callPackage ./cursortab.nix;
 in
@@ -94,7 +94,7 @@ in
     # ++ miniet.plugins
   ;
   packages = [ ]
-    ++ opencode.packages
+    # ++ opencode.packages
     # ++ aider.packages
     # ++ miniet.packages
   ;
