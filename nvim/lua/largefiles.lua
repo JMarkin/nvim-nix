@@ -77,7 +77,7 @@ local function is_large_file(bufnr, as_bool, path)
       _type = FILE_TYPE.LARGE_SIZE
     else
       local _m = maxline(path)
-      if _m > 10 * vim.o.synmaxcol then
+      if _m > 100 * vim.o.synmaxcol then
         vim.notify("LONG LINE " .. _m, vim.log.levels.INFO)
         _type = FILE_TYPE.LONG_LINE
       end
@@ -133,8 +133,8 @@ local function optimize_buffer(bufnr, path)
 
   if _type == FILE_TYPE.LONG_LINE then
     vim.opt_local.list = false
-    vim.opt_local.undolevels = -1
-    vim.opt_local.undofile = false
+    -- vim.opt_local.undolevels = -1
+    -- vim.opt_local.undofile = false
   end
 
   pcall_notify(function()

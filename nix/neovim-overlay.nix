@@ -97,7 +97,7 @@ with final.pkgs.lib; let
                 enabled = true, -- highlight yanked text
                 timeout = 100,
               },
-              validate_yank = false,
+              -- validate_yank = false,
             })
             vim.api.nvim_create_autocmd("FocusGained", {
               callback = function()
@@ -183,6 +183,7 @@ with final.pkgs.lib; let
       '';
     }
   ])
+    ++ (callPackage ./juan-logs.nix)
     ++ (callPackage ./treesitter.nix)
     ++ (callPackage ./statusline.nix)
     ++ (callPackage ./windows.nix)

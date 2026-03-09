@@ -67,10 +67,13 @@ vim.filetype.add({
         lf.optimize_buffer(buf, path)
         local t = lf.is_large_file(buf, false, path)
         if t == lf.FILE_TYPE.LARGE_SIZE then
-          return "largefile.size"
+          return "size.largefile"
+        end
+        if t == lf.FILE_TYPE.LONG_LINE then
+          return "long.largefile"
         end
         if t == lf.FILE_TYPE.READ_ONLY then
-          return "largefile.readonly"
+          return "readonly.largefile"
         end
         return nil
       end,

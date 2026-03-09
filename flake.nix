@@ -9,11 +9,15 @@
     gen-luarc.url = "github:mrcjkb/nix-gen-luarc-json";
     gen-luarc.inputs.nixpkgs.follows = "nixpkgs";
     gen-luarc.inputs.flake-parts.follows = "flake-parts";
+    
+    # need build
+    # blink-pairs.url = "github:Saghen/blink.pairs";
+    kubectl-nvim.url = "github:Ramilito/kubectl.nvim/?ref=v2.40.2";
+    juan-logs-nvim = {
+      url = "github:minigian/juan-logs.nvim/?ref=v0.1.2";
+      flake = false;
+    };
 
-    blink-pairs.url = "github:Saghen/blink.pairs?ref=v0.4.1";
-    kubectl-nvim.url = "github:Ramilito/kubectl.nvim/?ref=v2.39.2";
-
-    # Development and formatting tools
     kulala-nvim.url = "github:mistweaverco/kulala.nvim";
     kulala-nvim.flake = false;
     kulala-fmt.url = "github:mistweaverco/kulala-fmt";
