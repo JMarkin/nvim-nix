@@ -5,7 +5,7 @@ vim.g.did_load_mini_plugin = true
 
 local misc = require("mini.misc")
 misc.setup()
-misc.setup_auto_root(vim.g.root_pattern)
+-- misc.setup_auto_root(vim.g.root_pattern)
 
 local data = vim.fn.stdpath("data")
 

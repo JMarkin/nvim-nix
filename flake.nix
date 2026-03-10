@@ -28,8 +28,6 @@
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
     neovim-nightly-overlay.inputs.nixpkgs.follows = "nixpkgs";
     neovim-nightly-overlay.inputs.flake-parts.follows = "flake-parts";
-    nvim-treesitter-main.url = "github:iofq/nvim-treesitter-main";
-    nvim-treesitter-main.inputs.nixpkgs.follows = "nixpkgs";
 
     smart-splits-nvim = {
       url = "github:mrjones2014/smart-splits.nvim";
@@ -124,7 +122,6 @@
           _module.args.pkgs = import inputs.nixpkgs {
             inherit system;
             overlays = [
-              inputs.nvim-treesitter-main.overlays.default
               # Import the overlay, so that the final Neovim derivation(s) can be accessed via pkgs.<nvim-pkg>
               neovim-overlay
               # This adds a function can be used to generate a .luarc.json

@@ -59,8 +59,8 @@ with final.pkgs.lib; let
     let g:did_load_tags_plugin = v:${val}
     let g:did_load_treesitter_plugin = v:${val}
     let g:did_load_ui_plugins = v:${val}
-    let g:did_load_llama_plugins = v:${val}
-    let g:did_load_secrets_plugins = v:${val}
+    let g:did_load_llama_plugin = v:${val}
+    let g:did_load_secrets_plugin = v:${val}
   '';
 
   minimal-packages = with pkgs; [
@@ -357,10 +357,7 @@ with final.pkgs.lib; let
 
   all-packages = langs.packages ++ small-packages ++ ai.packages;
 
-  nvim-treesitter = inputs.nvim-treesitter-main.packages.${prev.system}.nvim-treesitter;
-  nvim-treesitter-textobjects = inputs.nvim-treesitter-main.packages.${prev.system}.nvim-treesitter-textobjects;
 in
-rec
 {
   vectorcode = prev.vectorcode.overrideAttrs {
     meta.license = "MIT";
@@ -368,14 +365,6 @@ rec
   };
 
 
-  tree-sitter-kulala-http = prev.tree-sitter.buildGrammar
-    {
-      passthru.name = "kulala_http";
-      language = "kulala_http";
-      version = inputs.kulala-nvim.lastModifiedDate;
-      src = inputs.kulala-nvim;
-      location = "lua/tree-sitter";
-    };
   kulala-fmt = inputs.kulala-fmt.packages.${prev.system}.default;
 
   smart-splits-nvim-src = inputs.smart-splits-nvim;
@@ -383,15 +372,6 @@ rec
   vimPlugins = prev.vimPlugins.extend
     (
       f: p: {
-        nvim-treesitter = (nvim-treesitter.withPlugins (_: [ tree-sitter-kulala-http ] ++ nvim-treesitter.allGrammars)).overrideAttrs (old: {
-          postInstall = old.postInstall + ''
-            ln -sfT ${tree-sitter-kulala-http}/queries/kulala_http $out/queries/kulala_http
-          '';
-        });
-
-        nvim-treesitter-textobjects = nvim-treesitter-textobjects.overrideAttrs {
-          dependencies = [ f.nvim-treesitter ];
-        };
 
         hlargs-nvim = (mkNvimPlugin inputs.hlargs-nvim "hlargs.nvim").overrideAttrs
           {

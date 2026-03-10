@@ -22,6 +22,8 @@ function _G.get_oil_winbar()
   end
 end
 
+local globalcwd = vim.fn.getcwd()
+
 oil.setup({
   win_options = {
     winbar = "%!v:lua.get_oil_winbar()",
@@ -46,7 +48,7 @@ oil.setup({
     ["<C-r>"] = "actions.refresh",
     ["-"] = { "actions.parent", mode = "n" },
     ["_"] = function()
-      require("oil").open(vim.fn.getcwd(-1, 0))
+      require("oil").open(globalcwd)
     end,
     ["<tab>"] = "actions.select",
     ["<s-tab>"] = { "actions.parent", mode = "n" },

@@ -128,6 +128,9 @@ opt.wildignore:append({ -- Ignore on file name completion.
 	".DS_store",
 	"**/node_modules/**",
 	"**/.venv/**",
+	"**/vendor/**",
+	"**/target/**",
+	"**/dist/**",
 })
 
 opt.lazyredraw                                                         = true

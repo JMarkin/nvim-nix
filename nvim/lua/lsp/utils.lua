@@ -245,10 +245,10 @@ capabilities.textDocument = {
 
 vim.lsp.config("*", {
   capabilities = capabilities,
-  root_markers = vim.g.root_pattern,
-  -- flags = {
-  --   debounce_text_changes = 1000,
-  -- },
+  -- root_markers = vim.g.root_pattern,
+  flags = {
+    debounce_text_changes = 200,
+  },
 })
 
 local group = vim.api.nvim_create_augroup("my-lsp-config", { clear = true })

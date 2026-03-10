@@ -43,7 +43,7 @@ LLAMA.config = {
   keymap_inst_continue = "<leader>lc",
   keymap_inst_accept = "<Tab>",
   keymap_inst_cancel = "<Esc>",
-  enable_at_startup = true,
+  enable_at_startup = false,
 }
 
 local function rand(i0, i1)
