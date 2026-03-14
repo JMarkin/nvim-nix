@@ -14,7 +14,7 @@
     # blink-pairs.url = "github:Saghen/blink.pairs";
     kubectl-nvim.url = "github:Ramilito/kubectl.nvim/?ref=v2.40.2";
     juan-logs-nvim = {
-      url = "github:minigian/juan-logs.nvim/?ref=v0.1.2";
+      url = "github:minigian/juan-logs.nvim/?ref=v0.1.3";
       flake = false;
     };
 
