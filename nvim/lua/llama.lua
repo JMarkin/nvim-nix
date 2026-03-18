@@ -18,7 +18,7 @@ LLAMA.config = {
   endpoint_fim = base_url .. "/infill",
   endpoint_inst = base_url .. "/v1/chat/completions",
   model_fim = "fim-small",
-  model_inst = "gpt-oss",
+  model_inst = "inst",
   api_key = vim.env.LLAMA_CPP_API_KEY or "",
   n_prefix = 256,
   n_suffix = 64,
@@ -146,12 +146,12 @@ local function disable()
   vim.api.nvim_clear_autocmds({ group = "llama" })
   vim.api.nvim_del_augroup_by_name("llama")
 
-  vim.keymap.del("i", LLAMA.config.keymap_fim_trigger)
-  vim.keymap.del("v", LLAMA.config.keymap_inst_trigger)
-  vim.keymap.del("n", LLAMA.config.keymap_inst_rerun)
-  vim.keymap.del("n", LLAMA.config.keymap_inst_continue)
-  vim.keymap.del("n", LLAMA.config.keymap_inst_accept)
-  vim.keymap.del("n", LLAMA.config.keymap_inst_cancel)
+  pcall(vim.keymap.del, "i", LLAMA.config.keymap_fim_trigger)
+  pcall(vim.keymap.del, "v", LLAMA.config.keymap_inst_trigger)
+  pcall(vim.keymap.del, "n", LLAMA.config.keymap_inst_rerun)
+  pcall(vim.keymap.del, "n", LLAMA.config.keymap_inst_continue)
+  pcall(vim.keymap.del, "n", LLAMA.config.keymap_inst_accept)
+  pcall(vim.keymap.del, "n", LLAMA.config.keymap_inst_cancel)
 
   state.enabled = false
   debug_log("plugin disabled")
@@ -475,8 +475,8 @@ local function fim_ctx_local(pos_x, pos_y, prev)
 
   if not prev or #prev == 0 then
     line_cur = vim.fn.getline(pos_y)
-    line_cur_prefix = vim.fn.strpart(line_cur, 0, pos_x)
-    line_cur_suffix = vim.fn.strpart(line_cur, pos_x)
+    line_cur_prefix = line_cur:sub(1, pos_x)
+    line_cur_suffix = line_cur:sub(pos_x + 1)
     lines_prefix = vim.fn.getline(math.max(1, pos_y - LLAMA.config.n_prefix), pos_y - 1)
     lines_suffix = vim.fn.getline(pos_y + 1, math.min(max_y, pos_y + LLAMA.config.n_suffix))
 
@@ -990,7 +990,7 @@ function LLAMA.fim_accept(accept_type)
   if can_accept and #content > 0 then
     local word = ""
     if accept_type ~= "word" then
-      vim.api.nvim_buf_set_lines(0, pos_y - 1, pos_y, false, { line_cur:sub(1, pos_x) .. content[1] })
+      vim.api.nvim_buf_set_lines(0, pos_y - 1, pos_y, false, { line_cur:sub(1, pos_x + 1) .. content[1] })
     else
       local suffix = line_cur:sub(pos_x + 1)
       local new_part = content[1]:sub(1, -(#suffix + 1))
@@ -1004,9 +1004,9 @@ function LLAMA.fim_accept(accept_type)
     end
 
     if accept_type == "word" then
-      vim.fn.cursor(pos_y, pos_x + #word + 1)
+      vim.api.nvim_win_set_cursor(0, { pos_y, pos_x + #word[1] + 1 })
     elseif accept_type == "line" or #content == 1 then
-      vim.fn.cursor(pos_y, pos_x + #content[1] + 1)
+      vim.api.nvim_win_set_cursor(0, { pos_y, pos_x + #content[1] + 1 })
       if #content > 1 then
         vim.api.nvim_feedkeys("\r", "n", false)
       end
@@ -1014,7 +1014,7 @@ function LLAMA.fim_accept(accept_type)
       vim.fn.cursor(pos_y + #content - 1, #content[#content] + 1)
     end
   end
-  if state.fim_hint_shown then
+  if state.fim_hint_shown and can_accept then
     fim_hide()
     local pos = vim.api.nvim_win_get_cursor(0)
     pos_x = pos[2]
@@ -1115,7 +1115,7 @@ function LLAMA.inst(l0, l1)
   local ns = vim.api.nvim_create_namespace("vt_inst")
   req.extmark = vim.api.nvim_buf_set_extmark(bufnr, ns, l0 - 1, 0, {
     end_row = l1 - 1,
-    end_col = #vim.fn.getline(l1),
+    end_col = #vim.fn.getline(l1) - 1,
     hl_group = "llama_hl_inst_src",
   })
   req.inst = ""
@@ -1145,6 +1145,7 @@ function LLAMA.inst_send(req_id, messages)
     messages = messages,
     stream = true,
     cache_prompt = true,
+    max_tokens = -1,
   }
   if LLAMA.config.model_inst ~= "" then
     body.model = LLAMA.config.model_inst
@@ -1191,6 +1192,7 @@ function LLAMA.inst_update(req_id, status)
   local hl, virt_lines
   local sep = "====================================="
   if status == "ready" then
+    state.inst_ready_req = req
     hl = "llama_hl_inst_virt_ready"
     virt_lines = { { { sep, hl } } }
     for _, ln in ipairs(vim.split(req.result, "\n")) do
@@ -1232,67 +1234,94 @@ function LLAMA.inst_update(req_id, status)
   end
 end
 
+--- parse response from streaming v1/completion openai copabitable api
 --- @param req_id integer request id
 --- @param data string response data
 local function inst_on_response(req_id, data)
   if not data then
     return
   end
-  local lines = vim.split(data, "\n")
-  if #lines == 0 then
-    return
-  end
-
-  local content = ""
-  local thinking = ""
-  for _, line in ipairs(lines) do
-    if #line > 6 and vim.startswith(line, "data: ") then
-      line = line:sub(7)
-    end
-    if line == "" or line:match("^%s*$") then
-      goto continue
-    end
-    local ok, resp = pcall(json_decode, line)
-    if ok then
-      local choices = resp.choices or {}
-      local delta
-      if choices[1] and choices[1].delta then
-        delta = choices[1].delta
-        if delta.content then
-          if type(delta.content) == "string" then
-            content = content .. delta.content
-          end
-        end
-        if delta.reasoning_content then
-          if type(delta.reasoning_content) == "string" then
-            thinking = thinking .. delta.reasoning_content
-          end
-        end
-      elseif choices[1] and choices[1].message then
-        delta = choices[1].message.content
-        if type(delta) == "string" then
-          content = content .. delta
-        end
-      end
-    else
-      debug_log("inst_on_response parse error", line)
-    end
-    ::continue::
-  end
 
   local req = state.inst_reqs[req_id]
   if not req then
     return
   end
-  LLAMA.inst_update(req_id, "gen")
-  if thinking ~= "" then
-    req.think = req.think .. thinking
-    req.n_gen = req.n_gen + 1
+
+  if req.partial_line then
+    data = req.partial_line .. data
+    req.partial_line = nil
   end
+
+  local lines = vim.split(data, "\n")
+
+  local last_line = lines[#lines]
+  if #lines > 0 and last_line == "" then
+    table.remove(lines)
+  elseif #lines > 0 then
+    req.partial_line = last_line
+    table.remove(lines)
+  end
+
+  local content = ""
+  local thinking = ""
+  local n_gen_chunk = 0
+
+  for _, line in ipairs(lines) do
+    line = line:gsub("^%s*(.-)%s*$", "%1")
+
+    if line == "" then
+      goto continue
+    end
+
+    if vim.startswith(line, "data: ") then
+      line = line:sub(7)
+    end
+
+    local ok, resp = pcall(json_decode, line)
+    if not ok and line ~= "[DONE]" then
+      vim.notify_once(string.format("Error parsing JSON line: %s", line), vim.log.levels.ERROR)
+      goto continue
+    end
+
+    local choices = resp.choices or {}
+    if not choices[1] then
+      goto continue
+    end
+
+    local delta = choices[1].delta
+    if delta then
+      if delta.content and delta.content ~= vim.NIL then
+        content = string.format("%s%s", content, delta.content)
+      end
+      if delta.reasoning_content and delta.reasoning_content ~= vim.NIL then
+        thinking = string.format("%s%s", thinking, delta.reasoning_content)
+      end
+    elseif choices[1].message then
+      if choices[1].message.content and choices[1].message.content ~= vim.NIL then
+        content = string.format("%s%s", content, choices[1].message.content)
+      end
+    end
+
+    -- if line == "[DONE]" or (resp and resp.id == "[DONE]") then
+    --   vim.print("DONE")
+    -- end
+
+    ::continue::
+  end
+
   if content ~= "" then
     req.result = req.result .. content
+    n_gen_chunk = n_gen_chunk + 1
+  end
+  if thinking ~= "" then
+    req.think = req.think .. thinking
+  end
+
+  if content ~= "" or thinking ~= "" then
     req.n_gen = req.n_gen + 1
   end
+
+  LLAMA.inst_update(req_id, "gen")
 end
 LLAMA.inst_on_response = vim.schedule_wrap(inst_on_response)
 
@@ -1338,7 +1367,7 @@ end
 --- @param result string replacement text
 --- @return nil
 function LLAMA.inst_callback(bufnr, l0, l1, result)
-  local result_lines = vim.split(result, "\n", { stub = true, trimempty = true })
+  local result_lines = vim.split(result, "\n", { plain = true })
   while #result_lines > 0 and result_lines[#result_lines] == "" do
     table.remove(result_lines)
   end
@@ -1347,16 +1376,16 @@ end
 
 function LLAMA.inst_accept()
   local line = vim.fn.line(".")
-  for _, req in pairs(state.inst_reqs) do
-    if req.status == "ready" then
-      LLAMA.inst_update_pos(req)
-      if line >= req.range[1] and line <= req.range[2] then
-        LLAMA.inst_remove(req.id)
-        LLAMA.inst_callback(req.bufnr, req.range[1], req.range[2], req.result)
-        return
-      end
+  local req = state.inst_ready_req
+  if req.status == "ready" then
+    LLAMA.inst_update_pos(req)
+    if line >= req.range[1] and line <= req.range[2] then
+      LLAMA.inst_remove(req.id)
+      LLAMA.inst_callback(req.bufnr, req.range[1], req.range[2], req.result)
+      return
     end
   end
+  state.inst_ready_req = {}
   vim.api.nvim_feedkeys("\t", "n", false)
 end
 
