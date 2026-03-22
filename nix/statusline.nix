@@ -2,7 +2,6 @@
 with pkgs.vimPlugins; [
   {
     plugin = mini-statusline;
-    type = "lua";
     optional = true;
     config = /*lua*/''
       lze.load {

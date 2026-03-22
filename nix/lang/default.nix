@@ -22,7 +22,6 @@ in
   plugins = with pkgs.vimPlugins; [
     {
       plugin = nvim-lspconfig;
-      type = "lua";
       optional = false;
       config = /*lua*/''
         ${setup}
@@ -30,7 +29,6 @@ in
     }
     {
       plugin = symbol-usage-nvim;
-      type = "lua";
       optional = true;
       config = /*lua*/''
         lze.load {

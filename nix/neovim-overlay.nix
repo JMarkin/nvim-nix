@@ -86,7 +86,6 @@ with final.pkgs.lib; let
     {
       plugin = smartyank-nvim;
       optional = true;
-      type = "lua";
       config = /*lua*/''
         lze.load {
           "${smartyank-nvim.pname}",
@@ -115,7 +114,6 @@ with final.pkgs.lib; let
     {
       plugin = vim-suda;
       optional = true;
-      type = "lua";
       config = /*lua*/''
         lze.load({
           "${vim-suda.pname}",
@@ -126,8 +124,7 @@ with final.pkgs.lib; let
     # {
     #   plugin = stayinpalce;
     #   optional = true;
-    #   type = "lua";
-    #   config = /*lua*/''
+    #       #   config = /*lua*/''
     #     lze.load({
     #       "${stayinpalce.pname}",
     #       after=function()
@@ -165,7 +162,6 @@ with final.pkgs.lib; let
     {
       plugin = vim-fugitive;
       optional = true;
-      type = "lua";
       config = /*vim*/''
         let g:did_load_mini_plugin = v:false
         let g:did_load_smart_plugin = v:false
@@ -193,12 +189,10 @@ with final.pkgs.lib; let
     {
       plugin = camouflage-nvim;
       optional = true;
-      type = "lua";
     }
     {
       plugin = bionic-reading-nvim;
       optional = true;
-      type = "lua";
       config = /*lua*/''
         lze.load {
           "${bionic-reading-nvim.pname}",
@@ -236,7 +230,6 @@ with final.pkgs.lib; let
     {
       plugin = plenary-nvim;
       optional = true;
-      type = "lua";
       config = /*lua*/''
         lze.load {
           "${plenary-nvim.pname}",
@@ -249,13 +242,11 @@ with final.pkgs.lib; let
     {
       plugin = mini-misc;
       optional = false;
-      type = "lua";
     }
     mini-ai
     {
       plugin = mini-icons;
       optional = false;
-      type = "lua";
       config = /*lua*/''
         require("mini.icons").setup()
         MiniIcons.mock_nvim_web_devicons()
@@ -292,7 +283,6 @@ with final.pkgs.lib; let
     with pkgs.vimPlugins; [
       {
         plugin = snacks-nvim;
-        type = "lua";
         optional = true;
         config = /*lua*/''
           lze.load {
@@ -318,8 +308,7 @@ with final.pkgs.lib; let
 
       # {
       #   plugin = nvim-scissors;
-      #   type = "lua";
-      #   optional = true;
+      #         #   optional = true;
       #   config = /*lua*/''
       #     lze.load {
       #       "${nvim-scissors.pname}",
@@ -351,7 +340,7 @@ with final.pkgs.lib; let
       #   '';
       # }
       # vim plugins
-      { plugin = vim-test; optional = false; type = "vim"; }
+      { plugin = vim-test; optional = false; }
     ]
   );
 

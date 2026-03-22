@@ -18,7 +18,7 @@ in
     delve
     mockgen
 
-    # gofumpt
+    gofumpt
     # golines
     # gomodifytags
     # iferr

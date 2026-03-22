@@ -5,6 +5,7 @@ vim.g.did_load_llama_plugin = true
 
 local LLAMA = require("llama")
 LLAMA.setup()
+LLAMA.enable()
 
 vim.api.nvim_create_user_command("LlamaEnable", function()
   LLAMA.enable()

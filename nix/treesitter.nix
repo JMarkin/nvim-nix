@@ -15,7 +15,6 @@ with pkgs.vimPlugins;
 
   {
     plugin = nvim-treesitter-full;
-    type = "lua";
     optional = false;
     config = /*lua*/''
       require("nvim-treesitter").setup()
@@ -24,7 +23,6 @@ with pkgs.vimPlugins;
 
   {
     plugin = nvim-treesitter-context;
-    type = "lua";
     optional = true;
     config = /*lua*/ ''
       lze.load({
@@ -36,7 +34,6 @@ with pkgs.vimPlugins;
 
   {
     plugin = hlargs-nvim;
-    type = "lua";
     optional = true;
     config = /*lua*/''
       lze.load({
@@ -48,7 +45,6 @@ with pkgs.vimPlugins;
 
   {
     plugin = nvim-treesitter-textobjects;
-    type = "lua";
     optional = true;
     config = /*lua*/''
       lze.load({

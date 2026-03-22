@@ -3,7 +3,6 @@
   plugins = with pkgs.vimPlugins; [
     {
       plugin = vectorcode-nvim;
-      type = "lua";
       optional = true;
       config = /*lua*/''
         vim.api.nvim_create_autocmd("LspAttach", {
@@ -58,7 +57,6 @@
     }
     {
       plugin = minuet-ai-nvim;
-      type = "lua";
       optional = true;
       config = /*lua*/''
 

@@ -372,11 +372,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1773446705,
-        "narHash": "sha256-IBAHAaYfiR9fhR+y6ZUdM697dht26tvrWeIrTLwBs3E=",
+        "lastModified": 1774137890,
+        "narHash": "sha256-o1bwfbAeJ4jouE0dG176+n0Oy30AIKoczX/Wjbx2Iwo=",
         "owner": "nix-community",
         "repo": "neovim-nightly-overlay",
-        "rev": "49ff0692b00466bee56c3c72e91e4d0b8342a93b",
+        "rev": "004286778676bb67da256a0c1b93add3e1275be7",
         "type": "github"
       },
       "original": {
@@ -388,11 +388,11 @@
     "neovim-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1773431856,
-        "narHash": "sha256-Oj4HMwF261bJCS/zqgmqdxoCBSeEjwghxW+1MA9Ktik=",
+        "lastModified": 1774136084,
+        "narHash": "sha256-84L6rm4ilbd+mg3mhTufTVTpY6lrlfNtFOlcIh5ekgo=",
         "owner": "neovim",
         "repo": "neovim",
-        "rev": "fd1e019e90e76bb3f6236210ac6287f3b8d4d47f",
+        "rev": "0db8efcbe4fc9642597ac93556793948c01f8f6f",
         "type": "github"
       },
       "original": {
@@ -450,11 +450,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1773231277,
-        "narHash": "sha256-Xy3WEpUAbpsz8ydgvVAQAGGB/WB+8cNA5cshiL0McTI=",
+        "lastModified": 1773840656,
+        "narHash": "sha256-9tpvMGFteZnd3gRQZFlRCohVpqooygFuy9yjuyRL2C0=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "75690239f08f885ca9b0267580101f60d10fbe62",
+        "rev": "9cf7092bdd603554bd8b63c216e8943cf9b12512",
         "type": "github"
       },
       "original": {
@@ -512,6 +512,26 @@
         "type": "github"
       }
     },
+    "rag-nvim": {
+      "inputs": {
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1,
+        "narHash": "sha256-gwYZFvVhjDLIzOX+4QkdI3QM/lTlbXIuznHPKWV5f3o=",
+        "path": "./plugins/rag.nvim",
+        "type": "path"
+      },
+      "original": {
+        "path": "./plugins/rag.nvim",
+        "type": "path"
+      }
+    },
     "root": {
       "inputs": {
         "bionic-reading-nvim": "bionic-reading-nvim",
@@ -533,6 +553,7 @@
         "nvim-window": "nvim-window",
         "nvim-yati": "nvim-yati",
         "oil-nvim": "oil-nvim",
+        "rag-nvim": "rag-nvim",
         "smart-splits-nvim": "smart-splits-nvim",
         "whatthejump-nvim": "whatthejump-nvim",
         "wiremux-nvim": "wiremux-nvim",
@@ -563,11 +584,11 @@
     "smart-splits-nvim": {
       "flake": false,
       "locked": {
-        "lastModified": 1773418871,
-        "narHash": "sha256-3XoOSoUbS31YW5Ls17CQs01w7cy5KZBBamyRcEzfcvY=",
+        "lastModified": 1774025348,
+        "narHash": "sha256-Zcoy6z09Qvl+V10VmJa+ZEOGv9J9jePvPw/yDmwwSy0=",
         "owner": "mrjones2014",
         "repo": "smart-splits.nvim",
-        "rev": "82d01bb71bc051955654b3af68355f783d872fe0",
+        "rev": "96afd5d3b029ac354aaa369fb33b4613a0bbf2f0",
         "type": "github"
       },
       "original": {

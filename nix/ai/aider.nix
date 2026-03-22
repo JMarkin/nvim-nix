@@ -3,7 +3,6 @@
   plugins = with pkgs.vimPlugins; [
     {
       plugin = nvim-aider;
-      type = "lua";
       optional = true;
       config = /*lua*/''
         lze.load {

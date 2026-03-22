@@ -2,7 +2,6 @@
 with pkgs.vimPlugins; [
   {
     plugin = tabby-nvim;
-    type = "lua";
     optional = true;
     config = /*lua*/''
       lze.load({
@@ -21,7 +20,6 @@ with pkgs.vimPlugins; [
   }
   {
     plugin = nvim-window;
-    type = "lua";
     optional = true;
     config = /*lua*/''
       lze.load {

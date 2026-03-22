@@ -26,7 +26,6 @@ in
 [
   {
     plugin = juan-logs-nvim;
-    type = "lua";
     optional = false;
     config = /*lua*/''
       require("juanlog").setup({

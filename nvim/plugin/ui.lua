@@ -32,9 +32,9 @@ lze.load({
   end,
 })
 fn.augroup("local-highlight-attach", {
-  vim.g.post_load_events,
+  "BufRead",
   {
-    pattern = "*",
+    pattern = "*.*",
     callback = function(data)
       if not lf.is_large_file(data.buf, true) then
         require("local-highlight").attach(data.buf)

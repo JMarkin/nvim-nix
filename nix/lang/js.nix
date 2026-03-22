@@ -20,7 +20,6 @@
   plugins = with pkgs.vimPlugins; [
     {
       plugin = nvim-vtsls;
-      type = "lua";
       optional = true;
       config = /*lua*/''
         lze.load {

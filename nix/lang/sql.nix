@@ -14,7 +14,6 @@
     {
       plugin = vim-dadbod;
       optional = true;
-      type = "lua";
       config = /*lua*/''
         lze.load {
           "${vim-dadbod.pname}",
@@ -26,7 +25,6 @@
     {
       plugin = vim-dadbod-completion;
       optional = true;
-      type = "lua";
       config = /*lua*/''
         lze.load {
           "${vim-dadbod-completion.pname}",
@@ -38,7 +36,6 @@
     {
       plugin = vim-dadbod-ui;
       optional = true;
-      type = "lua";
       config = /*lua*/''
         lze.load {
           "${vim-dadbod-ui.pname}",

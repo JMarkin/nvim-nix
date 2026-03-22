@@ -16,7 +16,6 @@
   plugins = with pkgs.vimPlugins; [
     {
       plugin = nvim-lint;
-      type = "lua";
       optional = true;
       config = /*lua*/''
         lze.load {
@@ -30,7 +29,6 @@
     }
     {
       plugin = conform-nvim;
-      type = "lua";
       optional = true;
       config = /*lua*/''
         lze.load {
@@ -51,7 +49,6 @@
 
     {
       plugin = SchemaStore-nvim;
-      type = "lua";
       optional = false;
       config = /*lua*/''
         lze.load {
@@ -62,7 +59,6 @@
     }
     {
       plugin = yaml-nvim;
-      type = "lua";
       optional = true;
       config = /*lua*/''
         lze.load {

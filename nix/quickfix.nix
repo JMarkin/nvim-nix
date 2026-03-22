@@ -2,7 +2,6 @@
 with pkgs.vimPlugins; [
   {
     plugin = quicker-nvim;
-    type = "lua";
     optional = true;
     config = /*lua*/''
       lze.load {
@@ -50,7 +49,6 @@ with pkgs.vimPlugins; [
   }
   {
     plugin = nvim-bqf;
-    type = "lua";
     optional = true;
     config = /*lua*/''
       lze.load {

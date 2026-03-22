@@ -9,7 +9,6 @@ in
 [
   {
     plugin = kubectl-nvim;
-    type = "lua";
     optional = true;
     config = /*lua*/''
 

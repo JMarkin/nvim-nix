@@ -3,7 +3,6 @@ with pkgs.vimPlugins; [
   {
     plugin = nui-nvim;
     optional = true;
-    type = "lua";
     config = /*lua*/''
       lze.load {
         "${nui-nvim.pname}",

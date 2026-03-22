@@ -32,6 +32,7 @@ let
     EDITOR = "nvim";
     VISUAL = "nvim";
     MANPAGER = "nvim +Man!";
+    LD_LIBRARY_PATH = ''${pkgs.sqlite-vec}/lib:'';
   };
 
 

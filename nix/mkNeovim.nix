@@ -30,13 +30,13 @@ with lib;
 , # Additional python 3 packages
   extraPython3Packages ? p: [ ]
 , # Build Neovim with Python 3 support?
-  withPython3 ? true
+  withPython3 ? false
 , # Build Neovim with Ruby support?
   withRuby ? false
 , # Build Neovim with NodeJS support?
   withNodeJs ? false
 , # Add sqlite? This is a dependency for some plugins
-  withSqlite ? false
+  withSqlite ? true
 , # You probably don't want to create vi or vim aliases
   # if the appName is something different than "nvim"
   # Add a "vi" binary to the build output as an alias?
@@ -56,8 +56,6 @@ let
     # set to `true`, it is installed in the 'opt' packpath, and can be lazy loaded with
     # ':packadd! {plugin-name}
     optional = true;
-    runtime = { };
-    type = "lua";
   };
 
   externalPackages = extraPackages ++ (optionals withSqlite [ sqlite ]);
@@ -230,7 +228,7 @@ let
   isCustomAppName = appName != null && appName != "nvim";
 in
 neovim-wrapped.overrideAttrs (oa: {
-    buildPhase =
+  buildPhase =
     oa.buildPhase
     # If a custom NVIM_APPNAME has been set, rename the `nvim` binary
     + lib.optionalString isCustomAppName ''

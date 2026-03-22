@@ -9,7 +9,7 @@
     gen-luarc.url = "github:mrcjkb/nix-gen-luarc-json";
     gen-luarc.inputs.nixpkgs.follows = "nixpkgs";
     gen-luarc.inputs.flake-parts.follows = "flake-parts";
-    
+
     # need build
     # blink-pairs.url = "github:Saghen/blink.pairs";
     kubectl-nvim.url = "github:Ramilito/kubectl.nvim/?ref=v2.40.2";
@@ -106,6 +106,11 @@
       url = "github:JMarkin/gentags.lua?ref=feat/neovim-0.10";
       flake = false;
     };
+
+    rag-nvim.url = "path:./plugins/rag.nvim";
+    rag-nvim.inputs.flake-parts.follows = "flake-parts";
+    rag-nvim.inputs.nixpkgs.follows = "nixpkgs";
+
   };
   outputs = inputs@{ flake-parts, ... }:
     let

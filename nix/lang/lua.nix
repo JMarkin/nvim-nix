@@ -14,7 +14,6 @@
     {
       plugin = lazydev-nvim;
       optional = true;
-      type = "lua";
       config = /*lua*/''
         lze.load {
           "${lazydev-nvim.pname}",

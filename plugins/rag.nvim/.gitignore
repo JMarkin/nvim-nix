@@ -1,0 +1,19 @@
+# Cache files
+*.cache
+.cache/
+
+# Database files
+*.db
+*.db-shm
+*.db-wal
+
+# Embedding cache
+*.json
+
+# Compiled vec0.so
+vec0.so
+
+# Temporary files
+*.tmp
+*.swp
+*.swo

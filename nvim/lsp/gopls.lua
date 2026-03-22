@@ -2,7 +2,7 @@
 return {
   settings = {
     gopls = {
-      gofumpt = false,
+      gofumpt = true,
       codelenses = {
         gc_details = false,
         generate = true,

@@ -9,7 +9,6 @@ in
 [
   {
     plugin = blink-pairs;
-    type = "lua";
     optional = true;
     config = /*lua*/''
       lze.load{
