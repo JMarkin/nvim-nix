@@ -91,10 +91,10 @@
     };
 
     # rust
-    bacon.url = "github:Canop/bacon";
-    bacon.inputs.nixpkgs.follows = "nixpkgs";
-    bacon-ls.url = "github:crisidev/bacon-ls";
-    bacon-ls.inputs.nixpkgs.follows = "nixpkgs";
+    # bacon.url = "github:Canop/bacon";
+    # bacon.inputs.nixpkgs.follows = "nixpkgs";
+    # bacon-ls.url = "github:crisidev/bacon-ls";
+    # bacon-ls.inputs.nixpkgs.follows = "nixpkgs";
 
 
     # nvim-aider = {
