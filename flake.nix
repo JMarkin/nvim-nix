@@ -90,6 +90,12 @@
       flake = false;
     };
 
+    # rust
+    bacon.url = "github:Canop/bacon";
+    bacon.inputs.nixpkgs.follows = "nixpkgs";
+    bacon-ls.url = "github:crisidev/bacon-ls";
+    bacon-ls.inputs.nixpkgs.follows = "nixpkgs";
+
 
     # nvim-aider = {
     #   url = "github:GeorgesAlkhouri/nvim-aider";
@@ -107,9 +113,9 @@
       flake = false;
     };
 
-    rag-nvim.url = "path:./plugins/rag.nvim";
-    rag-nvim.inputs.flake-parts.follows = "flake-parts";
-    rag-nvim.inputs.nixpkgs.follows = "nixpkgs";
+    # rag-nvim.url = "path:./plugins/rag.nvim";
+    # rag-nvim.inputs.flake-parts.follows = "flake-parts";
+    # rag-nvim.inputs.nixpkgs.follows = "nixpkgs";
 
   };
   outputs = inputs@{ flake-parts, ... }:

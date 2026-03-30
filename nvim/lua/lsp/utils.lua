@@ -327,7 +327,7 @@ M.setup_autocmds = function()
       timer:start(200, 0, function()
         reset_timer()
         vim.schedule(function()
-          vim.lsp.stop_client(client_id, true)
+          client:stop(true)
         end)
       end)
     end,
