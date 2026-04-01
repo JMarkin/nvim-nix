@@ -101,7 +101,7 @@ lze.load({
     end,
     keys = {
       {
-        "s",
+        "ss",
         mode = { "n", "x", "o" },
         function()
           require("flash").jump()
@@ -109,7 +109,7 @@ lze.load({
         desc = "Flash",
       },
       {
-        "S",
+        "st",
         mode = { "n", "o", "x" },
         function()
           require("flash").treesitter()
@@ -117,15 +117,7 @@ lze.load({
         desc = "Flash Treesitter",
       },
       {
-        "r",
-        mode = "o",
-        function()
-          require("flash").remote()
-        end,
-        desc = "Remote Flash",
-      },
-      {
-        "R",
+        "sR",
         mode = { "o", "x" },
         function()
           require("flash").treesitter_search()

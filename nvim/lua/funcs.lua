@@ -122,7 +122,7 @@ end
 function M.debounce(fn, ms)
   local timer = vim.uv.new_timer()
   return function(...)
-    local argv = {...}
+    local argv = { ... }
     timer:stop()
     timer:start(ms, 0, function()
       timer:stop()
@@ -247,5 +247,153 @@ function M.get_ts(buf)
 end
 
 M.schedule_notify = vim.schedule_wrap(vim.notify)
+
+-- orig https://github.com/Wansmer/nvim-config/blob/main/lua/utils.lua
+
+-- From: https://neovim.discourse.group/t/how-do-you-work-with-strings-with-multibyte-characters-in-lua/2437/4
+function M.char_byte_count(s, i)
+  if not s or s == "" then
+    return 1
+  end
+
+  local char = string.byte(s, i or 1)
+
+  -- Get byte count of unicode character (RFC 3629)
+  if char > 0 and char <= 127 then
+    return 1
+  elseif char >= 194 and char <= 223 then
+    return 2
+  elseif char >= 224 and char <= 239 then
+    return 3
+  elseif char >= 240 and char <= 244 then
+    return 4
+  end
+end
+
+function M.char_on_pos(pos)
+  pos = pos or vim.fn.getpos(".")
+  return tostring(vim.fn.getline(pos[1])):sub(pos[2], pos[2])
+end
+
+---@return 'char'|'line'|'block'|nil
+function M.visual_mode_type()
+  return ({
+    ["v"] = "char",
+    ["V"] = "line",
+    ["^V"] = "block",
+  })[vim.fn.strtrans(vim.fn.mode())]
+end
+
+function M.get_visual_range()
+  local sr, sc = unpack(vim.fn.getpos("v"), 2, 3)
+  local er, ec = unpack(vim.fn.getpos("."), 2, 3)
+
+  local mode = M.visual_mode_type()
+
+  if sr > er then
+    sr, sc, er, ec = er, ec, sr, sc
+  end
+
+  if sr == er or mode == "block" then
+    sc, ec = math.min(sc, ec), math.max(sc, ec)
+  end
+
+  if mode == "line" then
+    sc, ec = 0, -1 -- -1 means last character
+  end
+
+  local range = { sr, sc > 0 and sc - 1 or 0, er, ec }
+
+  -- To correct work with non-single byte chars
+  local byte_c = M.char_byte_count(M.char_on_pos({ range[3], range[4] }))
+  range[4] = range[4] + ((byte_c or 1) - 1)
+
+  return range
+end
+
+function M.split_padline(line, side)
+  side = side or "both"
+  local is_left = side == "both" and true or side == "left"
+  local is_right = side == "both" and true or side == "right"
+  local pad_left, pad_right = "", ""
+
+  if is_left then
+    local start, end_ = line:find("^%s+")
+    if start then
+      pad_left = line:sub(start, end_)
+      line = line:sub(end_ + 1)
+    end
+  end
+
+  if is_right then
+    local start, end_ = line:find("%s+$")
+    if start then
+      pad_right = line:sub(start, end_)
+      line = line:sub(1, -(#pad_right + 1))
+    end
+  end
+
+  return pad_left, line, pad_right
+end
+
+function M.to_api_range(range)
+  local sr, sc, er, ec = unpack(range)
+  return sr - 1, sc, er - 1, ec
+end
+
+---Feedkeys with 'n' (noremap) by default
+---@param f string
+---@param mode? string
+function M.feedkeys(f, mode)
+  local term = vim.keycode(f)
+  vim.api.nvim_feedkeys(term, mode or "n", true)
+end
+
+function M.lazy_rhs_cb(module, cb_name, ...)
+  local args = { ... }
+  return function()
+    if #args == 0 then
+      return require(module)[cb_name]()
+    else
+      return require(module)[cb_name](unpack(args))
+    end
+  end
+end
+
+---Clear autocmds by group and return callback to restore them
+---@param group number|string Group name or id
+---@return function Callback to restore cleared group's autocmds
+function M.disable_autocmd(group)
+  local ok, aus = pcall(vim.api.nvim_get_autocmds, { group = group })
+  if ok then
+    vim.api.nvim_clear_autocmds({ group = group })
+    local function make_opts(au)
+      local opts = {
+        group = au.group,
+        desc = au.desc,
+        once = au.once,
+        pattern = au.pattern,
+      }
+
+      if au.command ~= "" then
+        opts.command = au.command
+      else
+        opts.callback = au.callback
+      end
+
+      return opts
+    end
+
+    return function()
+      vim.defer_fn(function()
+        for _, au in ipairs(aus) do
+          vim.api.nvim_create_autocmd(au.event, make_opts(au))
+        end
+      end, 0)
+    end
+  else
+    return function() end
+  end
+end
 
 return M

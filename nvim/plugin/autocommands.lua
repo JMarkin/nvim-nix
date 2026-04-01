@@ -83,6 +83,7 @@ fn.augroup("quit", {
       "dbout",
       "gitsigns-blame",
       "tsplayground",
+      "nvim-undotree",
     },
     callback = function(event)
       vim.opt_local.wrap = false
@@ -157,7 +158,7 @@ vim.defer_fn(function()
 end, 100)
 
 fn.augroup("Format Options", {
-  "BufReadPost",
+  "BufEnter",
   {
     callback = function()
       vim.opt_local.formatoptions = vim.opt_local.formatoptions
@@ -211,6 +212,9 @@ fn.augroup("after ui", {
   {
     callback = function(event)
       vim.cmd.packadd("nohlsearch")
+      vim.cmd.packadd("nvim.difftool")
+      vim.cmd.packadd("nvim.undotree")
+      vim.cmd.packadd("nvim.tohtml")
     end,
   },
 })
@@ -225,3 +229,47 @@ vim.api.nvim_create_autocmd("BufHidden", {
     end
   end,
 })
+
+vim.api.nvim_create_autocmd("BufReadPost", {
+  desc = "Jump to the last place you’ve visited in a file before exiting",
+  callback = function()
+    local ignore_ft = { "neo-tree", "toggleterm", "lazy" }
+    local ft = vim.bo.filetype
+    if not vim.tbl_contains(ignore_ft, ft) then
+      local mark = vim.api.nvim_buf_get_mark(0, '"')
+      local lcount = vim.api.nvim_buf_line_count(0)
+      if mark[1] > 0 and mark[1] <= lcount then
+        pcall(vim.api.nvim_win_set_cursor, 0, mark)
+        vim.cmd.normal({ args = { "zz" }, bang = true })
+      end
+    end
+  end,
+})
+
+vim.api.nvim_create_autocmd("BufWinEnter", {
+  desc = "Set colorcolumn equals textwidth",
+  callback = function(data)
+    local tw = vim.bo[data.buf].textwidth
+    vim.opt_local.colorcolumn = tostring(tw)
+  end,
+})
+
+vim.api.nvim_create_autocmd("BufWinEnter", {
+  desc = "Open :help with vertical split",
+  pattern = { "*.txt" },
+  callback = function()
+    if vim.bo.filetype == "help" then
+      vim.cmd.wincmd("L")
+    end
+  end,
+})
+
+vim.api.nvim_create_autocmd("VimEnter", {
+  once = true,
+  callback = function()
+    if vim.fn.argc() == 0 then
+      vim.cmd("intro")
+    end
+  end,
+})
+
