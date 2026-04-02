@@ -140,7 +140,7 @@ g.dbs = {
   { name = "local", url = vim.env.DB_URL },
 }
 
-opt.shortmess:append({ W = false, I = true, c = true, C = true, A = false })
+opt.shortmess:append({ W = false, c = true, C = true, A = false })
 
 if g.modern_ui then
   opt.listchars:append({ nbsp = "␣" })

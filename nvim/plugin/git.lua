@@ -69,7 +69,8 @@ lze.load({
       })
     end,
     event = vim.g.pre_load_events,
-    keys = {
+    on_require = {"gitsigns.attach"},
+    keys = { 
       "[c",
       "]c",
       { "<leader>gb", ":Gitsign blame_line<cr>", desc = "Git: blake line" },

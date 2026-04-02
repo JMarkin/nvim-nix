@@ -179,7 +179,7 @@ with final.pkgs.lib; let
       '';
     }
   ])
-    ++ (callPackage ./juan-logs.nix)
+    # ++ (callPackage ./juan-logs.nix)
     ++ (callPackage ./treesitter.nix)
     ++ (callPackage ./statusline.nix)
     ++ (callPackage ./windows.nix)

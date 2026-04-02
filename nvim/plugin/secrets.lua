@@ -18,6 +18,7 @@ vim.g.sensitive_patterns = {
 lze.load({
   "camouflage-nvim",
   event = vim.g.pre_load_events,
+  on_require = {"camouflage"},
   keys = {
     { "<leader>ct", "<cmd>CamouflageToggle<cr>", desc = "Toggle Camouflage" },
     { "<leader>cr", "<cmd>CamouflageReveal<cr>", desc = "Reveal Line" },

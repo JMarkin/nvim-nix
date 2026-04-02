@@ -249,7 +249,7 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 vim.api.nvim_create_autocmd("BufWinEnter", {
   desc = "Set colorcolumn equals textwidth",
   callback = function(data)
-    local tw = vim.bo[data.buf].textwidth
+    local tw = vim.bo[data.buf].textwidth + 1
     vim.opt_local.colorcolumn = tostring(tw)
   end,
 })
@@ -260,15 +260,6 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
   callback = function()
     if vim.bo.filetype == "help" then
       vim.cmd.wincmd("L")
-    end
-  end,
-})
-
-vim.api.nvim_create_autocmd("VimEnter", {
-  once = true,
-  callback = function()
-    if vim.fn.argc() == 0 then
-      vim.cmd("intro")
     end
   end,
 })

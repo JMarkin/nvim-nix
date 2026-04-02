@@ -2,6 +2,7 @@ local doau = require("funcs").doau
 local maxline = require("funcs").maxline
 local ifind = require("funcs").ifind
 local pcall_notify = require("funcs").pcall_notify
+local disable_autocmd = require("funcs").disable_autocmd
 
 local max_file_size = 2
 local max_file_size_readonly = 100
@@ -113,7 +114,10 @@ local function optimize_buffer(bufnr, path)
     return
   end
 
+  disable_autocmd("checktime")
+
   vim.opt_local.cursorline = false
+  vim.opt_local.cursorcolumn = false
   vim.opt_local.linebreak = false
   vim.opt_local.wrap = false
   vim.opt_local.spell = false
@@ -138,11 +142,19 @@ local function optimize_buffer(bufnr, path)
   end
 
   pcall_notify(function()
+    vim.cmd[[:NoMatchParen<cr>]]
+  end)
+
+  pcall_notify(function()
     require("gitsigns.attach").detach(bufnr)
   end)
 
   pcall_notify(function()
     require("local-highlight").detach(bufnr)
+  end)
+  
+  pcall_notify(function()
+    require("camouflage").disable()
   end)
 
   if _type == FILE_TYPE.READ_ONLY then
