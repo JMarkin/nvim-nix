@@ -30,7 +30,7 @@
     neovim-nightly-overlay.inputs.flake-parts.follows = "flake-parts";
 
     smart-splits-nvim = {
-      url = "github:mrjones2014/smart-splits.nvim";
+      url = "github:mrjones2014/smart-splits.nvim?rev=0bd02161ee5c5378bf4133fcedf53d1fc4179e1d";
       flake = false;
     };
 
