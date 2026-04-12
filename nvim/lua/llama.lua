@@ -986,13 +986,13 @@ function LLAMA.fim_accept(accept_type)
   local line_cur = fim_data.line_cur
   local can_accept = fim_data.can_accept
   local content = fim_data.content
+  local word = ""
 
   if can_accept and #content > 0 then
-    local word = ""
     if accept_type ~= "word" then
-      vim.api.nvim_buf_set_lines(0, pos_y - 1, pos_y, false, { line_cur:sub(1, pos_x + 1) .. content[1] })
+      vim.api.nvim_buf_set_lines(0, pos_y - 1, pos_y, false, { line_cur:sub(1, pos_x) .. content[1] })
     else
-      local suffix = line_cur:sub(pos_x + 1)
+      local suffix = line_cur:sub(pos_x)
       local new_part = content[1]:sub(1, -(#suffix + 1))
       word = new_part:match("^%s*%S+") or ""
       local new_line = line_cur:sub(1, pos_x) .. word .. suffix
@@ -1004,7 +1004,7 @@ function LLAMA.fim_accept(accept_type)
     end
 
     if accept_type == "word" then
-      vim.api.nvim_win_set_cursor(0, { pos_y, pos_x + #word[1] + 1 })
+      vim.api.nvim_win_set_cursor(0, { pos_y, pos_x + #word + 1 })
     elseif accept_type == "line" or #content == 1 then
       vim.api.nvim_win_set_cursor(0, { pos_y, pos_x + #content[1] + 1 })
       if #content > 1 then
