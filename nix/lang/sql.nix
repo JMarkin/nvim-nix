@@ -49,7 +49,7 @@
             vim.g.db_ui_use_nvim_notify = true
             vim.g.db_ui_auto_execute_table_helpers = 1
 
-            autocmd("FileType", {
+            vim.api.nvim_create_autocmd("FileType", {
               pattern = { "dbui" },
               callback = function()
                 vim.keymap.set("n", "<tab>", "<Plug>(DBUI_SelectLine)", { buffer = event.buffer, silent = true })
