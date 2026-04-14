@@ -136,10 +136,6 @@ opt.wildignore:append({ -- Ignore on file name completion.
 opt.lazyredraw                                                         = true
 
 -- stylua: ignore end
-g.dbs = {
-  { name = "local", url = vim.env.DB_URL },
-}
-
 opt.shortmess:append({ W = false, c = true, C = true, A = false })
 
 if g.modern_ui then
