@@ -5,6 +5,13 @@ let
     #!${pkgs.bash}/bin/bash
     exec ${pkgs.lspmux}/bin/lspmux client --server-path ${pkgs.gopls}/bin/gopls $@
   '';
+  gotoolsWithoutModernize = pkgs.symlinkJoin {
+    name = "gotools-without-modernize";
+    paths = [ pkgs.gotools ];
+    postBuild = ''
+      rm -f "$out/bin/modernize"
+    '';
+  };
 in
 
 {
@@ -14,7 +21,7 @@ in
     golangci-lint
     gopls
     # gopls-proxy
-    gotools
+    gotoolsWithoutModernize
     delve
     mockgen
 
