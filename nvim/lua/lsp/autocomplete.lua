@@ -114,12 +114,18 @@ M.attach_completion = function(client, buf)
     return
   end
 
+  if client.name == "phoenix" then
+    phoenix_id = client.id
+  end
+
   vim.api.nvim_create_autocmd("CompleteChanged", {
     group = group,
     desc = "Auto show LSP documentation",
     callback = complete_changed,
     buffer = buf,
   })
+
+  local lsp = vim.lsp
 
   vim.lsp.completion.enable(true, client.id, buf, {
     autotrigger = true,
@@ -144,6 +150,27 @@ M.attach_completion = function(client, buf)
       end
 
       return entry
+    end,
+    cmp = function(a, b)
+      local item_a = a.user_data.nvim.lsp.completion_item
+      local item_b = b.user_data.nvim.lsp.completion_item
+
+      local is_snip_a = item_a.kind == lsp.protocol.CompletionItemKind.Snippet
+      local is_snip_b = item_b.kind == lsp.protocol.CompletionItemKind.Snippet
+
+      if is_snip_a ~= is_snip_b then
+        return is_snip_a
+      end
+
+      local client_a = a.user_data.nvim.lsp.client_id
+      local client_b = b.user_data.nvim.lsp.client_id
+      local prio_a = client_a == phoenix_id and 999 or 1
+      local prio_b = client_b == phoenix_id and 999 or 1
+      if prio_a ~= prio_b then
+        return prio_a < prio_b
+      end
+
+      return (item_a.sortText or item_a.label) < (item_b.sortText or item_b.label)
     end,
   })
 end
