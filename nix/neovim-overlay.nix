@@ -282,16 +282,16 @@ with final.pkgs.lib; let
     ++ langs.plugins
     ++ (
     with pkgs.vimPlugins; [
-      {
-        plugin = snacks-nvim;
-        optional = true;
-        config = /*lua*/''
-          lze.load {
-            "${snacks-nvim.pname}",
-          on_require = {"snacks", "snacks.picker"},
-          }
-        '';
-      }
+      # {
+      #   plugin = snacks-nvim;
+      #   optional = true;
+      #   config = /*lua*/''
+      #     lze.load {
+      #       "${snacks-nvim.pname}",
+      #     on_require = {"snacks", "snacks.picker"},
+      #     }
+      #   '';
+      # }
 
       {
         plugin = template-string-nvim;

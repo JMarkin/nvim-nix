@@ -13,6 +13,6 @@ with pkgs.vimPlugins; [
   local-highlight-nvim
   whatthejump-nvim
   render-markdown-nvim
-  dropbar-nvim
+  # dropbar-nvim
 
 ]

@@ -32,7 +32,7 @@ with pkgs.vimPlugins; [
             local diff          = MiniStatusline.section_diff({ trunc_width = 75 })
             local diagnostics   = MiniStatusline.section_diagnostics({ trunc_width = 75 })
             local lsp           = MiniStatusline.section_lsp({ trunc_width = 75 })
-            local filename      = "%t"
+            -- local filename      = "%t"
             local fileinfo      = MiniStatusline.section_fileinfo({ trunc_width = 120 })
             local location      = MiniStatusline.section_location({ trunc_width = 75 })
             local search        = MiniStatusline.section_searchcount({ trunc_width = 75 })
@@ -43,7 +43,7 @@ with pkgs.vimPlugins; [
               { hl = mode_hl,                  strings = { mode } },
               { hl = 'MiniStatuslineDevinfo',  strings = { root_dir, git, diff, diagnostics, lsp } },
               '%<', -- Mark general truncate point
-              { hl = 'MiniStatuslineFilename', strings = { filename } },
+              -- { hl = 'MiniStatuslineFilename', strings = { filename } },
               '%=', -- End left alignment
               { hl = "MiniStatuslineDevinfo", strings = { wiremux } },
               { hl = "MiniStatuslineDevinfo", strings = { macro } },

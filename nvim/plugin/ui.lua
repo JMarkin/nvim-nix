@@ -3,13 +3,50 @@ if vim.g.did_load_ui_plugins then
 end
 vim.g.did_load_ui_plugins = true
 
-require("vim._core.ui2").enable({
-  enable = true, -- Whether to enable or disable the UI.
-  msg = { -- Options related to the message module.
-    ---@type 'cmd'|'msg' Where to place regular messages, either in the
-    ---cmdline or in a separate ephemeral message window.
-    target = "msg",
-    timeout = 4000, -- Time a message is visible in the message window.
+require('vim._core.ui2').enable({
+  enable = true,
+  msg = {
+    targets = {
+      [''] = 'msg',
+      empty = 'cmd',
+      bufwrite = 'msg',
+      confirm = 'cmd',
+      emsg = 'pager',
+      echo = 'msg',
+      echomsg = 'msg',
+      echoerr = 'pager',
+      completion = 'cmd',
+      list_cmd = 'pager',
+      lua_error = 'pager',
+      lua_print = 'msg',
+      progress = 'pager',
+      rpc_error = 'pager',
+      quickfix = 'msg',
+      search_cmd = 'cmd',
+      search_count = 'cmd',
+      shell_cmd = 'pager',
+      shell_err = 'pager',
+      shell_out = 'pager',
+      shell_ret = 'msg',
+      undo = 'msg',
+      verbose = 'pager',
+      wildlist = 'cmd',
+      wmsg = 'msg',
+      typed_cmd = 'cmd',
+    },
+    cmd = {
+      height = 0.5,
+    },
+    dialog = {
+      height = 0.5,
+    },
+    msg = {
+      height = 0.3,
+      timeout = 5000,
+    },
+    pager = {
+      height = 0.5,
+    },
   },
 })
 
@@ -48,64 +85,82 @@ lze.load({
   keys = { "<C-i>", "<C-o>" },
 })
 
-lze.load({
-  "dropbar.nvim",
-  event = "BufAdd",
-  after = function()
-    local disabled_fts = { "AgenticChat", "AgenticInput", "AgenticCode", "AgenticFiles" }
-    require("dropbar").setup({
-      bar = {
-        enable = function(bufnr, win, _)
-          bufnr = vim._resolve_bufnr(bufnr)
-          if not vim.api.nvim_buf_is_valid(bufnr) or not vim.api.nvim_win_is_valid(win) then
-            return false
-          end
+function _G.simple_winbar()
+  local devicons = require("nvim-web-devicons")
+  local cwd = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
+  local filename = vim.fn.expand("%:t")
+  local extension = vim.fn.expand("%:e")
+  local _, icon_hl = devicons.get_icon(filename, extension, { default = true })
 
-          if
-            not vim.api.nvim_buf_is_valid(bufnr)
-            or not vim.api.nvim_win_is_valid(win)
-            or vim.fn.win_gettype(win) ~= ""
-            or vim.wo[win].winbar ~= ""
-            or vim.bo[bufnr].ft == "help"
-            or vim.tbl_contains(disabled_fts, vim.bo[bufnr].ft)
-          then
-            return false
-          end
+  return string.format(
+    " %%#%s#%s/../%s%%* ",
+    icon_hl,
+    cwd,
+    filename
+  )
+end
 
-          if lf.is_large_file(bufnr, true) then
-            return false
-          end
+vim.opt.winbar = "%{%v:lua.simple_winbar()%}"
 
-          return vim.bo[bufnr].bt == "terminal"
-            or vim.bo[bufnr].ft == "markdown"
-            or pcall(vim.treesitter.get_parser, bufnr)
-            or not vim.tbl_isempty(vim.lsp.get_clients({
-              bufnr = bufnr,
-              method = vim.lsp.protocol.Methods.textDocument_documentSymbol,
-            }))
-        end,
-      },
-      sources = {
-        path = {
-          relative_to = function(buf, win)
-            -- Show full path in oil or fugitive buffers
-            local bufname = vim.api.nvim_buf_get_name(buf)
-            if vim.startswith(bufname, "oil://") or vim.startswith(bufname, "fugitive://") then
-              local root = bufname:gsub("^%S+://", "", 1)
-              while root and root ~= vim.fs.dirname(root) do
-                root = vim.fs.dirname(root)
-              end
-              return root
-            end
-
-            local ok, cwd = pcall(vim.fn.getcwd, win)
-            return ok and cwd or vim.fn.getcwd()
-          end,
-        },
-      },
-    })
-  end,
-})
+-- disable to native winbar
+-- lze.load({
+--   "dropbar.nvim",
+--   event = "BufAdd",
+--   after = function()
+--     local disabled_fts = { "AgenticChat", "AgenticInput", "AgenticCode", "AgenticFiles" }
+--     require("dropbar").setup({
+--       bar = {
+--         enable = function(bufnr, win, _)
+--           bufnr = vim._resolve_bufnr(bufnr)
+--           if not vim.api.nvim_buf_is_valid(bufnr) or not vim.api.nvim_win_is_valid(win) then
+--             return false
+--           end
+--
+--           if
+--             not vim.api.nvim_buf_is_valid(bufnr)
+--             or not vim.api.nvim_win_is_valid(win)
+--             or vim.fn.win_gettype(win) ~= ""
+--             or vim.wo[win].winbar ~= ""
+--             or vim.bo[bufnr].ft == "help"
+--             or vim.tbl_contains(disabled_fts, vim.bo[bufnr].ft)
+--           then
+--             return false
+--           end
+--
+--           if lf.is_large_file(bufnr, true) then
+--             return false
+--           end
+--
+--           return vim.bo[bufnr].bt == "terminal"
+--             or vim.bo[bufnr].ft == "markdown"
+--             or pcall(vim.treesitter.get_parser, bufnr)
+--             or not vim.tbl_isempty(vim.lsp.get_clients({
+--               bufnr = bufnr,
+--               method = vim.lsp.protocol.Methods.textDocument_documentSymbol,
+--             }))
+--         end,
+--       },
+--       sources = {
+--         path = {
+--           relative_to = function(buf, win)
+--             -- Show full path in oil or fugitive buffers
+--             local bufname = vim.api.nvim_buf_get_name(buf)
+--             if vim.startswith(bufname, "oil://") or vim.startswith(bufname, "fugitive://") then
+--               local root = bufname:gsub("^%S+://", "", 1)
+--               while root and root ~= vim.fs.dirname(root) do
+--                 root = vim.fs.dirname(root)
+--               end
+--               return root
+--             end
+--
+--             local ok, cwd = pcall(vim.fn.getcwd, win)
+--             return ok and cwd or vim.fn.getcwd()
+--           end,
+--         },
+--       },
+--     })
+--   end,
+-- })
 
 lze.load({
   "render-markdown.nvim",

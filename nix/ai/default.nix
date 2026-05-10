@@ -32,6 +32,7 @@ in
               targets = {
                 definitions = {
                   opencode = { cmd = "opencode", kind = "pane", split = "horizontal", shell = false },
+                  forge    = { cmd = "forge",    kind = "pane", split = "horizontal", shell = false },
                   aichat   = { cmd = "aichat",   kind = "pane", split = "horizontal", shell = false },
                 },
               },
