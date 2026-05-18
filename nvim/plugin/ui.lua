@@ -87,15 +87,13 @@ lze.load({
 
 function _G.simple_winbar()
   local devicons = require("nvim-web-devicons")
-  local cwd = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
-  local filename = vim.fn.expand("%:t")
+  local filename = vim.fn.expand("%")
   local extension = vim.fn.expand("%:e")
   local _, icon_hl = devicons.get_icon(filename, extension, { default = true })
 
   return string.format(
-    " %%#%s#%s/../%s%%* ",
+    " %%#%s#%s%%* ",
     icon_hl,
-    cwd,
     filename
   )
 end
