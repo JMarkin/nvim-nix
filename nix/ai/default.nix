@@ -3,7 +3,7 @@ let
   callPackage = (file: pkgs.callPackage file {
     inherit inputs pkgs mkNvimPlugin;
   });
-  system = pkgs.system;
+  system = pkgs.stdenv.hostPlatform.system;
   rag-nvim = inputs.rag-nvim.packages.${system}.default;
 
   # opencode = callPackage ./opencode.nix;

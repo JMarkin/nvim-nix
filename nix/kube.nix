@@ -3,7 +3,7 @@
 , ...
 }:
 let
-  system = pkgs.system;
+  system = pkgs.stdenv.hostPlatform.system;
   kubectl-nvim = inputs.kubectl-nvim.packages.${system}.kubectl-nvim;
 in
 [

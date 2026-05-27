@@ -3,7 +3,7 @@
 , ...
 }:
 let
-  system = pkgs.system;
+  system = pkgs.stdenv.hostPlatform.system;
   blink-pairs = inputs.blink-pairs.packages.${system}.blink-pairs;
 in
 [

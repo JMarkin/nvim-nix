@@ -13,7 +13,7 @@ let
   http = callPackage ./http.nix;
   js = callPackage ./js.nix;
 
-  langs = [ unsorted go lua rust nix sql python http js ];
+  langs = [ unsorted go lua rust nix sql python js ]; #http ];
 
   setup = lib.strings.concatMapStrings (x: x.luasetup) langs;
 in

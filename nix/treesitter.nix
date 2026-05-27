@@ -1,14 +1,15 @@
 { inputs, pkgs, mkNvimPlugin, ... }:
 let
-  tree-sitter-kulala-http = pkgs.tree-sitter.buildGrammar
-    {
-      passthru.name = "kulala_http";
-      language = "kulala_http";
-      version = inputs.kulala-nvim.lastModifiedDate;
-      src = inputs.kulala-nvim;
-      location = "lua/tree-sitter";
-    };
-  nvim-treesitter-full = (pkgs.vimPlugins.nvim-treesitter.withPlugins (_: [ tree-sitter-kulala-http ] ++ pkgs.vimPlugins.nvim-treesitter.allGrammars));
+  # tree-sitter-kulala-http = pkgs.tree-sitter.buildGrammar
+  #   {
+  #     passthru.name = "kulala_http";
+  #     language = "kulala_http";
+  #     version = inputs.kulala-nvim.lastModifiedDate;
+  #     src = inputs.kulala-nvim;
+  #     location = "lua/tree-sitter";
+  #   };
+  # nvim-treesitter-full = (pkgs.vimPlugins.nvim-treesitter.withPlugins (_: [ tree-sitter-kulala-http ] ++ pkgs.vimPlugins.nvim-treesitter.allGrammars));
+  nvim-treesitter-full = pkgs.vimPlugins.nvim-treesitter.withAllGrammars;
   # TODO: move from nvim-treesitter
   # nvim-treesitter-parsers = pkgs.symlinkJoin
     # {

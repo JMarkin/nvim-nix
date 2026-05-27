@@ -18,16 +18,16 @@
       flake = false;
     };
 
-    kulala-nvim.url = "github:mistweaverco/kulala.nvim";
-    kulala-nvim.flake = false;
-    kulala-fmt.url = "github:mistweaverco/kulala-fmt";
-    kulala-fmt.inputs.flake-parts.follows = "flake-parts";
-    kulala-fmt.inputs.nixpkgs.follows = "nixpkgs";
+    # kulala-nvim.url = "github:mistweaverco/kulala.nvim?ref=v6.2.0";
+    # kulala-nvim.flake = false;
+    # kulala-fmt.url = "github:mistweaverco/kulala-fmt";
+    # kulala-fmt.inputs.flake-parts.follows = "flake-parts";
+    # kulala-fmt.inputs.nixpkgs.follows = "nixpkgs";
 
 
-    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
-    neovim-nightly-overlay.inputs.nixpkgs.follows = "nixpkgs";
-    neovim-nightly-overlay.inputs.flake-parts.follows = "flake-parts";
+    # neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+    # neovim-nightly-overlay.inputs.nixpkgs.follows = "nixpkgs";
+    # neovim-nightly-overlay.inputs.flake-parts.follows = "flake-parts";
 
     smart-splits-nvim = {
       #  May 8, 2026

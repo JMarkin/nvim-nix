@@ -1,6 +1,6 @@
 { pkgs, inputs, ... }:
 let
-  system = pkgs.system;
+  system = pkgs.stdenv.hostPlatform.system;
   # bacon-flake = inputs.bacon.defaultPackage.${system};
   # bacon-ls = inputs.bacon-ls.defaultPackage.${system};
 in
