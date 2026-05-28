@@ -6,7 +6,7 @@ let
 
   nvim-spell-ru-utf8-dictionary = builtins.fetchurl {
     url = "https://ftp.cc.uoc.gr/pub/vim/runtime/spell/ru.utf-8.spl";
-    sha256 = "";
+    sha256 = "sha256:0kf5vbk7lmwap1k4y4c1fm17myzbmjyzwz0arh5v6810ibbknbgb";
   };
 
   packages = {
