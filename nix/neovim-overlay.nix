@@ -156,6 +156,7 @@ with final.pkgs.lib; let
   small-packages = with pkgs; [
     jaq
     codespell
+    gh
   ] ++ minimal-packages;
   smallset-plugins = minimal-plugins
     ++ (with pkgs.vimPlugins; [
@@ -278,6 +279,7 @@ with final.pkgs.lib; let
     ++ (callPackage ./autocomplete.nix)
     # ++ (callPackage ./blink-pairs.nix)
     ++ (callPackage ./kube.nix)
+    ++ (callPackage ./differ.nix)
     ++ (callPackage ./ui.nix)
     ++ langs.plugins
     ++ (
@@ -412,7 +414,10 @@ in
         };
 
 
-        cmp-diag-codes = (mkNvimPlugin inputs.cmp-diag-codes "cmp-diag-codes");
+        cmp-diag-codes = (mkNvimPlugin inputs.cmp-diag-codes "cmp-diag-codes").overrideAttrs
+          {
+            dependencies = [ prev.vimPlugins.blink-compat ];
+          };
 
         yaml-nvim = (mkNvimPlugin inputs.yaml-nvim "yaml.nvim");
         gentags = (mkNvimPlugin inputs.gentags-lua "gentags.lua").overrideAttrs

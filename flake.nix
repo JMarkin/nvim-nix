@@ -91,6 +91,11 @@
       flake = false;
     };
 
+    differ-nvim = {
+      url = "github:undont/differ.nvim?ref=v0.1.17";
+      flake = false;
+    };
+
     # rust
     # bacon.url = "github:Canop/bacon";
     # bacon.inputs.nixpkgs.follows = "nixpkgs";

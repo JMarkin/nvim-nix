@@ -42,7 +42,7 @@
           cmd = { "DBUI", "DBUIToggle" },
           before = function(event)
             vim.g.db_ui_execute_on_save = 0
-            vim.g.db_ui_win_position = "right"
+            vim.g.db_ui_win_position = "left"
             vim.g.db_ui_show_database_icon = 1
             vim.g.db_ui_use_nerd_fonts = 1
             vim.g.db_ui_env_variable_url = "DATABASE_URL"

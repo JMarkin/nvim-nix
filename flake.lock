@@ -75,6 +75,7 @@
       },
       "original": {
         "owner": "undont",
+        "ref": "v0.1.17",
         "repo": "differ.nvim",
         "type": "github"
       }
