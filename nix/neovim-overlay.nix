@@ -484,6 +484,8 @@ in
   nvim-pkg = mkNeovim {
     plugins = all-plugins;
     pkg = neovim-nightly;
+    viAlias = false;
+    vimAlias = false;
     extraPackages = all-packages;
     ignoreConfigRegexes = [
       "^snippets/.*"
@@ -493,6 +495,8 @@ in
   nvim-small = mkNeovim {
     plugins = smallset-plugins;
     pkg = final.pkgs.neovim-unwrapped;
+    viAlias = false;
+    vimAlias = false;
     ignoreConfigRegexes = [
       "^lsp/.*.lua"
     ];
@@ -502,6 +506,8 @@ in
   nvim-minimal = mkNeovim {
     plugins = minimal-plugins;
     pkg = final.pkgs.neovim-unwrapped;
+    viAlias = false;
+    vimAlias = false;
     ignoreConfigRegexes = [
       "^lsp/.*.lua"
     ];
