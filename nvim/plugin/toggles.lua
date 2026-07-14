@@ -65,3 +65,20 @@ setup({
   end,
 })
 
+setup({
+  name = "colorschema",
+  keymap = "<leader>tb",
+  desc = "Toggle: dark schema",
+  get = function()
+    return vim.o.background == "dark"
+  end,
+  set = function(state)
+    if state then
+      vim.o.background = "light"
+      vim.cmd("colorscheme ex-bamboo-light")
+    else
+      vim.o.background = "dark"
+      vim.cmd("colorscheme ex-bamboo")
+    end
+  end,
+})
