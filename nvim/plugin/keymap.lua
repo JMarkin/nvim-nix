@@ -80,11 +80,28 @@ for i = 1, 9, 1 do
   -- vim.keymap.set({ "t" }, "<c-t>" .. i, tabswitch(vim.cmd.tabnext, i), { desc = "Tabs: go to " .. i })
 end
 
+local function yank_all(s)
+  vim.fn.setreg('"', s)
+  vim.fn.setreg("+", s)
+end
+
 vim.keymap.set("n", "<leader>lcl", function()
   local s = string.format("%s:%s", vim.fn.expand("%"), vim.fn.line("."))
   vim.notify(string.format("Copied reference: %s", s))
-  vim.fn.setreg("+", s)
+  yank_all(s)
 end, { noremap = true, desc = "Copy as: line" })
+
+vim.keymap.set("n", "<leader>lcf", function()
+  local s = vim.fn.expand("%:p")
+  vim.notify(string.format("Copied reference: %s", s))
+  yank_all(s)
+end, { noremap = true, desc = "Copy as: file" })
+
+vim.keymap.set("n", "<leader>lcd", function()
+  local s = vim.fn.expand("%:p:h")
+  vim.notify(string.format("Copied reference: %s", s))
+  yank_all(s)
+end, { noremap = true, desc = "Copy as: directory" })
 
 vim.keymap.set("n", "<A-g>", ":DiffviewOpen<cr>", { desc = "DIFF" })
 
